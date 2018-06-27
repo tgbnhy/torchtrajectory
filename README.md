@@ -29,7 +29,7 @@ and effectiveness for query processing.
 * various indexes
 * various similarity functions
 
-### Getting started
+## Getting started
 
 ##### 1. Map matching
 
