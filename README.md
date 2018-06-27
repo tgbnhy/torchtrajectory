@@ -31,7 +31,7 @@ and effectiveness for query processing.
 
 ### Getting started
 
-#####1. Map matching
+##### 1. Map matching
 
 Map matching is the technique for projecting raw trajectories onto real road network.
 
@@ -44,7 +44,7 @@ The first argument is to specify your raw trajectory data src, while the second 
 After setup, start() method is to convert raw trajectories to mapped trajectories. and the results 
 be stored in *Torch* folder under CWD, which will be used for query processing later.
 
-######Note:
+###### Note:
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```

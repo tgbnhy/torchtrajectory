@@ -55,8 +55,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="362">
-                <caret line="151" column="5" selection-start-line="151" selection-start-column="5" selection-end-line="151" selection-end-column="51" />
+              <first_editor relative-caret-position="182">
+                <caret line="135" column="3" lean-forward="true" selection-start-line="135" selection-start-column="3" selection-end-line="135" selection-end-column="3" />
               </first_editor>
               <second_editor />
             </state>
@@ -157,8 +157,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="8" />
-    <option name="y" value="83" />
+    <option name="x" value="33" />
+    <option name="y" value="35" />
     <option name="width" value="1420" />
     <option name="height" value="796" />
   </component>
@@ -589,7 +589,7 @@
       <workItem from="1529974946944" duration="201000" />
       <workItem from="1529975218670" duration="105000" />
       <workItem from="1529975366792" duration="15372000" />
-      <workItem from="1530005491997" duration="48297000" />
+      <workItem from="1530005491997" duration="49101000" />
     </task>
     <servers />
   </component>
@@ -602,11 +602,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66151000" />
+    <option name="totallyTimeSpent" value="66955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="8" y="83" width="1420" height="796" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -619,10 +618,10 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.46781117" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2160229" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2160229" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20827286" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20827286" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32904148" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -994,8 +993,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="362">
-            <caret line="151" column="5" selection-start-line="151" selection-start-column="5" selection-end-line="151" selection-end-column="51" />
+          <first_editor relative-caret-position="182">
+            <caret line="135" column="3" lean-forward="true" selection-start-line="135" selection-start-column="3" selection-end-line="135" selection-end-column="3" />
           </first_editor>
           <second_editor />
         </state>
