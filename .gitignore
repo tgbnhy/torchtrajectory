@@ -1,1 +1,7 @@
-.idea
+local
+map-data
+T_set
+target
+Torch
+src/main/java/au/edu/rmit/trajectory/similarity
+src/test/java/au/edu/rmit/trajectory/similarity

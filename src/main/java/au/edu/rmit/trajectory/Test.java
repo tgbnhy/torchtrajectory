@@ -1,0 +1,10 @@
+package au.edu.rmit.trajectory;
+
+import au.edu.rmit.trajectory.torch.io.MapMatching;
+
+public class Test {
+    public static void main(String[] args){
+        MapMatching mm = MapMatching.getBuilder().setBatchSize(10).build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
+        mm.start();
+    }
+}

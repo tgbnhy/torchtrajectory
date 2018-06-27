@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.davidmoten:rtree:0.8-RC10">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/rtree/0.8-RC10/rtree-0.8-RC10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/rtree/0.8-RC10/rtree-0.8-RC10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/davidmoten/rtree/0.8-RC10/rtree-0.8-RC10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

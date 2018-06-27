@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
+<log4j:configuration>
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="DEBUG" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{YYYY-MM-dd HH:mm:ss:SSS}] [%p] - %l - %m -  %t %n" />
+		</layout>
+	</appender>
+
+	<logger name="au.edu.rmit.trajectory.torch">
+		<level value="INFO"></level>
+		<appender-ref ref="consoleAppender" />
+	</logger>
+
+	<root>
+		<level value="ERROR" />
+	</root>
+</log4j:configuration>
