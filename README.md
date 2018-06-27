@@ -48,7 +48,7 @@ be stored in *Torch* folder under CWD, which will be used for query processing l
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
- 1. the format of trajectory data should be the same as it in sample dataset, and there is a **"\t"** separating trajectory id and content of it**
+ 1. the format of trajectory data should be the same as it in sample dataset, and there is a **"\t"** separating trajectory id and content of it
  2. it is your part to do data cleansing, high length trajectory(over 200) could slow down mapping process rapidly. 
  
 
