@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory;
 
-import au.edu.rmit.trajectory.torch.io.MapMatching;
+import au.edu.rmit.trajectory.torch.Torch;
+import au.edu.rmit.trajectory.torch.mapping.MapMatching;
 
 public class Test {
     public static void main(String[] args){

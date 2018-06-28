@@ -2,6 +2,6 @@ local
 map-data
 T_set
 target
-Torch
+T-Torch
 src/main/java/au/edu/rmit/trajectory/similarity
 src/test/java/au/edu/rmit/trajectory/similarity
