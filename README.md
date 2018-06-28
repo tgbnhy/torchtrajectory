@@ -11,7 +11,7 @@ counter two typical types of queries:
   * strict path query
 * Top K similarity retrieval
 
-and it also support a wide variety of trajectory similarity functions:
+and it also support a list of well-known similarity functions:
   * Longest overlapped road segments
   * Longest common sub-sequence
   * Edit distance with real penalty
@@ -23,8 +23,9 @@ and it also support a wide variety of trajectory similarity functions:
 ## Features
 * T-Torch performs trajectory retrieval over the mapped trajectories. 
 Although map-matching process is slow, is could increase both efficiency 
-and effectiveness for query processing.
-* data visualization
+and effectiveness in query processing part.
+* edge based search
+* data visualization on real graph
 * various map-matching algorithms and implementations
 * various indexes
 * various similarity functions
@@ -42,14 +43,14 @@ mm.start();
 
 The first argument is to specify your raw trajectory data src, while the second argument *"Resources/porto.osm.pbf"* is an PBF file<sup>[1]</sup>
 After setup, start() method is to convert raw trajectories to mapped trajectories. and the results 
-be stored in *Torch* folder under CWD, which will be used for query processing later.
+be stored in *Torch* folder under CWD, which will be used for query processing part later.
 
 ###### Note:
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
  1. the format of trajectory data should be the same as it in sample dataset, and there is a **"\t"** separating trajectory id and content of it
- 2. it is your part to do data cleansing, high length trajectory(over 200) could slow down mapping process rapidly. 
+ 2. it is your part to take care of data cleansing, as high length trajectory(over 200) could slow down mapping process rapidly, and low quality trajectory leads to low projection rate. 
  
 
 
