@@ -57,8 +57,8 @@ public interface Torch {
         String TRAJECTORY_VERTEX_REPRESENTATION_PATH = TORCH_META_PREFIX +"/trajectory_vertex.txt";
         String TRAJECTORY_EDGE_REPRESENTATION_PATH = TORCH_META_PREFIX +"/trajectory_edge.txt";
 
-        String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/index/edgeInvertedIdx";
-        String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/index/vertexInvertedIdx";
+        String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/invertedIndex/edgeInvertedIdx";
+        String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/invertedIndex/vertexInvertedIdx";
     }
 
     String SEPARATOR2 = ";";

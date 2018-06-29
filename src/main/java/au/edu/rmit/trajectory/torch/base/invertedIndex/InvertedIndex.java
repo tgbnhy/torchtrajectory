@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.base.index;
+package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 import static au.edu.rmit.trajectory.torch.base.Torch.SEPARATOR2;
 import static au.edu.rmit.trajectory.torch.base.helper.FileUtil.*;
 
-public abstract class InvertedIndex extends HashMap<String, Map<String, Integer>> {
+public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer>> {
 
     private static Logger logger = LoggerFactory.getLogger(InvertedIndex.class);
     /**
-     * index a list of trajectories, either by edges or vertices.
+     * invertedIndex a list of trajectories, either by edges or vertices.
      * @param trajectories trajectories to be indexed
      */
-    public <T extends TrajEntry> void indexAll(List<Trajectory<T>> trajectories){}
+    public abstract <T extends TrajEntry> void indexAll(List<Trajectory<T>> trajectories);
 
 
     /**
@@ -35,7 +35,7 @@ public abstract class InvertedIndex extends HashMap<String, Map<String, Integer>
              BufferedWriter trajBufWriter = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(path + "_trajId.txt", false), StandardCharsets.UTF_8)));
              BufferedWriter posBufWriter = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(path+ "_pos.txt", false), StandardCharsets.UTF_8)))) {
 
-            for (Map.Entry<String, Map<String, Integer>> entry : this.entrySet()) {
+            for (Map.Entry<Integer, Map<String, Integer>> entry : this.entrySet()) {
 
                 //write id
                 idBufWriter.write(entry.getKey());
@@ -90,7 +90,7 @@ public abstract class InvertedIndex extends HashMap<String, Map<String, Integer>
                 for (int i = 0; i < trajArray.length; i++)
                     invertedList.put(trajArray[i], Integer.valueOf(posArray[i]));
 
-                this.put(idString, invertedList);
+                this.put(Integer.valueOf(idString), invertedList);
             }
 
             logger.info("load complete - " + this.size());

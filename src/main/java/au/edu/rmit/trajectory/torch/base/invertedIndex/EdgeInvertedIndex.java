@@ -1,10 +1,11 @@
-package au.edu.rmit.trajectory.torch.base.index;
+package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The class models inverted list for edge or vertex.
@@ -16,10 +17,11 @@ import java.util.*;
 public class EdgeInvertedIndex extends InvertedIndex{
 
     /**
-     * index a list of trajectories
+     * invertedIndex a list of trajectories
      * @param trajectories trajectories to be indexed
      */
     public <T extends TrajEntry> void indexAll(List<Trajectory<T>> trajectories){
+
         for (Trajectory<T> trajectory: trajectories) {
 
             List<TorEdge> edges = trajectory.edges;
@@ -27,10 +29,8 @@ public class EdgeInvertedIndex extends InvertedIndex{
 
             for (TorEdge edge : edges) {
                 Map<String, Integer> trajIdPosMap = computeIfAbsent(edge.id, k -> new HashMap<>());
-                trajIdPosMap.put(String.valueOf(trajectory.id), ++pos);
+                trajIdPosMap.put(trajectory.id, ++pos);
             }
         }
     }
-
-
 }

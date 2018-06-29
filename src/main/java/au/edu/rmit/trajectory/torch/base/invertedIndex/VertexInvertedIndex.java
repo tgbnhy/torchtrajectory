@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.base.index;
+package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.model.*;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 public class VertexInvertedIndex extends InvertedIndex{
 
     /**
-     * index a list of trajectories
+     * invertedIndex a list of trajectories
      * @param trajectories trajectories to be indexed
      */
     public <T extends TrajEntry> void indexAll(List<Trajectory<T>> trajectories){

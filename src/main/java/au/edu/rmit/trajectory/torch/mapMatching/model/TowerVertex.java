@@ -9,14 +9,14 @@ import java.util.*;
 public class TowerVertex extends TorVertex {
 
     // the id is aligned to graph-hopper tower node id
-    public final String id;
+    public final int id;
 
     //only tower points have adjacent points
     private Map<TowerVertex, Double> adjacentTowerVertices = new HashMap<>();
 
     public TowerVertex(double lat, double lng, int id) {
         super(lat, lng, true);
-        this.id = String.valueOf(id);
+        this.id = id;
     }
 
 
@@ -37,11 +37,11 @@ public class TowerVertex extends TorVertex {
 
     @Override
     public String toString(){
-        return id;
+        return String.valueOf(id);
     }
 
     @Override
-    public String getId() {
+    public int getId() {
         return id;
     }
 }

@@ -9,7 +9,7 @@ public interface TrajEntry {
     /**
      * @return id of that trajectory entry
      */
-    String getId();
+    int getId();
 
     /**
      * @return double value represents latitude of the entry

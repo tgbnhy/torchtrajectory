@@ -2,9 +2,9 @@ package au.edu.rmit.trajectory.torch.mapMatching.io;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
-import au.edu.rmit.trajectory.torch.base.index.EdgeInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.index.InvertedIndex;
-import au.edu.rmit.trajectory.torch.base.index.VertexInvertedIndex;
+import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
+import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
+import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.*;
@@ -34,8 +34,8 @@ import static au.edu.rmit.trajectory.torch.base.helper.FileUtil.*;
  *      ~ map-matched trajectory represented by vertices
  *      ~ map-matched trajectory represented by edges
  *
- *      ~ edge inverted index( trajectory ids)
- *      ~ vertex inverted index( trajectory ids)
+ *      ~ edge inverted invertedIndex( trajectory ids)
+ *      ~ vertex inverted invertedIndex( trajectory ids)
  */
 public class TorSaver {
 
@@ -123,7 +123,7 @@ public class TorSaver {
         Collection<TorEdge> allEdges = TorGraph.getInstance().allEdges.values();
 
         List<TorEdge> edges = new ArrayList<>(allEdges);
-        edges.sort(Comparator.comparing(e -> Integer.valueOf(e.id)));
+        edges.sort(Comparator.comparing(e -> e.id));
 
         ensureExistence(Torch.URI.ID_EDGE_RAW);
 
@@ -131,7 +131,7 @@ public class TorSaver {
             BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.ID_EDGE_LOOKUP))) {
 
             StringBuilder builder = new StringBuilder();
-            Set<String> visited = new HashSet<>();
+            Set<Integer> visited = new HashSet<>();
 
             for (TorEdge edge : edges){
 
@@ -162,7 +162,7 @@ public class TorSaver {
 
         if (!append) ensureExistence(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
 
-        //index trajectories
+        //invertedIndex trajectories
         vertexInvertedIndex.indexAll(mappedTrajectories);
         edgeInvertedList.indexAll(mappedTrajectories);
 
@@ -177,7 +177,7 @@ public class TorSaver {
 
                 for (TowerVertex vertex : traj) {
                     hash = GeoHash.encodeHash(vertex.lat, vertex.lng);
-                    String id = graph.vertexIdLookup.get(hash);
+                    Integer id = graph.vertexIdLookup.get(hash);
 
                     if (id == null)
                         logger.error("a mapped edge is missing when processing trajectory id "+ traj.id);

@@ -67,13 +67,11 @@ public class TrajReader {
                 if (hasDate) dateLine = dateReader.readLine();
 
                 String[] temp = trajLine.split("\t");
-                String _trajId = temp[0];
-                int traId;
+                String trajId = temp[0];
                 String trajContent = temp[1];
                 String dateContent = null;
 
                 try {
-                    traId = Integer.parseInt(_trajId);
                     trajContent = trajContent.substring(2, trajContent.length() - 2); //remove head "[[" and tail "]]"
                     if (hasDate) {
                         dateContent = dateLine.split("\t")[1];
@@ -81,7 +79,7 @@ public class TrajReader {
                     }
 
                 }catch (Exception e){
-                    logger.warn("trajectory id {} is excluded, either too short or contain illegal chars", _trajId);
+                    logger.warn("trajectory id {} is excluded, either too short or contain illegal chars", trajId);
                     continue;
                 }
 
@@ -93,7 +91,7 @@ public class TrajReader {
                     assert trajTuples.length == dateTuples.length;
                 }
 
-                Trajectory<TrajEntry> trajectory = new Trajectory<>(traId, hasDate);
+                Trajectory<TrajEntry> trajectory = new Trajectory<>(trajId, hasDate);
 
                 String[] latLng;
                 for (int i = 0; i < trajTuples.length; i++){
@@ -105,7 +103,7 @@ public class TrajReader {
                         lat = Double.parseDouble(latLng[1]);
                         lon = Double.parseDouble(latLng[0]);
                     }catch (Exception e){
-                        logger.warn("node of trajectory ID {} contains illegal gps location, that node will be excluded. " + _trajId);
+                        logger.warn("node of trajectory ID {} contains illegal gps location, that node will be excluded. " + trajId);
                         continue;
                     }
 
@@ -116,7 +114,7 @@ public class TrajReader {
                         try {
                             date = sdfmt.parse(dateTuples[i]);
                         } catch (ParseException e) {
-                            logger.warn("node of trajectory ID {} contains illegal timestamp, that node will be excluded. " + _trajId);
+                            logger.warn("node of trajectory ID {} contains illegal timestamp, that node will be excluded. " + trajId);
                             continue;
                         }
                         node.setTime(date.getTime());

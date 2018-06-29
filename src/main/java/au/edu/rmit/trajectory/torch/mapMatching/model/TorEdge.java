@@ -58,11 +58,11 @@ public class TorEdge{
     /**
      * for database
      */
-    public final String id;
+    public final int id;
 
     public TorEdge() {
         idGenerator++;
-        id = String.valueOf(idGenerator);
+        id = idGenerator;
     }
 
     /**
@@ -183,6 +183,6 @@ public class TorEdge{
 
     @Override
     public String toString(){
-        return id;
+        return String.valueOf(id);
     }
 }

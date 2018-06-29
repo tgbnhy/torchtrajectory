@@ -55,11 +55,11 @@ public class TorGraph {
 
     //key -- lat, lng hash using GeoHash library
     //value -- id
-    public Map<String, String> vertexIdLookup;
+    public Map<String, Integer> vertexIdLookup;
 
     //key -- concat hash of two tower points
     //value -- id
-    public Map<String, String> edgeIdLookup;
+    public Map<String, Integer> edgeIdLookup;
 
     private TorGraph(){
         this.towerVertexes = new HashMap<>();

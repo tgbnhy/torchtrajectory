@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TrajNode implements TrajEntry{
 
-    String id;
+    public int id;
     public double lat = -1;
     public double lng = -1;
 
@@ -42,7 +42,7 @@ public class TrajNode implements TrajEntry{
     }
 
     @Override
-    public String getId() {
+    public int getId() {
         return id;
     }
 

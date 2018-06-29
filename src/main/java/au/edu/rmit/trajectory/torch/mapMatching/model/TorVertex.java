@@ -36,7 +36,7 @@ public abstract class TorVertex implements TrajEntry {
     }
 
     @Override
-    public String getId(){return null;};
+    public int getId(){return 0;};
 
     @Override
     public boolean equals(Object o) {

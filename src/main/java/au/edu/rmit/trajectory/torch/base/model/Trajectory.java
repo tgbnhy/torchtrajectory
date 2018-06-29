@@ -12,12 +12,12 @@ import java.util.List;
  */
 public class Trajectory<T extends TrajEntry> extends LinkedList<T> {
 
-    public int id;
+    public String id;
     public boolean hasTime;
     public List<TorEdge> edges = new ArrayList<>();
 
     public Trajectory(){}
-    public Trajectory(int id, boolean hasTime){
+    public Trajectory(String id, boolean hasTime){
         this.hasTime = hasTime;
         this.id = id;
     }
