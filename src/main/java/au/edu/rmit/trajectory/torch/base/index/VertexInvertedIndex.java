@@ -1,6 +1,6 @@
-package au.edu.rmit.trajectory.torch.index;
+package au.edu.rmit.trajectory.torch.base.index;
 
-import au.edu.rmit.trajectory.torch.model.*;
+import au.edu.rmit.trajectory.torch.base.model.*;
 
 import java.util.HashMap;
 import java.util.List;

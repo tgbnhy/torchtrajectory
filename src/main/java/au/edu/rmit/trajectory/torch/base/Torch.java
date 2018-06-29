@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch;
+package au.edu.rmit.trajectory.torch.base;
 
 import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 
@@ -44,9 +44,9 @@ public interface Torch {
 
     /**
      * Internal use.
-     * This is for system settings.
+     * This is for File settings.
      */
-    interface Props {
+    interface URI {
         String TORCH_META_PREFIX = "T-Torch/TorchMeta";
         String HOPPER_META = "T-Torch/HopperMeta";
 
@@ -59,8 +59,7 @@ public interface Torch {
 
         String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/index/edgeInvertedIdx";
         String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/index/vertexInvertedIdx";
-
-        String SEPARATOR = ",";
-        String SEPARATOR2 = ";";
     }
+
+    String SEPARATOR2 = ";";
 }

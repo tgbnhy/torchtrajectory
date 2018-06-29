@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.helper;
+package au.edu.rmit.trajectory.torch.base.helper;
 
 import java.io.File;
 

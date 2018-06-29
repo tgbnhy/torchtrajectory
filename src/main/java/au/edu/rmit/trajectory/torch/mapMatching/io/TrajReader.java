@@ -1,9 +1,9 @@
 package au.edu.rmit.trajectory.torch.mapMatching.io;
 
 import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
-import au.edu.rmit.trajectory.torch.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.model.TrajNode;
-import au.edu.rmit.trajectory.torch.model.Trajectory;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.TrajNode;
+import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

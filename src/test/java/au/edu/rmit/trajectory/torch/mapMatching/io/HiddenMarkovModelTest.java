@@ -1,11 +1,11 @@
 package au.edu.rmit.trajectory.torch.mapMatching.io;
 
 //import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
-//import au.edu.rmit.trajectory.torch.Torch;
+//import au.edu.rmit.trajectory.torch.base.Torch;
 //import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
 //import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
-//import au.edu.rmit.trajectory.torch.model.TrajNode;
-//import au.edu.rmit.trajectory.torch.model.Trajectory;
+//import au.edu.rmit.trajectory.torch.base.model.TrajNode;
+//import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 //import com.graphhopper.util.StopWatch;
 
 public class HiddenMarkovModelTest {

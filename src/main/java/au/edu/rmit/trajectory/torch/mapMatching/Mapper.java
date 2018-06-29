@@ -1,7 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching;
 
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
-import au.edu.rmit.trajectory.torch.model.*;
+import au.edu.rmit.trajectory.torch.base.model.*;
 
 import java.util.List;
 

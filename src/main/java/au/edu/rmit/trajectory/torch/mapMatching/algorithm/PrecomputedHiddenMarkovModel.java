@@ -1,11 +1,11 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
-import au.edu.rmit.trajectory.torch.model.*;
+import au.edu.rmit.trajectory.torch.base.model.*;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.geometry.Geometries;
 import com.github.davidmoten.rtree.geometry.Geometry;

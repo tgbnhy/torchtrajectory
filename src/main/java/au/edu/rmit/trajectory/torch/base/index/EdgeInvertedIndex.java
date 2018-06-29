@@ -1,8 +1,8 @@
-package au.edu.rmit.trajectory.torch.index;
+package au.edu.rmit.trajectory.torch.base.index;
 
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
-import au.edu.rmit.trajectory.torch.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.model.Trajectory;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 
 import java.util.*;
 

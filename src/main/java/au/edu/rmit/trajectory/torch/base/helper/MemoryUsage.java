@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.helper;
+package au.edu.rmit.trajectory.torch.base.helper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

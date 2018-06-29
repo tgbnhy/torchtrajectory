@@ -1,7 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching.model;
 
-import au.edu.rmit.trajectory.torch.helper.GeoUtil;
-import au.edu.rmit.trajectory.torch.Torch;
+import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.base.Torch;
 import java.util.*;
 
 /**
@@ -90,12 +90,12 @@ public class TorEdge{
         getLength();
 
         StringBuilder res = new StringBuilder();
-        return res.append(this.id).append(Torch.Props.SEPARATOR2)
-                .append(this.latitudes).append(Torch.Props.SEPARATOR2)
-                .append(this.longtitudes).append(Torch.Props.SEPARATOR2)
-                .append(this.length).append(Torch.Props.SEPARATOR2)
-                .append(this.isForward).append(Torch.Props.SEPARATOR2)
-                .append(this.isBackward).append(Torch.Props.SEPARATOR2).toString();
+        return res.append(this.id).append(Torch.SEPARATOR2)
+                .append(this.latitudes).append(Torch.SEPARATOR2)
+                .append(this.longtitudes).append(Torch.SEPARATOR2)
+                .append(this.length).append(Torch.SEPARATOR2)
+                .append(this.isForward).append(Torch.SEPARATOR2)
+                .append(this.isBackward).append(Torch.SEPARATOR2).toString();
     }
 
 //    /**

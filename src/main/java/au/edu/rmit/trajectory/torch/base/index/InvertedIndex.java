@@ -1,8 +1,8 @@
-package au.edu.rmit.trajectory.torch.index;
+package au.edu.rmit.trajectory.torch.base.index;
 
-import au.edu.rmit.trajectory.torch.Torch;
-import au.edu.rmit.trajectory.torch.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.model.Trajectory;
+import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static au.edu.rmit.trajectory.torch.Torch.Props.SEPARATOR2;
-import static au.edu.rmit.trajectory.torch.helper.FileUtil.*;
+import static au.edu.rmit.trajectory.torch.base.Torch.SEPARATOR2;
+import static au.edu.rmit.trajectory.torch.base.helper.FileUtil.*;
 
 public abstract class InvertedIndex extends HashMap<String, Map<String, Integer>> {
 
@@ -71,9 +71,9 @@ public abstract class InvertedIndex extends HashMap<String, Map<String, Integer>
      */
     public boolean load(String path) {
 
-        if (!path.equals(Torch.Props.EDGE_INVERTED_INDEX) &&
-                !path.equals(Torch.Props.VERTEX_INVERTED_INDEX))
-            throw new IllegalStateException("base path got to be "+Torch.Props.EDGE_INVERTED_INDEX+" or "+Torch.Props.VERTEX_INVERTED_INDEX);
+        if (!path.equals(Torch.URI.EDGE_INVERTED_INDEX) &&
+                !path.equals(Torch.URI.VERTEX_INVERTED_INDEX))
+            throw new IllegalStateException("base path got to be "+Torch.URI.EDGE_INVERTED_INDEX+" or "+Torch.URI.VERTEX_INVERTED_INDEX);
 
         try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.txt"));
              BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.txt"));

@@ -1,6 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching.model;
 
-import au.edu.rmit.trajectory.torch.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import com.github.davidmoten.geo.GeoHash;
 
 /**

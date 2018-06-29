@@ -4,12 +4,12 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorDijkstra;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.mapMatching.io.TrajReader;
-import au.edu.rmit.trajectory.torch.helper.MemoryUsage;
-import au.edu.rmit.trajectory.torch.Torch;
+import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
+import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.mapMatching.io.TorSaver;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
-import au.edu.rmit.trajectory.torch.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.model.Trajectory;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,14 +59,14 @@ public class MapMatching {
         }
 
         //check output directory
-        File dir = new File(Torch.Props.TORCH_META_PREFIX);
+        File dir = new File(Torch.URI.TORCH_META_PREFIX);
         if (!dir.exists()) {
             if (!dir.mkdirs()){
-                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", Torch.Props.TORCH_META_PREFIX);
+                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", Torch.URI.TORCH_META_PREFIX);
                 throw new RuntimeException();
             }
         }else if (!dir.isDirectory()){
-            logger.error("{} already exists and it is not a directory", Torch.Props.TORCH_META_PREFIX);
+            logger.error("{} already exists and it is not a directory", Torch.URI.TORCH_META_PREFIX);
             throw new RuntimeException();
         }
     }
@@ -87,7 +87,7 @@ public class MapMatching {
         //readBatch and build graph
         if (graph == null) {
             graph = TorGraph.getInstance().
-                    initGH(Torch.Props.HOPPER_META + "_" +  props.vehicleType, props.osmPath, props.vehicleType);
+                    initGH(Torch.URI.HOPPER_META + "_" +  props.vehicleType, props.osmPath, props.vehicleType);
             MemoryUsage.printCurrentMemUsage("[after init graph hopper]");
             graph.build(props);
             MemoryUsage.printCurrentMemUsage("[after build tor graph]");

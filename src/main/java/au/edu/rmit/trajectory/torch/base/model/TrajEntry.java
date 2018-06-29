@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.model;
+package au.edu.rmit.trajectory.torch.base.model;
 
 /**
  * Classes implemented TrajEntry could be added to Trajectory

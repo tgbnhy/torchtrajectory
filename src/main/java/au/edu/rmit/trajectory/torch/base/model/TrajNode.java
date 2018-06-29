@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.model;
+package au.edu.rmit.trajectory.torch.base.model;
 
 import java.util.ArrayList;
 import java.util.List;

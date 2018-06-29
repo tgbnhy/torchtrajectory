@@ -1,7 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
-import au.edu.rmit.trajectory.torch.Torch;
+import au.edu.rmit.trajectory.torch.base.Torch;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.weighting.FastestWeighting;
 import com.graphhopper.util.Parameters;
