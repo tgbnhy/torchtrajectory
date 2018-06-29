@@ -1,10 +1,10 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 
-import au.edu.rmit.trajectory.torch.GeoUtil;
-import au.edu.rmit.trajectory.torch.model.PillarVertex;
-import au.edu.rmit.trajectory.torch.model.TorVertex;
-import au.edu.rmit.trajectory.torch.model.TowerVertex;
+import au.edu.rmit.trajectory.torch.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.mapMatching.model.PillarVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

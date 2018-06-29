@@ -1,11 +1,12 @@
-package au.edu.rmit.trajectory.torch;
+package au.edu.rmit.trajectory.torch.mapMatching;
 
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.model.*;
 
 import java.util.List;
 
 /**
- * The contract for map-matching mapping implementations
+ * The contract for map-matching algorithm implementations
  */
 public interface Mapper {
 

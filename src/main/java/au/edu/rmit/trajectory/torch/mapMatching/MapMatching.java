@@ -1,18 +1,19 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching;
 
-import au.edu.rmit.trajectory.torch.Mapper;
-import au.edu.rmit.trajectory.torch.MemoryUsage;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorDijkstra;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
+import au.edu.rmit.trajectory.torch.mapMatching.io.TrajReader;
+import au.edu.rmit.trajectory.torch.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.Torch;
-import au.edu.rmit.trajectory.torch.io.TorReader;
-import au.edu.rmit.trajectory.torch.io.TorSaver;
-import au.edu.rmit.trajectory.torch.model.TowerVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.io.TorSaver;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.model.Trajectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,19 +72,19 @@ public class MapMatching {
     }
 
     /**
-     * read raw trajectory data --> map it on graph --> store mapped trajectories on disk.
+     * readBatch raw trajectory data --> map it on graph --> store mapped trajectories on disk.
      * Since some times the trajectory data file is too large and it cannot be loaded into memory at once,
-     * the subroutine will read and do the work on batch. The batch size could be specified via
+     * the subroutine will readBatch and do the work on batch. The batch size could be specified via
      *
      * @see Builder#setBatchSize(int)
      */
     public void start(){
 
         TorSaver saver = new TorSaver();
-        TorReader reader = new TorReader(props.batchSize);
+        TrajReader reader = new TrajReader(props);
         MemoryUsage.start();
 
-        //read and build graph
+        //readBatch and build graph
         if (graph == null) {
             graph = TorGraph.getInstance().
                     initGH(Torch.Props.HOPPER_META + "_" +  props.vehicleType, props.osmPath, props.vehicleType);
@@ -94,34 +95,34 @@ public class MapMatching {
 
         mapper = AlgorithmFactory.getMapper(props.mmAlg, graph);
 
-        //read trajectory data in batch from file
+        //readBatch trajectory data in batch from file
         List<Trajectory<TrajEntry>> rawTrajs = new LinkedList<>();
-        while ( !reader.read(props.trajSrcPath, null, rawTrajs)) {
+        while ( !reader.readBatch(props.trajSrcPath, null, rawTrajs)) {
 
             MemoryUsage.printCurrentMemUsage("[after loading trajectories]");
 
             //do map-matching
             List<Trajectory<TowerVertex>> mappedTrajectories = mapper.batchMatch(rawTrajs);
 
-            //save data
-            saver.asyncSave(mappedTrajectories);
+            //asyncSave data
+            saver.asyncSave(mappedTrajectories, false);
         }
 
         //do map-matching for the rest
         List<Trajectory<TowerVertex>> mappedTrajectories = mapper.batchMatch(rawTrajs);
-        saver.asyncSave(mappedTrajectories);
+        saver.asyncSave(mappedTrajectories, true);
     }
 
 
 
-    /**
-     * todo
-     *
-     * In addition to required files, you can pass your timestamp file along to mm.
-     * Time stamp provides information that would help in the query.
-     * It won't make difference in trajectory map-matching.
-     *
-     */
+//    /**
+//     * todo
+//     *
+//     * In addition to required files, you can pass your timestamp file along to mm.
+//     * Time stamp provides information that would help in the query.
+//     * It won't make difference in trajectory map-matching.
+//     *
+//     */
 //    private static MapMatching build(String trajSrc, String dateSrc, String PBFPath, String outDir) {
 //
 //        MapMatching mm = MapMatching.build(trajSrc, PBFPath, outDir);
@@ -184,7 +185,7 @@ public class MapMatching {
          * T-Torch will load and process trajectories in batch as sometimes dataset is too large to fit into memory at once
          * This tell T-Torch how many trajectories should be loaded and processed at once.
          *
-         * @see TorReader
+         * @see TrajReader
          */
         public Builder setBatchSize(int batchSize){
             this.batchSize = batchSize;
@@ -211,5 +212,14 @@ public class MapMatching {
             return mm;
         }
 
+        public int getBatchSize() {
+            return batchSize;
+        }
+        public int getPreComputationRange() {
+            return preComputationRange;
+        }
+        public String getMmAlg() {
+            return mmAlg;
+        }
     }
 }

@@ -1,12 +1,13 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.GeoUtil;
-import au.edu.rmit.trajectory.torch.MemoryUsage;
+import au.edu.rmit.trajectory.torch.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.Torch;
-import au.edu.rmit.trajectory.torch.model.PillarVertex;
-import au.edu.rmit.trajectory.torch.model.TorEdge;
-import au.edu.rmit.trajectory.torch.model.TorVertex;
-import au.edu.rmit.trajectory.torch.model.TowerVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
+import au.edu.rmit.trajectory.torch.mapMatching.model.PillarVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.rtree.RTree;
 import com.github.davidmoten.rtree.geometry.Geometries;
@@ -38,7 +39,7 @@ public class TorGraph {
     private Logger logger = LoggerFactory.getLogger(TorGraph.class);
 
     public boolean isBuilt = false;
-    FlagEncoder vehicleType;
+    public FlagEncoder vehicleType;
 
     Map<String, TowerVertex> towerVertexes;
     Map<String, TorVertex> allPoints;
@@ -125,8 +126,8 @@ public class TorGraph {
         buildTorGraph();
         initLookUpTable();
 
-        if (props.mmAlg.equals(Torch.Algorithms.HMM_PRECOMPUTED))
-            buildShortestPathCache(props.batchSize);
+        if (props.getMmAlg().equals(Torch.Algorithms.HMM_PRECOMPUTED))
+            buildShortestPathCache(props.getPreComputationRange());
 
         return this;
     }
@@ -214,9 +215,9 @@ public class TorGraph {
 
         MemoryUsage.printCurrentMemUsage("[after loading all edges]");
 
-        // add density to sparse edge to increase map-matching accuracy.
+        // indexAll density to sparse edge to increase map-matching accuracy.
         for (TorEdge edge : allEdges.values()) {
-            if (edge.getPillarVertexes().size() == 0 && au.edu.rmit.trajectory.torch.GeoUtil.distance(edge.baseVertex, edge.adjVertex) >= SPARSE_THRESHOLD * 2) {
+            if (edge.getPillarVertexes().size() == 0 && GeoUtil.distance(edge.baseVertex, edge.adjVertex) >= SPARSE_THRESHOLD * 2) {
 
                 PillarVertex pVertex = PillarVertex.generateMiddle(edge.baseVertex, edge.adjVertex, edge);
                 edge.addPillarVertex(pVertex);

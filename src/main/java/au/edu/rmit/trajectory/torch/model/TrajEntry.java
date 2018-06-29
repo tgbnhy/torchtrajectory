@@ -7,6 +7,11 @@ package au.edu.rmit.trajectory.torch.model;
 public interface TrajEntry {
 
     /**
+     * @return id of that trajectory entry
+     */
+    String getId();
+
+    /**
      * @return double value represents latitude of the entry
      */
     double getLat();

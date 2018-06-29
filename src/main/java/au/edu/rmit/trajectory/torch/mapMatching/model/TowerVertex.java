@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.model;
+package au.edu.rmit.trajectory.torch.mapMatching.model;
 
 import java.util.*;
 
@@ -37,6 +37,11 @@ public class TowerVertex extends TorVertex {
 
     @Override
     public String toString(){
+        return id;
+    }
+
+    @Override
+    public String getId() {
         return id;
     }
 }

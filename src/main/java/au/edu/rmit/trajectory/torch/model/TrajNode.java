@@ -6,11 +6,12 @@ import java.util.List;
 /**
  * A trajNode models a node on a trajectory.
  * Besides GPS coordinate, each node could also carries other information such as timestep, current speed etc.
- * However, mapping from raw trajectory nodes to graph vertices for other kind of information requires further research and experiment.
+ * However, algorithm from raw trajectory nodes to graph vertices for other kind of information requires further research and experiment.
  * This function is expected to be developed in future.
  */
 public class TrajNode implements TrajEntry{
 
+    String id;
     public double lat = -1;
     public double lng = -1;
 
@@ -38,6 +39,11 @@ public class TrajNode implements TrajEntry{
     public long getTime() {
         if (_time == -1) throw new IllegalStateException("try to fetch time in node not containing time information");
         return _time;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override

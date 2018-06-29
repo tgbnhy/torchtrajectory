@@ -1,6 +1,7 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.model.*;
 import com.github.davidmoten.geo.GeoHash;
 import com.graphhopper.matching.*;
@@ -12,7 +13,7 @@ import com.graphhopper.util.*;
 import java.util.*;
 
 /**
- * HiddenMarkovModel is a map-matching mapping.
+ * HiddenMarkovModel is a map-matching algorithm.
  *
  * It is a wrapper class of Graph-hopper HMM implementation.
  * This implementation is optimized for single trajectory map-matching, and
@@ -21,17 +22,13 @@ import java.util.*;
  *
  * @see com.graphhopper.matching.MapMatching More details on Hidden Markov Model
  * @see PrecomputedHiddenMarkovModel
- * @see AlgorithmFactory the place to instantiate HiddenMarkovModel mapping
+ * @see AlgorithmFactory the place to instantiate HiddenMarkovModel algorithm
  */
 public class HiddenMarkovModel implements Mapper {
 
     private com.graphhopper.matching.MapMatching hmm;
     private TorGraph torGraph;
 
-    /**
-     *
-     * @param options
-     */
     HiddenMarkovModel(TorGraph torGraph, AlgorithmOptions options){
         hmm = new com.graphhopper.matching.MapMatching(torGraph.getGH(), options);
         this.torGraph = torGraph;

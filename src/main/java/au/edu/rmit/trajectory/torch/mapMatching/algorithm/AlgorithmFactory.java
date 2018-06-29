@@ -1,6 +1,6 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
 import au.edu.rmit.trajectory.torch.Torch;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.weighting.FastestWeighting;
@@ -13,11 +13,11 @@ public abstract class AlgorithmFactory {
 
 
     /**
-     * Create specified map-matching mapping for mapping raw trajectory.
+     * Create specified map-matching algorithm for algorithm raw trajectory.
      *
-     * @param algorithm Specify which map-matching mapping should be used to do trajectory projection.
+     * @param algorithm Specify which map-matching algorithm should be used to do trajectory projection.
      * @param graph Graph used to project trajectory on.
-     * @return The map-matching mapping.
+     * @return The map-matching algorithm.
      * @see Torch.Algorithms Valid options for first param.
      */
     public static Mapper getMapper(String algorithm, TorGraph graph) {

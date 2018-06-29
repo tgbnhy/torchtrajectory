@@ -1,17 +1,12 @@
-package au.edu.rmit.trajectory.torch.io;
+package au.edu.rmit.trajectory.torch.mapMatching.io;
 
-//import au.edu.rmit.trajectory.torch.Mapper;
+//import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
 //import au.edu.rmit.trajectory.torch.Torch;
-//import au.edu.rmit.trajectory.torch.mapping.AlgorithmFactory;
-//import au.edu.rmit.trajectory.torch.model.TorVertex;
+//import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
+//import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 //import au.edu.rmit.trajectory.torch.model.TrajNode;
 //import au.edu.rmit.trajectory.torch.model.Trajectory;
 //import com.graphhopper.util.StopWatch;
-
-import java.io.File;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class HiddenMarkovModelTest {
 
@@ -20,8 +15,8 @@ public class HiddenMarkovModelTest {
 //
 ////    @BeforeClass
 //    public static void prepare() {
-//        TorReader torReader = new TorReader();
-//        rawTrajs = torReader.read(new File("BEIJING/beijing_raw.txt"), null);
+//        TrajReader torReader = new TrajReader();
+//        rawTrajs = torReader.readBatch(new File("BEIJING/beijing_raw.txt"), null);
 //        mapper = AlgorithmFactory.getMapper("map-data/Beijing.osm.pbf",Torch.vehicleType.CAR, Torch.Algorithms.HMM);
 //    }
 //
@@ -45,8 +40,8 @@ public class HiddenMarkovModelTest {
 //     * - normally map-matched trajectory sizes is of 7-10 times larger then raw trajectory.
 //     */
 //    public static void main(String[] args){
-//        TorReader torReader = new TorReader();
-//        rawTrajs = torReader.read(new File("BEIJING/beijing_raw.txt"), null);
+//        TrajReader torReader = new TrajReader();
+//        rawTrajs = torReader.readBatch(new File("BEIJING/beijing_raw.txt"), null);
 //        mapper = AlgorithmFactory.getMapper("map-data/Beijing.osm.pbf", Torch.vehicleType.CAR, Torch.Algorithms.HMM);
 //
 //        int len = rawTrajs.size();
@@ -65,6 +60,6 @@ public class HiddenMarkovModelTest {
 //        }
 //        watch.stop();
 //        System.out.println("broken trajectories: "+ counter);
-//        System.out.println("time for mapping 100 trajectories: "+watch.getSeconds());
+//        System.out.println("time for algorithm 100 trajectories: "+watch.getSeconds());
 //    }
 }

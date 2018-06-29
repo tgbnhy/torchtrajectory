@@ -1,5 +1,6 @@
-package au.edu.rmit.trajectory.torch.io;
+package au.edu.rmit.trajectory.torch.mapMatching.io;
 
+import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.model.TrajNode;
 import au.edu.rmit.trajectory.torch.model.Trajectory;
@@ -9,22 +10,21 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * The class is for reading trajectories following the certain format from file.
  */
-public class TorReader {
+public class TrajReader {
 
     private final int BATCH_SIZE;
-    private static Logger logger = LoggerFactory.getLogger(TorReader.class);
+    private static Logger logger = LoggerFactory.getLogger(TrajReader.class);
     private static LineNumberReader trajReader;
     private static BufferedReader dateReader = null;
 
-    public TorReader(int size){
-        BATCH_SIZE = size;
+    public TrajReader(MapMatching.Builder props){
+        BATCH_SIZE = props.getBatchSize();
     }
 
     /**
@@ -36,7 +36,7 @@ public class TorReader {
      *                 This file could be null and if this is the case, the program will leave time field in trajectory model blank.
      * @return a list of trajectories.
      */
-    public boolean read(String trajSrcPath, File dateDataPath, List<Trajectory<TrajEntry>> trajectoryList) {
+    public boolean readBatch(String trajSrcPath, File dateDataPath, List<Trajectory<TrajEntry>> trajectoryList) {
 
         logger.info("now reading trajectories");
 
@@ -55,9 +55,15 @@ public class TorReader {
             String dateLine = null;
 
             while (true) {
+
+                if (trajReader.getLineNumber() == 5) return true;
+
                 if ((trajLine = trajReader.readLine()) == null){
+                    trajReader.close();
+                    if (hasDate) dateReader.close();
                     return true;
                 }
+
                 if (hasDate) dateLine = dateReader.readLine();
 
                 String[] temp = trajLine.split("\t");
@@ -121,7 +127,7 @@ public class TorReader {
                 trajectoryList.add(trajectory);
 
                 if (trajReader.getLineNumber() % BATCH_SIZE == 0) {
-                    logger.info("have read {} trajectories in total", trajReader.getLineNumber());
+                    logger.info("have readBatch {} trajectories in total", trajReader.getLineNumber());
                     return false;
                 }
             }

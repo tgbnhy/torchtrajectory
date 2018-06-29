@@ -72,7 +72,7 @@ public class GeneralTest {
      * test relations of base node and forward, backward of edge.
      *
      * result: - hopper.setEncodingManager(new EncodingManager(encoder)); defines what kind of edges is indexed.
-     *           e.g. if carEncorder is set, only car edges are read and indexed from osm file.
+     *           e.g. if carEncorder is set, only car edges are readBatch and indexed from osm file.
      *         - boolean value returned by isForward(FlagEncoder encoder), isBackward(FlagEncoder encoder)
      *           relies on the base node.
      *         - if isForward(FlagEncoder encoder), isBackward(FlagEncoder encoder) both yields true, the edge is a bidirectional way.
@@ -247,7 +247,7 @@ public class GeneralTest {
 //                System.out.println("----");
 //                counter++;
 //            }
-//            set.add(hash);
+//            set.indexAll(hash);
 //        }
 //        System.err.println("total number of ways: " + counter_total);
 //        System.err.println("counter: "+counter);

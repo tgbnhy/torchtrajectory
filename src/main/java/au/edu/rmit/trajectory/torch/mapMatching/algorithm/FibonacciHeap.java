@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 /***********************************************************************
  * File: FibonacciHeap.java
@@ -10,7 +10,7 @@ package au.edu.rmit.trajectory.torch.mapping;
  * for many operations.  In particular, insert, peek, and decrease-key all
  * run in amortized O(1) time.  dequeueMin and delete each run in amortized
  * O(lg n) time.  This allows algorithms that rely heavily on decrease-key
- * to gain significant performance boosts.  For example, TorDijkstra's mapping
+ * to gain significant performance boosts.  For example, TorDijkstra's algorithm
  * for single-source shortest paths can be shown to run in O(m + n lg n) using
  * a Fibonacci heap, compared to O(m lg n) using a standard binary or binomial
  * heap.
@@ -45,7 +45,7 @@ package au.edu.rmit.trajectory.torch.mapping;
  * The other hard operation is decreaseKey, which works as follows.  First, we
  * update the key of the node to be the new value.  If this leaves the node
  * smaller than its parent, we're done.  Otherwise, we cut the node from its
- * parent, add it as a root, and then mark its parent.  If the parent was
+ * parent, indexAll it as a root, and then mark its parent.  If the parent was
  * already marked, we cut that node as well, recursively mark its parent,
  * and continue this counter.  This can be shown to run in O(1) amortized time
  * using yet another clever potential function.  Finally, given this function,
@@ -300,7 +300,7 @@ public final class FibonacciHeap<T> {
          */
         List<Entry<T>> toVisit = new ArrayList<Entry<T>>();
 
-        /* To add everything, we'll iterate across the elements until we
+        /* To indexAll everything, we'll iterate across the elements until we
          * find the first element twice.  We check this by looping while the
          * list is empty or while the current element isn't the first element
          * of that list.

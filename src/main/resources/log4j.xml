@@ -9,7 +9,7 @@
 	</appender>
 
 	<logger name="au.edu.rmit.trajectory.torch">
-		<level value="INFO"></level>
+		<level value="DEBUG"></level>
 		<appender-ref ref="consoleAppender" />
 	</logger>
 

@@ -1,8 +1,8 @@
 package au.edu.rmit.trajectory.torch.dataStructure;
 
-import au.edu.rmit.trajectory.torch.MemoryUsage;
+import au.edu.rmit.trajectory.torch.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.Torch;
-import au.edu.rmit.trajectory.torch.mapping.TorGraph;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import org.junit.Test;
 
 public class TorGraphTest {

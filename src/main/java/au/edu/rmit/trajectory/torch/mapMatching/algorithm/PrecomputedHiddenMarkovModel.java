@@ -1,7 +1,10 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.GeoUtil;
-import au.edu.rmit.trajectory.torch.Mapper;
+import au.edu.rmit.trajectory.torch.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.model.*;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.geometry.Geometries;
@@ -20,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * This class is a implementation of HiddenMarkovModel, a map-matching mapping. For more information, refer to
+ * This class is a implementation of HiddenMarkovModel, a map-matching algorithm. For more information, refer to
  * @see HiddenMarkovModel
  * @see com.graphhopper.matching.MapMatching
  *
- * PrecomputedHiddenMarkovModel is optimized for mapping a batch of trajectories.
+ * PrecomputedHiddenMarkovModel is optimized for algorithm a batch of trajectories.
  * It precomputes and stores information of nodes within a range from the source node,
  * which could be directly looked up while process trajectories.
  *
@@ -166,7 +169,7 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
         }
 
 
-        //vertibi mapping
+        //vertibi algorithm
         List<Candidate> preCandidates = timeSteps.get(0);
         for (Candidate preCandidate : preCandidates) {
             preCandidate.probability = 0;
@@ -265,8 +268,16 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
 
         if (vertices.size() == 0) return mappedTrajectory;
         mappedTrajectory.addAll(vertices);
-        mappedTrajectory.edges.addAll(edges);
+//
+//        Iterator<TorEdge> iterator = edges.iterator();
+//        TorEdge pre = iterator.next();
+//        while (iterator.hasNext()){
+//            TorEdge cur = iterator.next();
+//            if (pre == cur) iterator.remove();
+//            else pre = cur;
+//        }
 
+        mappedTrajectory.edges.addAll(edges);
         return mappedTrajectory;
     }
 
@@ -283,7 +294,7 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
             } else if (retVertices.get(verticesLastIdx) == curShortestPath.get(0)){
                 retVertices.remove(verticesLastIdx);
             }else{
-                System.err.println("this should not happen:");
+                System.err.println("cannot connect");
                 throw new Exception();
             }
         }
@@ -310,6 +321,8 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
             System.err.println("given two tower vertices, Torch cannot find the edge.");
             throw new IllegalStateException();
         }
+
+        if (retEdges.size() == 0 || retEdges.get(retEdges.size()-1) != preEdge)
         retEdges.add(preEdge);
 
         for (int i = 1; i < curShortestPath.size(); i++){
@@ -371,7 +384,7 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
 
     /**
      * The class contains candidate vertex for the given trajectory node,
-     * as well as necessary information for HMM mapping.
+     * as well as necessary information for HMM algorithm.
      */
     class Candidate {
 

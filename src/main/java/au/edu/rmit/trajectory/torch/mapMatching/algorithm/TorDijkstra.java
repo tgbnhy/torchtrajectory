@@ -1,21 +1,21 @@
-package au.edu.rmit.trajectory.torch.mapping;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.GeoUtil;
-import au.edu.rmit.trajectory.torch.model.*;
+import au.edu.rmit.trajectory.torch.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 /**
- * Dijkstra mapping computes the shortest path between nodes with twitches.
+ * Dijkstra algorithm computes the shortest path between nodes with twitches.
  * It calculate the shortest path from a start candidateVertex s to its adjacent points (tower points) limited by a max distance
  * the result will be store in ShortestPathCache which will be used for PrecomputedHiddenMarkovModel
  *
  * @see ShortestPathCache
  * @see PrecomputedHiddenMarkovModel
  */
-class TorDijkstra {
+public class TorDijkstra {
 
     private static Logger logger = LoggerFactory.getLogger(TorDijkstra.class);
 

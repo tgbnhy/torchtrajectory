@@ -1,7 +1,12 @@
-package au.edu.rmit.trajectory.torch.io;
+package au.edu.rmit.trajectory.torch.mapMatching.io;
 
 import au.edu.rmit.trajectory.torch.Torch;
-import au.edu.rmit.trajectory.torch.mapping.TorGraph;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
+import au.edu.rmit.trajectory.torch.index.EdgeInvertedIndex;
+import au.edu.rmit.trajectory.torch.index.InvertedIndex;
+import au.edu.rmit.trajectory.torch.index.VertexInvertedIndex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.model.*;
 import com.github.davidmoten.geo.GeoHash;
 import com.graphhopper.storage.Graph;
@@ -9,18 +14,28 @@ import com.graphhopper.storage.NodeAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static au.edu.rmit.trajectory.torch.helper.FileUtil.*;
+
 /**
- * The class is for saving results to disk.
- * Those result will be used for building index later.
+ * The class is for saving relevant information to disk.
+ *
+ * These includes:
+ *      ~ vertexId -- GPS Coordinate table
+ *
+ *      ~ edgeId -- edgeInfo table
+ *      ~ edgeId -- vertexId table
+ *
+ *      ~ map-matched trajectory represented by vertices
+ *      ~ map-matched trajectory represented by edges
+ *
+ *      ~ edge inverted index( trajectory ids)
+ *      ~ vertex inverted index( trajectory ids)
  */
 public class TorSaver {
 
@@ -28,34 +43,50 @@ public class TorSaver {
     private TorGraph graph;
     private boolean append = false;
 
-    public TorSaver(){}
+    private InvertedIndex edgeInvertedList;
+    private InvertedIndex vertexInvertedIndex;
 
 
-
-     private void save(List<Trajectory<TowerVertex>> mappedTrajectories){
-        if (!TorGraph.getInstance().isBuilt)
-            throw new IllegalStateException("should be called after TorGraph initialization");
-
-        graph = TorGraph.getInstance();
-
-        saveIdVertexLookupTable();
-        saveEdges();
-        saveMappedTrajectories(mappedTrajectories);
+    public TorSaver(){
+        edgeInvertedList = new EdgeInvertedIndex();
+        vertexInvertedIndex = new VertexInvertedIndex();
     }
 
-     public synchronized void asyncSave(List<Trajectory<TowerVertex>> mappedTrajectories){
+    /**
+     * Once a batch of trajectories have been mapped, we save it using a separate thread.
+     *
+     * @param mappedTrajectories trajectories to be saved
+     * @param saveAll false -- asyncSave trajectory data only
+     *                true -- asyncSave everything
+     *                As the method is expected to be called multiple times to write different batches of trajectories,
+     *                other information should only be saved once.
+     */
+    public synchronized void asyncSave(final List<Trajectory<TowerVertex>> mappedTrajectories, final boolean saveAll) {
+
         if (!TorGraph.getInstance().isBuilt)
             throw new IllegalStateException("should be called after TorGraph initialization");
+        graph = TorGraph.getInstance();
 
         ExecutorService thread = Executors.newSingleThreadExecutor();
-        thread.execute(()-> save(mappedTrajectories));
-
+        thread.execute(() -> _save(mappedTrajectories, saveAll));
         thread.shutdown();
 
         try {
             thread.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
             logger.error("{}", e);
+        }
+    }
+
+    private void _save(final List<Trajectory<TowerVertex>> mappedTrajectories, final boolean saveAll) {
+
+        saveMappedTrajectories(mappedTrajectories);
+
+        if (saveAll) {
+            saveIdVertexLookupTable();
+            saveEdges();
+            edgeInvertedList.toDisk(Torch.Props.EDGE_INVERTED_INDEX);
+            vertexInvertedIndex.toDisk(Torch.Props.VERTEX_INVERTED_INDEX);
         }
     }
 
@@ -129,9 +160,13 @@ public class TorSaver {
 
     private void saveMappedTrajectories(List<Trajectory<TowerVertex>> mappedTrajectories){
 
-        //write vertex id representation of trajectories.
-        ensureExistence(Torch.Props.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
+        if (!append) ensureExistence(Torch.Props.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
 
+        //index trajectories
+        vertexInvertedIndex.indexAll(mappedTrajectories);
+        edgeInvertedList.indexAll(mappedTrajectories);
+
+        //write vertex id representation of trajectories.
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.Props.TRAJECTORY_VERTEX_REPRESENTATION_PATH,append))) {
 
             StringBuilder trajBuilder = new StringBuilder();
@@ -140,7 +175,7 @@ public class TorSaver {
             for (Trajectory<TowerVertex> traj : mappedTrajectories) {
                 trajBuilder.append(traj.id).append(";");
 
-                for (TorVertex vertex : traj) {
+                for (TowerVertex vertex : traj) {
                     hash = GeoHash.encodeHash(vertex.lat, vertex.lng);
                     String id = graph.vertexIdLookup.get(hash);
 
@@ -196,12 +231,5 @@ public class TorSaver {
         }
 
         append = true;
-    }
-
-    private void ensureExistence(String path){
-        File f = new File(path);
-        if (!f.getParentFile().exists()){
-            f.getParentFile().mkdirs();
-        }
     }
 }

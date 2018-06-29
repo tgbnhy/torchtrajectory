@@ -1,11 +1,8 @@
-package au.edu.rmit.trajectory.torch;
+package au.edu.rmit.trajectory.torch.helper;
 
 import au.edu.rmit.trajectory.torch.model.TrajEntry;
-import com.graphhopper.util.GPXEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * The class provides basic function for geo-distance calculation.

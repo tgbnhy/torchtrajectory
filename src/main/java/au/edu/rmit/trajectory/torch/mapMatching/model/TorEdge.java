@@ -1,6 +1,6 @@
-package au.edu.rmit.trajectory.torch.model;
+package au.edu.rmit.trajectory.torch.mapMatching.model;
 
-import au.edu.rmit.trajectory.torch.GeoUtil;
+import au.edu.rmit.trajectory.torch.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.Torch;
 import java.util.*;
 
@@ -112,7 +112,7 @@ public class TorEdge{
 //        this.adjVertex = new TowerVertex(Double.parseDouble(lats[last]), Double.parseDouble(lons[last]));
 //        this.pillarVertexes.clear();
 //        for (int i = 1; i < last; ++i) {
-//            this.pillarVertexes.add(new PillarVertex(Double.parseDouble(lats[i]), Double.parseDouble(lons[i]), this));
+//            this.pillarVertexes.indexAll(new PillarVertex(Double.parseDouble(lats[i]), Double.parseDouble(lons[i]), this));
 //        }
 //
 //        getLength();

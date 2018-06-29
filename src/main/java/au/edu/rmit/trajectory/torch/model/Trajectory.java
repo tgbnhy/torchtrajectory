@@ -1,5 +1,7 @@
 package au.edu.rmit.trajectory.torch.model;
 
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
