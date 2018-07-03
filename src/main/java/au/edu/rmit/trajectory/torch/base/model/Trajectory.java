@@ -2,7 +2,9 @@ package au.edu.rmit.trajectory.torch.base.model;
 
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,6 +26,24 @@ public class Trajectory<T extends TrajEntry> extends LinkedList<T> {
 
     public Trajectory(boolean hasTime){
         this.hasTime = hasTime;
+    }
+
+
+    public static Trajectory<TrajEntry> generate(String id, String trajContent){
+
+        Trajectory<TrajEntry> trajectory = new Trajectory<>(id, false);
+
+        trajContent = trajContent.substring(2, trajContent.length() - 2); //remove head "[[" and tail "]]"
+        String[] trajTuples = trajContent.split("],\\[");
+        String[] latLng;
+
+        for (int i = 0; i < trajTuples.length; i++){
+            latLng = trajTuples[i].split(",");
+            Coordinate coordinate = new Coordinate(Double.parseDouble(latLng[0]), Double.parseDouble(latLng[1]));
+            trajectory.add(coordinate);
+        }
+
+        return trajectory;
     }
 
     @Override

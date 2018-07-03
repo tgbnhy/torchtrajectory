@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.mapMatching;
+package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.*;

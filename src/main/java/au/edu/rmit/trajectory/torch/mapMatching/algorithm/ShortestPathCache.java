@@ -111,7 +111,7 @@ class ShortestPathCache extends HashMap<String, ShortestPathCache.ShortestPathEn
      * for every pillar vertex, compute the distance to its base vertex on edge.
      */
     private void computeDistForPillarVertices(TorGraph graph) {
-        //initialize toBasePointDistance of Point
+        //initialize toBasePointDistance of LightPoint
         for (TorVertex vertex : graph.allPoints.values()) {
             if (!vertex.isTower) {
                 PillarVertex current = ((PillarVertex)vertex);

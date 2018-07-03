@@ -65,8 +65,12 @@ public class GeoUtil {
      * @return new latitude.
      */
     public static double increaseLat(double lat, double meters) {
+        double ret;
         double coef = meters * 0.0000089;
-        return lat + coef;
+        ret = lat + coef;
+        if (ret > 90) ret = 90;
+        if (ret < -90) ret = -90;
+        return ret;
     }
 
     /**
@@ -77,7 +81,12 @@ public class GeoUtil {
      * @return new latitude.
      */
     public static double increaseLng(double lat, double lon, double meters) {
+        double ret;
         double coef = meters * 0.0000089;
-        return lon + coef / Math.cos(lat * 0.018);
+        ret = lon + coef / Math.cos(lat * 0.018);
+        if (ret > 180) ret -= 360;
+        if (ret < -180) ret += 360;
+
+        return ret;
     }
 }

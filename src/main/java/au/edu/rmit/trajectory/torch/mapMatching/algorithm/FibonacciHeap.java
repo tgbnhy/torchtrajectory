@@ -243,7 +243,7 @@ public final class FibonacciHeap<T> {
         /* Grab the minimum element so we know what to return. */
         Entry<T> minElem = mMin;
 
-        /* Now, we need to get rid of this element from the list of roots.  There
+        /* Now, we need to getList rid of this element from the list of roots.  There
          * are two cases to consider.  First, if this is the only element in the
          * list of roots, we set the list of roots to be null by clearing mMin.
          * Otherwise, if it's not null, then we write the elements next to the
@@ -468,7 +468,7 @@ public final class FibonacciHeap<T> {
              * |    |<-P--|    |<-P--|    |
              * +----+     +----+     +----+
              *
-             * And we want to relink everything to get
+             * And we want to relink everything to getList
              *
              * +----+     +----+     +----+---+
              * |    |--N->|one |     |    |   |

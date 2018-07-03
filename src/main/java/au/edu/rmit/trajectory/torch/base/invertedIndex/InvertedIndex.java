@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
+import au.edu.rmit.trajectory.torch.base.Index;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
@@ -11,12 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static au.edu.rmit.trajectory.torch.base.Torch.SEPARATOR2;
+import static au.edu.rmit.trajectory.torch.base.Torch.SEPARATOR;
 import static au.edu.rmit.trajectory.torch.base.helper.FileUtil.*;
 
-public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer>> {
+public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer>> implements Index {
 
     private static Logger logger = LoggerFactory.getLogger(InvertedIndex.class);
+    public boolean loaded = false;
+
     /**
      * invertedIndex a list of trajectories, either by edges or vertices.
      * @param trajectories trajectories to be indexed
@@ -28,7 +31,7 @@ public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer
      * write inverted indexes to disk in a specific format
      * @param path URI to save the indexes
      */
-    public final void toDisk(String path){
+    public final void save(String path){
         ensureExistence(path);
 
         try (BufferedWriter idBufWriter = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(path + "_id.txt", false), StandardCharsets.UTF_8)));
@@ -47,9 +50,9 @@ public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer
 
                 for (Map.Entry<String, Integer> pair : invertedList) {
                     //write trjectory hash
-                    trajBufWriter.write(pair.getKey() + SEPARATOR2);
+                    trajBufWriter.write(pair.getKey() + SEPARATOR);
                     //write position
-                    posBufWriter.write(pair.getValue() + SEPARATOR2);
+                    posBufWriter.write(pair.getValue() + SEPARATOR);
                 }
                 trajBufWriter.newLine();
                 posBufWriter.newLine();
@@ -63,13 +66,13 @@ public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer
     }
 
     /**
-     * load edge dataStructure files from disk
+     * build edge dataStructure files from disk
      * the in-memory edge-dataStructure is an field of this instance
      *
-     * @return true if the dataStructure file can be load and construct successfully
+     * @return true if the dataStructure file can be build and construct successfully
      *         false if indexes cannot be construct( cannot find dataStructure file or some other reasons)
      */
-    public boolean load(String path) {
+    public boolean build(String path) {
 
         if (!path.equals(Torch.URI.EDGE_INVERTED_INDEX) &&
                 !path.equals(Torch.URI.VERTEX_INVERTED_INDEX))
@@ -78,13 +81,15 @@ public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer
         try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.txt"));
              BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.txt"));
              BufferedReader posBufReader = new BufferedReader(new FileReader(path + "_pos.txt"))) {
-            String trajLine, posLine, idString;
+
+            //idString either be edge id or tower point id.
+            String trajIdLine, posLine, idString;
             while ((idString = idBufReader.readLine()) != null) {
 
-                trajLine = trajBufReader.readLine();
+                trajIdLine = trajBufReader.readLine();
                 posLine = posBufReader.readLine();
 
-                String[] trajArray = trajLine.split(SEPARATOR2), posArray = posLine.split(SEPARATOR2);
+                String[] trajArray = trajIdLine.split(SEPARATOR), posArray = posLine.split(SEPARATOR);
                 Map<String, Integer> invertedList= new HashMap<>();
 
                 for (int i = 0; i < trajArray.length; i++)
@@ -93,7 +98,8 @@ public abstract class InvertedIndex extends HashMap<Integer, Map<String, Integer
                 this.put(Integer.valueOf(idString), invertedList);
             }
 
-            logger.info("load complete - " + this.size());
+            loaded = true;
+            logger.info("build complete - " + this.size());
             return true;
         } catch (IOException e) {
             e.printStackTrace();

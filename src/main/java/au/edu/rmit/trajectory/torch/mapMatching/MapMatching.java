@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching;
 
-import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorDijkstra;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.mapMatching.io.TrajReader;
@@ -87,13 +88,13 @@ public class MapMatching {
         //readBatch and build graph
         if (graph == null) {
             graph = TorGraph.getInstance().
-                    initGH(Torch.URI.HOPPER_META + "_" +  props.vehicleType, props.osmPath, props.vehicleType);
+                    initGH(Torch.URI.HOPPER_META, props.osmPath, props.vehicleType);
             MemoryUsage.printCurrentMemUsage("[after init graph hopper]");
             graph.build(props);
             MemoryUsage.printCurrentMemUsage("[after build tor graph]");
         }
 
-        mapper = AlgorithmFactory.getMapper(props.mmAlg, graph);
+        mapper = Mappers.getMapper(props.mmAlg, graph);
 
         //readBatch trajectory data in batch from file
         List<Trajectory<TrajEntry>> rawTrajs = new LinkedList<>();
@@ -105,12 +106,12 @@ public class MapMatching {
             List<Trajectory<TowerVertex>> mappedTrajectories = mapper.batchMatch(rawTrajs);
 
             //asyncSave data
-            saver.asyncSave(mappedTrajectories, false);
+            saver.asyncSave(mappedTrajectories, rawTrajs, false);
         }
 
         //do map-matching for the rest
         List<Trajectory<TowerVertex>> mappedTrajectories = mapper.batchMatch(rawTrajs);
-        saver.asyncSave(mappedTrajectories, true);
+        saver.asyncSave(mappedTrajectories, rawTrajs, true);
     }
 
 
@@ -162,7 +163,7 @@ public class MapMatching {
         }
 
         /**
-         * @param vehicle It tells osm parser which edges and vertices to load.
+         * @param vehicle It tells osm parser which edges and vertices to build.
          *                As car and bike do not run on same roads
          * @see Torch.vehicleType
          */
@@ -182,7 +183,7 @@ public class MapMatching {
         }
 
         /**
-         * T-Torch will load and process trajectories in batch as sometimes dataset is too large to fit into memory at once
+         * T-Torch will build and process trajectories in batch as sometimes dataset is too large to fit into memory at once
          * This tell T-Torch how many trajectories should be loaded and processed at once.
          *
          * @see TrajReader

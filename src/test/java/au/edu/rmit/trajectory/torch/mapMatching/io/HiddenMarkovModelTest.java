@@ -1,8 +1,8 @@
 package au.edu.rmit.trajectory.torch.mapMatching.io;
 
-//import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
+//import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 //import au.edu.rmit.trajectory.torch.base.Torch;
-//import au.edu.rmit.trajectory.torch.mapMatching.algorithm.AlgorithmFactory;
+//import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mappers;
 //import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 //import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 //import au.edu.rmit.trajectory.torch.base.model.Trajectory;
@@ -17,7 +17,7 @@ public class HiddenMarkovModelTest {
 //    public static void prepare() {
 //        TrajReader torReader = new TrajReader();
 //        rawTrajs = torReader.readBatch(new File("BEIJING/beijing_raw.txt"), null);
-//        mapper = AlgorithmFactory.getMapper("map-data/Beijing.osm.pbf",Torch.vehicleType.CAR, Torch.Algorithms.HMM);
+//        mapper = Mappers.getMapper("map-data/Beijing.osm.pbf",Torch.vehicle.CAR, Torch.Algorithms.HMM);
 //    }
 //
 //
@@ -25,7 +25,7 @@ public class HiddenMarkovModelTest {
 //    public void test1() {
 //        int len = rawTrajs.size();
 //        for (int i = 0; i < len; i += len / 4) {
-//            Trajectory<TrajNode> rawTraj = rawTrajs.get(i);
+//            Trajectory<TrajNode> rawTraj = rawTrajs.getList(i);
 //            Trajectory<TorVertex> trajectory = mapper.match(rawTraj);
 //            System.out.println("rawTraj: " + rawTraj.toString());
 //            System.out.println("rawTraj size: " + rawTraj.size());
@@ -42,7 +42,7 @@ public class HiddenMarkovModelTest {
 //    public static void main(String[] args){
 //        TrajReader torReader = new TrajReader();
 //        rawTrajs = torReader.readBatch(new File("BEIJING/beijing_raw.txt"), null);
-//        mapper = AlgorithmFactory.getMapper("map-data/Beijing.osm.pbf", Torch.vehicleType.CAR, Torch.Algorithms.HMM);
+//        mapper = Mappers.getMapper("map-data/Beijing.osm.pbf", Torch.vehicle.CAR, Torch.Algorithms.HMM);
 //
 //        int len = rawTrajs.size();
 //        System.out.println("total trajectories: "+len);
@@ -50,7 +50,7 @@ public class HiddenMarkovModelTest {
 //        watch.start();
 //        int counter = 0;
 //        for (int i = 200; i < 300; i ++) {
-//            Trajectory<TrajNode> rawTraj = rawTrajs.get(i);
+//            Trajectory<TrajNode> rawTraj = rawTrajs.getList(i);
 //            System.out.println("rawTraj size: " + rawTraj.size());
 //            try {
 //                Trajectory<TorVertex> trajectory = mapper.match(rawTraj);

@@ -1,7 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
-import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
@@ -218,7 +217,7 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
 
         //first find the candidate from the last candidate set with the maximum probability,
         //then find the optimal candidate chain
-        //finally get the shortest edges between two candidates
+        //finally getList the shortest edges between two candidates
         Candidate maxCandidate = null;
         double maxProbability = Double.MIN_VALUE;
         for (Candidate candidate : timeSteps.get(timeSteps.size() - 1)) {

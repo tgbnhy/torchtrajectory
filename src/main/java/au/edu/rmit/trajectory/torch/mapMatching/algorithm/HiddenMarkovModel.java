@@ -1,6 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.*;
 import com.github.davidmoten.geo.GeoHash;
@@ -22,7 +22,7 @@ import java.util.*;
  *
  * @see com.graphhopper.matching.MapMatching More details on Hidden Markov Model
  * @see PrecomputedHiddenMarkovModel
- * @see AlgorithmFactory the place to instantiate HiddenMarkovModel algorithm
+ * @see Mappers the place to instantiate HiddenMarkovModel algorithm
  */
 public class HiddenMarkovModel implements Mapper {
 
@@ -40,6 +40,7 @@ public class HiddenMarkovModel implements Mapper {
         Trajectory<TowerVertex> mappedTrajectory = new Trajectory<>();
         Graph hopperGraph = torGraph.getGH().getGraphHopperStorage();
         Map<String, TowerVertex> towerVertexes =  torGraph.towerVertexes;
+        Map<String,TorEdge> edges= torGraph.allEdges;
 
         mappedTrajectory.hasTime = in.hasTime;
         mappedTrajectory.id = in.id;
@@ -75,6 +76,15 @@ public class HiddenMarkovModel implements Mapper {
 
             mappedTrajectory.add(adjVertex);
         }
+
+        for ( int i = 1; i < mappedTrajectory.size(); i++){
+            TorEdge edge = edges.get(TorEdge.getKey(mappedTrajectory.get(0), mappedTrajectory.get(1)));
+            if (edge == null)
+                edge = edges.get(TorEdge.getKey(mappedTrajectory.get(1), mappedTrajectory.get(0)));
+            edge.setPosition(i);
+            mappedTrajectory.edges.add(edge);
+        }
+
         return mappedTrajectory;
     }
 

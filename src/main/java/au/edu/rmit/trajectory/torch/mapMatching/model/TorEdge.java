@@ -51,7 +51,7 @@ public class TorEdge{
     }
 
     /**
-     * for LORS, representing the edge position in a trajectory
+     * for LEVI, representing the edge position in a trajectory
      */
     private transient int position;
 
@@ -63,6 +63,13 @@ public class TorEdge{
     public TorEdge() {
         idGenerator++;
         id = idGenerator;
+    }
+
+    public TorEdge(int id, TowerVertex t1, TowerVertex t2, double len){
+        this.id = id;
+        baseVertex = t1;
+        adjVertex = t2;
+        length = len;
     }
 
     /**
@@ -90,12 +97,12 @@ public class TorEdge{
         getLength();
 
         StringBuilder res = new StringBuilder();
-        return res.append(this.id).append(Torch.SEPARATOR2)
-                .append(this.latitudes).append(Torch.SEPARATOR2)
-                .append(this.longtitudes).append(Torch.SEPARATOR2)
-                .append(this.length).append(Torch.SEPARATOR2)
-                .append(this.isForward).append(Torch.SEPARATOR2)
-                .append(this.isBackward).append(Torch.SEPARATOR2).toString();
+        return res.append(this.id).append(Torch.SEPARATOR)
+                .append(this.latitudes).append(Torch.SEPARATOR)
+                .append(this.longtitudes).append(Torch.SEPARATOR)
+                .append(this.length).append(Torch.SEPARATOR)
+                .append(this.isForward).append(Torch.SEPARATOR)
+                .append(this.isBackward).append(Torch.SEPARATOR).toString();
     }
 
 //    /**

@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching.io;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
@@ -46,10 +47,12 @@ public class TorSaver {
     private InvertedIndex edgeInvertedList;
     private InvertedIndex vertexInvertedIndex;
 
+    private TrajectoryMap trajectoryMap;
 
     public TorSaver(){
         edgeInvertedList = new EdgeInvertedIndex();
         vertexInvertedIndex = new VertexInvertedIndex();
+        trajectoryMap = new TrajectoryMap(Torch.URI.RAW_TRAJECTORY_INDEX);
     }
 
     /**
@@ -57,18 +60,20 @@ public class TorSaver {
      *
      * @param mappedTrajectories trajectories to be saved
      * @param saveAll false -- asyncSave trajectory data only
-     *                true -- asyncSave everything
+     *                true -- asyncSave everything( It should only be set to true if it is the last batch.)
      *                As the method is expected to be called multiple times to write different batches of trajectories,
      *                other information should only be saved once.
+     *
+     *
      */
-    public synchronized void asyncSave(final List<Trajectory<TowerVertex>> mappedTrajectories, final boolean saveAll) {
+    public synchronized void asyncSave(final List<Trajectory<TowerVertex>> mappedTrajectories,final List<Trajectory<TrajEntry>> rawTrajectories, final boolean saveAll) {
 
         if (!TorGraph.getInstance().isBuilt)
             throw new IllegalStateException("should be called after TorGraph initialization");
         graph = TorGraph.getInstance();
 
         ExecutorService thread = Executors.newSingleThreadExecutor();
-        thread.execute(() -> _save(mappedTrajectories, saveAll));
+        thread.execute(() -> _save(mappedTrajectories,rawTrajectories, saveAll));
         thread.shutdown();
 
         try {
@@ -78,15 +83,34 @@ public class TorSaver {
         }
     }
 
-    private void _save(final List<Trajectory<TowerVertex>> mappedTrajectories, final boolean saveAll) {
+    private void _save(final List<Trajectory<TowerVertex>> mappedTrajectories,final List<Trajectory<TrajEntry>> rawTrajectories, final boolean saveAll) {
 
-        saveMappedTrajectories(mappedTrajectories);
+        saveMappedTrajectories(mappedTrajectories);  // for purpose of debugging
+        trajectoryMap.saveAll(rawTrajectories);
 
         if (saveAll) {
+            saveMeta();
             saveIdVertexLookupTable();
             saveEdges();
-            edgeInvertedList.toDisk(Torch.URI.EDGE_INVERTED_INDEX);
-            vertexInvertedIndex.toDisk(Torch.URI.VERTEX_INVERTED_INDEX);
+            edgeInvertedList.save(Torch.URI.EDGE_INVERTED_INDEX);
+            vertexInvertedIndex.save(Torch.URI.VERTEX_INVERTED_INDEX);
+
+
+            trajectoryMap.cleanUp();
+        }
+    }
+
+    private void saveMeta() {
+        ensureExistence(Torch.URI.META);
+        try(FileWriter fw = new FileWriter(Torch.URI.META);
+            BufferedWriter writer = new BufferedWriter(fw))
+        {
+            writer.write(graph.vehicleType);
+            writer.newLine();
+            writer.write(graph.OSMPath);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -141,9 +165,10 @@ public class TorSaver {
                 rawWriter.write(edge.convertToDatabaseForm());
                 rawWriter.newLine();
 
-                builder.append(edge.id).append(Torch.SEPARATOR2)
-                       .append(graph.vertexIdLookup.get(edge.baseVertex.hash)).append(Torch.SEPARATOR2)
-                       .append(graph.vertexIdLookup.get(edge.adjVertex.hash));
+                builder.append(edge.id).append(Torch.SEPARATOR)
+                       .append(graph.vertexIdLookup.get(edge.baseVertex.hash)).append(Torch.SEPARATOR)
+                       .append(graph.vertexIdLookup.get(edge.adjVertex.hash)).append(Torch.SEPARATOR)
+                       .append(edge.getLength());
 
                 writer.write(builder.toString());
                 writer.newLine();

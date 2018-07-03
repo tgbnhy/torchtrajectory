@@ -57,14 +57,14 @@ trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 todo
 
 
-### Build index
+### Build vertexInvertedIndex
 After preprocessing, Torch can build indices for map matched trajectories.
 Torch supports three types of indices in total:  
-1. **GridIndex** is used for indexing trajectory points. It first uniformly partitions the whole area into small rectangles. Then build the inverted index of trajectory points based on those rectangles.  
-2. **EdgeIndex (EdgII)** is an inverted index for trajectory edges.  
-3. **NodeIndex (VerII)** is an inverted index for trajectory points.  
+1. **GridIndex** is used for indexing trajectory points. It first uniformly partitions the whole area into small rectangles. Then build the inverted vertexInvertedIndex of trajectory points based on those rectangles.  
+2. **EdgeIndex (EdgII)** is an inverted vertexInvertedIndex for trajectory edges.  
+3. **NodeIndex (VerII)** is an inverted vertexInvertedIndex for trajectory points.  
 
-Before using any index, please first declare them as follows:
+Before using any vertexInvertedIndex, please first declare them as follows:
 ```
 @Autowired
 NodeIndex nodeIndex;
@@ -74,12 +74,12 @@ EdgeIndex edgeIndex;
 GridIndex gridIndex;
 ...
 ```
-After declaring, buildIndex() should be called to build the index.
-### Compress index
-After invoking buildIndex(), all indices will be stored in the disk in plain text. Because the index consists of a sequence of integers, it can be compressed by delta encoding and re-stored in binary form in the disk.
-This can be done by calling compress() for each index.
+After declaring, buildIndex() should be called to build the vertexInvertedIndex.
+### Compress vertexInvertedIndex
+After invoking buildIndex(), all indices will be stored in the disk in plain text. Because the vertexInvertedIndex consists of a sequence of integers, it can be compressed by delta encoding and re-stored in binary form in the disk.
+This can be done by calling compress() for each vertexInvertedIndex.
 ### Queries
-After the index is built, it can be loaded in the plain text form or compressed binary form using the following code:
+After the vertexInvertedIndex is built, it can be loaded in the plain text form or compressed binary form using the following code:
 ```
 edgeIndex.load(); // or
 edgeIndex.loadCompressedForm();
@@ -87,9 +87,9 @@ edgeIndex.loadCompressedForm();
 Under three types of indices, Torch supports four types of queries:
 #### Range query
 Range query is used to retrieve trajectories passing through a specified rectangle area.
-Given a point and a radius r, it can be done with the help of NodeIndex and GridIndex.
+Given a torPoint and a radius r, it can be done with the help of NodeIndex and GridIndex.
 ```
-List<Integer> trajectoryIDs = nodeIndex.rangeQuery(gridIndex, point, r, null);
+List<Integer> trajectoryIDs = nodeIndex.rangeQuery(gridIndex, torPoint, r, null);
 ```
 #### Path query
 Path<sup>[2]</sup> is used to retrieve trajectories containing any edge of the given path.

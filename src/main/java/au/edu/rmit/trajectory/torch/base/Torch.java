@@ -7,6 +7,8 @@ import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
  */
 public interface Torch {
 
+    String SEPARATOR = ";";
+
     /**
      * Map-matching algorithms currently supported by T-Torch
      *
@@ -18,20 +20,35 @@ public interface Torch {
          * map matching algorithm *
          * * * * * * * * * * * * */
 
-        String HMM = "hidden_markov_model_1";
-        String HMM_PRECOMPUTED = "hidden_markov_model_2";
+        //hidden markov model
+        String HMM = "HMM1";
+        String HMM_PRECOMPUTED = "HMM2";
 
 
-        /** * * * * * * * * * * * *
-         *  similarity algorithm  *
+        /** * * * * * * * * * * **
+         *   similarity measure  *
          * * * * * * * * * * * * */
 
+//        String EUCLIDEAN_DISTANCE = "ED";     // Euclidean Distance
+//        String LCSS = "LCSS";                 // Longest Common Sub-Sequence
+//        String ERP = "ERP";                   // Edit Distance With Real Penalty
+//        String EDR = "ERP";                   // Edit Distance On Real Sequence
+        String DTW = "DTW";                   // Dynamic Time Warping
+        String Hausdorff = "H";
+        String Frechet = "F";
+    }
 
+    interface QueryType{
+
+        String RangeQ = "RQ";
+        String PathQ = "PQ";
+        String StrictPathQ = "SPQ";
+        String TopK = "TK";
     }
 
     /**
-     * It is used by graph-hopper to specify what kind of graph to build.
-     * For instance, different graph data will be loaded from the same *.osm.pbf based on the parameter you set.
+     * It is used by graph-hopper to loading the specific edges and nodes on graph
+     * e.g. different graph data will be loaded from the same *.osm.pbf based on the parameter here.
      *
      * @see MapMatching.Builder#setVehicleType(String)
      */
@@ -42,14 +59,18 @@ public interface Torch {
         String MOTOCYCLE = "moto";
     }
 
+    interface IndexType{
+        String LEVI = "levi";
+        String EDGE_INVERTED_INDEX = "eii";
+    }
+
     /**
-     * Internal use.
-     * This is for File settings.
+     * Internal use for File settings.
      */
     interface URI {
-        String TORCH_META_PREFIX = "T-Torch/TorchMeta";
+        String TORCH_META_PREFIX = "T-Torch/T-Torch";
         String HOPPER_META = "T-Torch/HopperMeta";
-
+        String META = "T-Torch/meta";
         String ID_VERTEX_LOOKUP = TORCH_META_PREFIX +"/id_vertex.txt";
         String ID_EDGE_LOOKUP = TORCH_META_PREFIX +"/id_edge.txt";
         String ID_EDGE_RAW = TORCH_META_PREFIX +"/id_edge_raw.txt";
@@ -59,7 +80,10 @@ public interface Torch {
 
         String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/invertedIndex/edgeInvertedIdx";
         String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/invertedIndex/vertexInvertedIdx";
-    }
 
-    String SEPARATOR2 = ";";
+        String RAW_TRAJECTORY_INDEX = TORCH_META_PREFIX + "/raw_trajectories";
+
+        String GRID_INDEX = TORCH_META_PREFIX + "/grid_vertex.idx";
+        String RTREE_INDEX = TORCH_META_PREFIX + "/rtree_raw.idx";
+    }
 }

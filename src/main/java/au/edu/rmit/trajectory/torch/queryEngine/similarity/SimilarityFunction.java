@@ -1,5 +1,9 @@
 package au.edu.rmit.trajectory.torch.queryEngine.similarity;
 
+import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
+import au.edu.rmit.trajectory.torch.base.model.TorPoint;
+import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.mapMatching.model.LightPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +23,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author forrest0402
  */
-public class SimilarityFunction<T> {
+public class SimilarityFunction<T extends TrajEntry> {
 
     private static Logger logger = LoggerFactory.getLogger(SimilarityFunction.class);
+    public static final SimilarityFunction<TrajEntry> DEFAULT;
+
+    static {
+        DistanceFunction<TrajEntry, TrajEntry> distFunc = GeoUtil::distance;
+        Comparator<TrajEntry> comparator = (p1, p2) -> {
+            double dist = GeoUtil.distance(p1, p2);
+            if (dist < 8) return 0;
+            return 1;
+        };
+
+        DEFAULT = new SimilarityFunction<>(distFunc, comparator);
+    }
 
     private final DistanceFunction distFunc;
 
@@ -215,7 +231,7 @@ public class SimilarityFunction<T> {
         return dpInts[T1.size()][T2.size()];
     }
 
-    public double fastDynamicTimeWarping(List<T> T1, List<T> T2, int warpingWindowSize, double bestSoFar, AtomicInteger scannedCandidateNumber) {
+    public double fastDynamicTimeWarping(List<T> T1, List<T> T2, int warpingWindowSize, double bestSoFar) {
         if (T1.size() == 0 && T2.size() == 0) return 0;
         if (T1.size() == 0 || T2.size() == 0) return Integer.MAX_VALUE;
 
@@ -229,24 +245,13 @@ public class SimilarityFunction<T> {
 
         dpInts[0][0] = 0;
 
-//        dpInts[0][0] = Integer.MAX_VALUE;
-//
-//        for (int i = 1; i <= T1.size(); ++i) {
-//            dpInts[i][0] = Integer.MAX_VALUE;
-//        }
-//
-//        for (int j = 1; j <= T2.size(); ++j) {
-//            dpInts[0][j] = Integer.MAX_VALUE;
-//        }
-
         for (int i = 1; i <= T1.size(); ++i) {
             for (int j = Math.max(1, i - warpingWindowSize); j <= Math.min(T2.size(), i + warpingWindowSize); ++j) {
                 dpInts[i][j] = distFunc.apply(T1.get(i - 1), T2.get(j - 1)) + min(dpInts[i - 1][j - 1], dpInts[i - 1][j], dpInts[i][j - 1]);
                 if (dpInts[i][j] > bestSoFar) return dpInts[i][j];
             }
         }
-        if (scannedCandidateNumber != null)
-            scannedCandidateNumber.incrementAndGet();
+
         return dpInts[T1.size()][T2.size()];
     }
 
@@ -349,5 +354,9 @@ public class SimilarityFunction<T> {
         if (a < b) a = b;
         if (a < c) a = c;
         return a;
+    }
+
+    public enum MeasureType {
+        DTW, LCSS, EDR, ERP, LORS, Hausdorff, Frechet
     }
 }

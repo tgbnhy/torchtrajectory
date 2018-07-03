@@ -1,15 +1,14 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
-import au.edu.rmit.trajectory.torch.mapMatching.Mapper;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import com.graphhopper.routing.AlgorithmOptions;
 import com.graphhopper.routing.weighting.FastestWeighting;
 import com.graphhopper.util.Parameters;
 
 /**
- * AlgorithmFactory provides simple APIs for instantiating various algorithms supported by T-Torch.
+ * An Factory class provides simple APIs for instantiating map-matching algorithms supported by T-Torch.
  */
-public abstract class AlgorithmFactory {
+public abstract class Mappers {
 
 
     /**
@@ -30,7 +29,7 @@ public abstract class AlgorithmFactory {
         switch (algorithm) {
             case Torch.Algorithms.HMM:
                 AlgorithmOptions algorithmOptions = AlgorithmOptions.start().
-                        algorithm(Parameters.Algorithms.DIJKSTRA).weighting(new FastestWeighting(graph.vehicleType)).build();
+                        algorithm(Parameters.Algorithms.DIJKSTRA).weighting(new FastestWeighting(graph.vehicle)).build();
                 mapper = new HiddenMarkovModel(graph, algorithmOptions);
                 break;
             case Torch.Algorithms.HMM_PRECOMPUTED:
