@@ -5,6 +5,7 @@ import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
+import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 import com.sun.org.apache.regexp.internal.RE;
 
@@ -27,7 +28,7 @@ class WindowQuery implements Query {
     }
 
     @Override
-    public List<Trajectory<TrajEntry>> execute(Object windowRange) {
+    public QueryResult execute(Object windowRange) {
         if (!(windowRange instanceof SearchWindow))
             throw new IllegalStateException(
                     "parameter passed to windowQuery should be of type SearchWindow, " +
@@ -49,7 +50,7 @@ class WindowQuery implements Query {
             ret.add(t);
         }
 
-        return ret;
+        return new QueryResult(ret);
     }
 
     @Override

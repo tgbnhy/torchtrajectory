@@ -3,6 +3,7 @@ package au.edu.rmit.trajectory.torch.queryEngine.query;
 import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
+import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface Query {
      * @return A list of trajectories meets the specific query requirement.
      * @throws IllegalStateException if the passed object type is not expected for an particular query, exception will be thrown.
      */
-    List<Trajectory<TrajEntry>> execute(Object param);
+    QueryResult execute(Object param);
 
     /**
      * If search on the map-matched trajectory set, the query trajectory will also be converted to map-matched trajectory.<p>

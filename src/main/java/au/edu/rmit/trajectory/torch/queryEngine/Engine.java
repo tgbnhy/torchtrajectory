@@ -3,6 +3,7 @@ package au.edu.rmit.trajectory.torch.queryEngine;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
+import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 import au.edu.rmit.trajectory.torch.queryEngine.model.QueryProperties;
 import au.edu.rmit.trajectory.torch.queryEngine.query.Query;
@@ -25,7 +26,7 @@ public class Engine {
      * @param raw
      * @return
      */
-    public List<Trajectory<TrajEntry>> findTopK(List<? extends TrajEntry> raw){
+    public QueryResult findTopK(List<? extends TrajEntry> raw){
 
         Query topK = pool.get(Torch.QueryType.TopK);
         topK.prepare(raw);
@@ -38,10 +39,10 @@ public class Engine {
      * @param raw
      * @return
      */
-    public List<Trajectory<TrajEntry>> findOnPath(List<? extends TrajEntry> raw){
+    public QueryResult findOnPath(List<? extends TrajEntry> raw){
         Query pathQ = pool.get(Torch.QueryType.PathQ);
         pathQ.prepare(raw);
-        return pathQ.execute(null);
+        return pathQ.execute(false);
     }
 
     /**
@@ -50,10 +51,10 @@ public class Engine {
      * @param raw
      * @return
      */
-    public List<Trajectory<TrajEntry>> findOnStrictPath(List<? extends TrajEntry> raw){
-        Query strictPathQ = pool.get(Torch.QueryType.StrictPathQ);
+    public QueryResult findOnStrictPath(List<? extends TrajEntry> raw){
+        Query strictPathQ = pool.get(Torch.QueryType.PathQ);
         strictPathQ.prepare(raw);
-        return strictPathQ.execute(null);
+        return strictPathQ.execute(true);
     }
 
     /**
@@ -62,7 +63,7 @@ public class Engine {
      * @param window
      * @return
      */
-    public List<Trajectory<TrajEntry>> findInRange(SearchWindow window){
+    public QueryResult findInRange(SearchWindow window){
 
         Query rangeQ = pool.get(Torch.QueryType.RangeQ);
         return rangeQ.execute(window);
@@ -81,13 +82,12 @@ public class Engine {
 
             // if user does not specify what kind of query will be used,
             // we initialize all supported queries.
+            queryUsed.addAll(builder.queryUsed);
             if (queryUsed.size() == 0){
                 queryUsed.add(Torch.QueryType.TopK);
                 queryUsed.add(Torch.QueryType.RangeQ);
                 queryUsed.add(Torch.QueryType.PathQ);
-                queryUsed.add(Torch.QueryType.StrictPathQ);
             }
-            queryUsed.addAll(builder.queryUsed);
         }
 
         public static Builder getBuilder(){
@@ -121,8 +121,7 @@ public class Engine {
         public Builder addQuery(String queryType){
             if (!queryType.equals(Torch.QueryType.PathQ) &&
                     !queryType.equals(Torch.QueryType.RangeQ) &&
-                    !queryType.equals(Torch.QueryType.TopK)&&
-                    !queryType.equals(Torch.QueryType.StrictPathQ))
+                    !queryType.equals(Torch.QueryType.TopK))
                 throw new IllegalStateException("checkout valid query type options at Torch.QueryType");
             queryUsed.add(queryType);
             return this;

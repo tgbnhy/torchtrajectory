@@ -24,8 +24,8 @@ import java.util.*;
  * divide trajectories into envelope and use R tree to dataStructure them
  *
  */
-
-public class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
+//todo
+public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 
     private static Logger logger = LoggerFactory.getLogger(RTreeWrapper.class);
 
@@ -65,8 +65,8 @@ public class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
         return trajIDSet;
     }
 
-    @Override
-    public <T extends TorPoint> List<String> findTopK(int k, List<T> query, List<LightEdge> edgeQuery) {
+
+//    public <T extends TorPoint> List<String> findTopK(int k, List<T> query, List<LightEdge> edgeQuery) {
 //        if (this.rTree == null)
 //            throw new IllegalArgumentException("call build() first");
 //
@@ -130,8 +130,8 @@ public class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 //            resIDList.add(topkHeap.poll().trajectoryID);
 //        }
 //        return resIDList;
-        return null;
-    }
+//        return null;
+//    }
 
     private void findMBRs(rx.Observable<Entry<String, Geometry>> results, Set<String> trajectoryID) {
         results.forEach(entry -> {

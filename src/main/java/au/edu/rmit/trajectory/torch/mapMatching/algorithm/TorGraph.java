@@ -152,7 +152,7 @@ public class TorGraph {
             return this;
         }
 
-        Map<Integer, TowerVertex> lookup = new HashMap<>();
+        idVertexLookup = new HashMap<>();
 
         //read id vertex lookup table
         try(FileReader fr = new FileReader(Torch.URI.ID_VERTEX_LOOKUP);
@@ -174,7 +174,6 @@ public class TorGraph {
                 idVertexLookup.put(id, temp);
             }
 
-
         }catch (IOException e){
             throw new IllegalStateException("id vertex lookup table is missing!");
         }
@@ -191,18 +190,19 @@ public class TorGraph {
             double len;
             TowerVertex t1, t2;
 
-            while((line = reader.readLine()) != null){
-                tokens = line.split(";");
-                edgeId = Integer.parseInt(tokens[0]);
-                vertexId1 = Integer.parseInt(tokens[1]);
-                vertexId2 = Integer.parseInt(tokens[2]);
-                len = Double.parseDouble(tokens[3]);
 
-                t1 = idVertexLookup.get(vertexId1);
-                t2 = idVertexLookup.get(vertexId2);
-                allEdges.put(t1.hash+ t2.hash, new TorEdge(edgeId, t1, t2, len));
+            while((line = reader.readLine()) != null && line.length() != 0){
+                try {
+                    tokens = line.split(";");
+                    edgeId = Integer.parseInt(tokens[0]);
+                    vertexId1 = Integer.parseInt(tokens[1]);
+                    vertexId2 = Integer.parseInt(tokens[2]);
+                    len = Double.parseDouble(tokens[3]);
+                    t1 = idVertexLookup.get(vertexId1);
+                    t2 = idVertexLookup.get(vertexId2);
+                    allEdges.put(t1.hash+ t2.hash, new TorEdge(edgeId, t1, t2, len));
+                }catch (Exception e){}
             }
-
 
         }catch (IOException e){
             throw new IllegalStateException("id edge lookup table is missing!");

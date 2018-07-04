@@ -9,6 +9,7 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
+import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ class TopKQuery implements Query{
     }
 
     @Override
-    public List<Trajectory<TrajEntry>> execute(Object K) {
+    public QueryResult execute(Object K) {
         if (!(K instanceof Integer))
             throw new IllegalStateException(
                     "parameter passed to windowQuery should be of type SearchWindow, " +
@@ -65,7 +66,7 @@ class TopKQuery implements Query{
             ret.add(t);
         }
 
-        return ret;
+        return new QueryResult(ret);
     }
 
     @Override

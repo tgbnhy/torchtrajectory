@@ -9,6 +9,8 @@ import com.graphhopper.routing.*;
 import com.graphhopper.storage.Graph;
 import com.graphhopper.storage.NodeAccess;
 import com.graphhopper.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -26,6 +28,7 @@ import java.util.*;
  */
 public class HiddenMarkovModel implements Mapper {
 
+    private static Logger logger = LoggerFactory.getLogger(HiddenMarkovModel.class);
     private com.graphhopper.matching.MapMatching hmm;
     private TorGraph torGraph;
 
@@ -36,6 +39,7 @@ public class HiddenMarkovModel implements Mapper {
 
     @Override
     public Trajectory<TowerVertex> match(Trajectory<? extends TrajEntry> in) {
+        logger.debug("begin projecting query points onto graph");
 
         Trajectory<TowerVertex> mappedTrajectory = new Trajectory<>();
         Graph hopperGraph = torGraph.getGH().getGraphHopperStorage();
@@ -78,13 +82,16 @@ public class HiddenMarkovModel implements Mapper {
         }
 
         for ( int i = 1; i < mappedTrajectory.size(); i++){
-            TorEdge edge = edges.get(TorEdge.getKey(mappedTrajectory.get(0), mappedTrajectory.get(1)));
+            TorEdge edge = edges.get(TorEdge.getKey(mappedTrajectory.get(i-1), mappedTrajectory.get(i)));
             if (edge == null)
-                edge = edges.get(TorEdge.getKey(mappedTrajectory.get(1), mappedTrajectory.get(0)));
+                edge = edges.get(TorEdge.getKey(mappedTrajectory.get(i), mappedTrajectory.get(i-1)));
             edge.setPosition(i);
             mappedTrajectory.edges.add(edge);
         }
 
+        logger.info("have done map-matching for query points");
+        logger.info("map-matched query vertices representation: {}", mappedTrajectory);
+        logger.info("map-matched query edges representation: {}", mappedTrajectory.edges);
         return mappedTrajectory;
     }
 

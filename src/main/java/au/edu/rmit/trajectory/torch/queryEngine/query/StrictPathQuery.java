@@ -8,6 +8,7 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
+import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ class StrictPathQuery implements Query {
     }
 
     @Override
-    public List<Trajectory<TrajEntry>> execute(Object Null) {
+    public QueryResult execute(Object Null) {
         if (mapped == null) throw new IllegalStateException("please invoke prepare(List<T> raw) first");
 
         List<TorEdge> edges = mapped.edges;
@@ -55,7 +56,7 @@ class StrictPathQuery implements Query {
 
             ret.add(t);
         }
-        return ret;
+        return new QueryResult(ret);
     }
 
     @Override

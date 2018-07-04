@@ -68,7 +68,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         Set<String> ret = new HashSet<>();
 
         for (Integer pointId : points)
-            ret.addAll(vertexInvertedIndex.get(pointId).keySet());
+            ret.addAll(vertexInvertedIndex.getKeys(pointId));
 
         return ret;
     }
@@ -184,8 +184,8 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
         for (Integer vertexId : vertices){
             Double dist = GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
-            Map<String, Integer> trajs= vertexInvertedIndex.get(vertexId);
-            for (String trajId : trajs.keySet()){
+            List<String> l= vertexInvertedIndex.getKeys(vertexId);
+            for (String trajId : l){
 
                 if (measureType == MeasureType.DTW) {
                     Map<TrajEntry, Double> map = existingTrajIDLowerBoundForDTW.get(trajId);

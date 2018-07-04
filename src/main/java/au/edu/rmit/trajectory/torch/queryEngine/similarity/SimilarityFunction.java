@@ -1,14 +1,11 @@
 package au.edu.rmit.trajectory.torch.queryEngine.similarity;
 
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
-import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.mapMatching.model.LightPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Euclidean Distance, DTW, LCSS, EDR

@@ -44,8 +44,8 @@ public class TorSaver {
     private TorGraph graph;
     private boolean append = false;
 
-    private InvertedIndex edgeInvertedList;
-    private InvertedIndex vertexInvertedIndex;
+    public InvertedIndex edgeInvertedList;
+    public InvertedIndex vertexInvertedIndex;
 
     private TrajectoryMap trajectoryMap;
 
@@ -86,7 +86,7 @@ public class TorSaver {
     private void _save(final List<Trajectory<TowerVertex>> mappedTrajectories,final List<Trajectory<TrajEntry>> rawTrajectories, final boolean saveAll) {
 
         saveMappedTrajectories(mappedTrajectories);  // for purpose of debugging
-        trajectoryMap.saveAll(rawTrajectories);
+        //trajectoryMap.saveAll(rawTrajectories);
 
         if (saveAll) {
             saveMeta();
@@ -96,7 +96,7 @@ public class TorSaver {
             vertexInvertedIndex.save(Torch.URI.VERTEX_INVERTED_INDEX);
 
 
-            trajectoryMap.cleanUp();
+            //trajectoryMap.cleanUp();
         }
     }
 

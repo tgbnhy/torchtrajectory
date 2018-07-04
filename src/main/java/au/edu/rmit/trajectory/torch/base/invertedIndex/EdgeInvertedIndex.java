@@ -2,12 +2,12 @@ package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.PathQueryIndex;
 import au.edu.rmit.trajectory.torch.base.TopKQueryIndex;
-import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
-import au.edu.rmit.trajectory.torch.mapMatching.model.LightPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -20,21 +20,26 @@ import java.util.*;
  */
 public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, TopKQueryIndex {
 
+    private static  final Logger logger = LoggerFactory.getLogger(EdgeInvertedIndex.class);
+
     /**
      * invertedIndex a list of trajectories
      * @param trajectories trajectories to be indexed
      */
     public <T extends TrajEntry> void indexAll(List<Trajectory<T>> trajectories){
 
-        for (Trajectory<T> trajectory: trajectories) {
+        for (Trajectory<T> trajectory: trajectories)
+            index(trajectory);
+    }
 
-            List<TorEdge> edges = trajectory.edges;
-            int pos = 0;
+    @Override
+    public <T extends TrajEntry> void index(Trajectory<T> trajectory) {
+        List<TorEdge> edges = trajectory.edges;
+        int pos = 0;
 
-            for (TorEdge edge : edges) {
-                Map<String, Integer> trajIdPosMap = computeIfAbsent(edge.id, k -> new HashMap<>());
-                trajIdPosMap.put(trajectory.id, ++pos);
-            }
+        for (TorEdge edge : edges) {
+            Map<String, Integer> trajIdPosMap = index.computeIfAbsent(edge.id, k -> new HashMap<>());
+            trajIdPosMap.put(trajectory.id, ++pos);
         }
     }
 
@@ -60,18 +65,18 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         for (LightEdge queryEdge : edgeQuery) {
 
-            Map<String, Integer> trajPosMap = get(queryEdge.id);
+            List<Pair> trajPosMap = getPairs(queryEdge.id);
             if (trajPosMap == null) continue;
 
             //key for trajectory hash, value for position
-            for (Map.Entry<String, Integer> entry : trajPosMap.entrySet()) {
+            for (Pair pair : trajPosMap) {
 
-                String trajId = entry.getKey();
+                String trajId = String.valueOf(pair.trajid);
                 //calculate upper bound for each trajectory
                 candidateUpperBound.merge(trajId, queryEdge.length, (a, b) -> b + a);
                 //re-construct every trajectory, need to reorder in the next steps
                 List<LightEdge> candidateEdges = candidates.computeIfAbsent(trajId, key -> new ArrayList<>());
-                candidateEdges.add(new LightEdge(queryEdge.id, queryEdge.length, entry.getValue()));
+                candidateEdges.add(new LightEdge(queryEdge.id, queryEdge.length, pair.pos));
             }
         }
 
@@ -134,10 +139,10 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         Set<String> ret = new HashSet<>();
         for (LightEdge edge : path) {
-            Map<String, Integer> trajIdPosMap = get(edge.id);
+            List<String> l = getKeys(edge.id);
 
-            if (trajIdPosMap != null) {
-                ret.addAll(trajIdPosMap.keySet());
+            if (l != null) {
+                ret.addAll(l);
             }
         }
         return new ArrayList<>(ret);
@@ -145,21 +150,27 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
     public List<String> findByStrictPath(List<LightEdge> edges) {
 
+        logger.info("start find trajectories has been on the strict path");
+
         //key is trajectory id, value is number of different query edges
         Map<String, Integer> map = new HashMap<>();
 
         for (LightEdge edge : edges) {
-            Map<String, Integer> trajIdPosMap = get(edge.id);
-            if (trajIdPosMap != null) {
-                for (String trajId : trajIdPosMap.keySet())
-                    map.merge(trajId, 1, (v1, v2) -> (v1 + v2));
+            List<String> l = getKeys(edge.id);
+            if (l != null) {
+                for (String trajId : l) {
+                    map.merge(trajId, 1, (a, b) -> a + b);
+                }
             }
         }
 
         List<String> ret = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue() == edges.size())
+            if (entry.getKey().equals("102099"))
+                logger.info("102099: " + entry.getValue());
+            if (entry.getValue() == edges.size()) {
                 ret.add(entry.getKey());
+            }
         }
 
         return new ArrayList<>(ret);

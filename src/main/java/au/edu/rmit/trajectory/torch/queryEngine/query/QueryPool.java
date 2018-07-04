@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
@@ -38,14 +39,15 @@ public class QueryPool extends HashMap<String, Query> {
     private LEVI LEVI;
 
     private Map<String, String[]> trajectoryPool = new HashMap<>();
+
     private Map<Integer, TowerVertex> idVertexLookup;
+    private Map<Integer, String[]> rawEdgeLookup = new HashMap<>();
 
     /**
      * initilize supported indexes for the 4 types of queries.
      * @param props
      */
     public QueryPool(QueryProperties props) {
-
         //set client preference
         useRawDataSet = props.dataUsed();
         queryUsed = props.queryUsed();
@@ -58,20 +60,22 @@ public class QueryPool extends HashMap<String, Query> {
 
     private void init() {
 
-        buildMapper();
-        loadTrajectories();
 
+        MemoryUsage.start();
+        buildMapper();
+        MemoryUsage.printCurrentMemUsage("after build mapper");
+        loadTrajectories();
+        MemoryUsage.printCurrentMemUsage("after loadTrajectories");
         vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
 
 
         if (queryUsed.contains(Torch.QueryType.PathQ))
             put(Torch.QueryType.PathQ, initPathQuery());
 
-        if (queryUsed.contains(Torch.QueryType.StrictPathQ))
-            put(Torch.QueryType.StrictPathQ, initStrictPathQuery());
 
         if (queryUsed.contains(Torch.QueryType.RangeQ))
-            put(Torch.QueryType.RangeQ,initRangeQuery());
+            put(Torch.QueryType.RangeQ, initRangeQuery());
+
 
         if (queryUsed.contains(Torch.QueryType.TopK))
             put(Torch.QueryType.TopK, initTopKQuery());
@@ -80,7 +84,7 @@ public class QueryPool extends HashMap<String, Query> {
     private void loadTrajectories() {
 
         //read meta properties
-        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
+        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
             BufferedReader reader = new BufferedReader(fr)){
 
             String line;
@@ -88,9 +92,9 @@ public class QueryPool extends HashMap<String, Query> {
             String trajId;
 
             while((line = reader.readLine()) != null){
-                tokens = line.split(";");
+                tokens = line.split("\t");
                 trajId = tokens[0];
-                trajectoryPool.put(trajId, tokens);
+                trajectoryPool.put(trajId, tokens[1].split(","));
             }
 
         }catch (IOException e){
@@ -123,24 +127,42 @@ public class QueryPool extends HashMap<String, Query> {
     }
 
     private Query initPathQuery() {
+
         if (!edgeInvertedIndex.loaded) {
             if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             edgeInvertedIndex.loaded = true;
         }
+        MemoryUsage.printCurrentMemUsage("after load edgeInvertedIndex");
 
-        return new PathQuery(edgeInvertedIndex, mapper, trajectoryPool, idVertexLookup);
+        if (rawEdgeLookup.size() == 0)
+            initRawEdgeLookupTable();
+        MemoryUsage.printCurrentMemUsage("after load rawEdgeLookupTable");
+
+        return new PathQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
     }
 
-    private Query initStrictPathQuery() {
+    private void initRawEdgeLookupTable() {
 
-        if (!edgeInvertedIndex.loaded) {
-            if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
-                throw new RuntimeException("some critical data is missing, system on exit...");
-            edgeInvertedIndex.loaded = true;
+        try(FileReader fr = new FileReader(Torch.URI.ID_EDGE_RAW);
+            BufferedReader reader = new BufferedReader(fr)){
+            String line;
+            String[] tokens;
+            int id;
+            String lats;
+            String lngs;
+            while((line = reader.readLine())!=null){
+                tokens = line.split(";");
+                id = Integer.parseInt(tokens[0]);
+                lats = tokens[1];
+                lngs = tokens[2];
+
+                rawEdgeLookup.put(id, new String[]{lats, lngs});
+            }
+        }catch (IOException e){
+            throw new RuntimeException("some critical data is missing, system on exit...");
         }
 
-        return new StrictPathQuery(edgeInvertedIndex, mapper, trajectoryPool, idVertexLookup);
     }
 
     private Query initTopKQuery() {

@@ -23,6 +23,10 @@ public class TrajReader {
     private static LineNumberReader trajReader;
     private static BufferedReader dateReader = null;
 
+    public TrajReader(){
+        BATCH_SIZE = 100000;
+    }
+
     public TrajReader(MapMatching.Builder props){
         BATCH_SIZE = props.getBatchSize();
     }
@@ -55,8 +59,6 @@ public class TrajReader {
             String dateLine = null;
 
             while (true) {
-
-                if (trajReader.getLineNumber() == 5) return true;
 
                 if ((trajLine = trajReader.readLine()) == null){
                     trajReader.close();

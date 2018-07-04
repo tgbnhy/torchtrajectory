@@ -46,28 +46,29 @@ public class Trajectory<T extends TrajEntry> extends LinkedList<T> {
         return trajectory;
     }
 
-    @Override
-    public String toString(){
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-
-        boolean isFirst = true;
-
-        for (T entry : this){
-
-            if (!isFirst)
-                builder.append(",");
-            isFirst = false;
-
-            builder.append("[").append(entry.getLat()).append(",").append(entry.getLng());
-            if (hasTime) {builder.append(",").append(((TrajNode)entry).getTime());}
-            builder.append("]");
-        }
-
-        builder.append("]");
-
-        return builder.toString();
-    }
+//    //real lat, lng representation of trajectory
+//    @Override
+//    public String toString(){
+//
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("[");
+//
+//        boolean isFirst = true;
+//
+//        for (T entry : this){
+//
+//            if (!isFirst)
+//                builder.append(",");
+//            isFirst = false;
+//
+//            builder.append("[").append(entry.getLat()).append(",").append(entry.getLng());
+//            if (hasTime) {builder.append(",").append(((TrajNode)entry).getTime());}
+//            builder.append("]");
+//        }
+//
+//        builder.append("]");
+//
+//        return builder.toString();
+//    }
 
 }
