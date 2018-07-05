@@ -5,11 +5,14 @@ import java.util.Set;
 /**
  * For internal use.
  */
-public abstract class QueryProperties {
+public interface QueryProperties {
 
-    public abstract String getSimilarityMeasure();
+    String preferedIndex();
 
-    public abstract Set<String> queryUsed();
+    String similarityMeasure();
 
-    public abstract boolean dataUsed();
+    Set<String> queryUsed();
+
+    boolean dataUsed();
+
 }

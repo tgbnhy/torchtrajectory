@@ -1,9 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
-import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
-import au.edu.rmit.trajectory.torch.base.model.Trajectory;
-import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 
 import java.util.List;
 

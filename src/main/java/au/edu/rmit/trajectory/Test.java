@@ -3,20 +3,17 @@ package au.edu.rmit.trajectory;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.model.LightPoint;
+import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
-import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.queryEngine.Engine;
-import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
+import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
+import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
 
 import java.io.*;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Test {
@@ -26,11 +23,11 @@ public class Test {
 
         List<List<TrajEntry>> queries = read();
 
-        Engine engine = Engine.Builder.getBuilder().
-                addQuery(Torch.QueryType.PathQ).
-                build();
+        Engine engine = Engine.Builder.getBuilder()
+                .addQuery(Torch.QueryType.TopK)
+                .build();
 
-        QueryResult ret = engine.findOnStrictPath(queries.get(0));
+        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.157401714266875,-8.648042015315042),10));
         System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
     }
 

@@ -93,6 +93,9 @@ public abstract class InvertedIndex implements Index {
 
     public List<String> getKeys(int vertexId){
         CompressedPair compressedPair = compressedIndex.get(vertexId);
+        if (compressedPair == null)
+            return new ArrayList<>();
+
         int[] trajIds = iic.uncompress(compressedPair.trajIds);
         List<String> l = new LinkedList<>();
         for (int trajId: trajIds)
@@ -132,16 +135,25 @@ public abstract class InvertedIndex implements Index {
                     trajId2beCompressed[i] = Integer.parseInt(trajArray[i]);
                     pos2beCompressed[i] = Integer.parseInt(posArray[i]);
                 }
-
+                if (path.equals(Torch.URI.VERTEX_INVERTED_INDEX)) {
+                    if (idString.equals("27072")){
+                        logger.info("equal 27072");
+                        logger.info("{}", trajIdLine);
+                    }
+                }
                 CompressedPair p = new CompressedPair();
                 p.trajIds = iic.compress(trajId2beCompressed);
                 p.posis = iic.compress(pos2beCompressed);
-
                 compressedIndex.put(Integer.valueOf(idString), p);
+                if (path.equals(Torch.URI.VERTEX_INVERTED_INDEX)) {
+                    if (idString.equals("27072")){
+                        logger.info("inver list for 27072 is null? {}",compressedIndex.get(27072).trajIds==null);
+                    }
+                }
             }
 
             loaded = true;
-            logger.info("build complete - " + compressedIndex.size());
+            logger.info("inverted index build complete - ");
             return true;
         } catch (IOException e) {
             e.printStackTrace();

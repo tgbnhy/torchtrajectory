@@ -1,19 +1,13 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
 import au.edu.rmit.trajectory.torch.base.PathQueryIndex;
-import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
-import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
-import au.edu.rmit.trajectory.torch.queryEngine.model.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,15 +36,11 @@ class PathQuery implements Query {
                 "which indicates top k results to return");
 
         boolean isStrictPath = (Boolean) _isStrict;
-        List<LightEdge> queryEdges = new ArrayList<>(mapped.edges.size());
-        for (TorEdge edge : mapped.edges)
-            queryEdges.add(LightEdge.copy(edge));
+        List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
 
 
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-        List<Trajectory<TrajEntry>> ret = constructResult(trajIds);
-
-        return new QueryResult(ret);
+        return QueryResult.construct(trajIds, trajectoryPool, rawEdgeLookup);
     }
 
 
@@ -68,37 +58,5 @@ class PathQuery implements Query {
             return false;
         }
         return true;
-    }
-
-    private List<Trajectory<TrajEntry>> constructResult(List<String> trajIds){
-
-        logger.info("matched trajectory id set: {}",trajIds);
-
-        List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
-        for (String trajId : trajIds){
-
-            String[] edges = trajectoryPool.get(trajId);
-            if (edges == null) {
-                logger.debug("cannot find edge id {}, this should not be happened");
-                continue;
-            }
-
-            Trajectory<TrajEntry> t = new Trajectory<>();
-            t.id = trajId;
-
-            for (int i = 1; i < edges.length; i++) {
-
-                String[] tokens = rawEdgeLookup.get(Integer.valueOf(edges[i]));
-                String[] lats = tokens[0].split(",");
-                String[] lngs = tokens[1].split(",");
-
-                for (int j = 0; j < lats.length; j++) {
-                    t.add(new Coordinate(Double.parseDouble(lats[j]),Double.parseDouble(lngs[j])));
-                }
-            }
-            ret.add(t);
-        }
-
-        return ret;
     }
 }

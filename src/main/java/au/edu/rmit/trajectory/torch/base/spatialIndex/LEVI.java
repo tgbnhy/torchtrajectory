@@ -46,7 +46,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     }
 
     @Override
-    public boolean build(String path) {
+    public boolean build(String Null) {
         
         if (!vertexInvertedIndex.loaded) vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX);
         if (!gridIndex.loaded) gridIndex.build(Torch.URI.GRID_INDEX);

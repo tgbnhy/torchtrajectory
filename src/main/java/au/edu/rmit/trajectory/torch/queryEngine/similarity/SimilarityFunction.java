@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine.similarity;
 
+import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import org.slf4j.Logger;
@@ -39,11 +40,13 @@ public class SimilarityFunction<T extends TrajEntry> {
     private final DistanceFunction distFunc;
 
     private final Comparator<T> comparator;
+    public String measure;
 
     public SimilarityFunction(DistanceFunction<T, T> distFunc, Comparator<T> comparator) {
         this.distFunc = distFunc;
         this.comparator = comparator;
     }
+
 
     public double EuclideanDistance(List<T> pointList1, List<T> pointList2) {
         if (pointList1.size() != pointList2.size())

@@ -3,9 +3,7 @@ package au.edu.rmit.trajectory.torch.queryEngine.query;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.base.spatialIndex.LEVI;
 import au.edu.rmit.trajectory.torch.base.spatialIndex.VertexGridIndex;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
@@ -14,7 +12,6 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.model.QueryProperties;
 import au.edu.rmit.trajectory.torch.queryEngine.similarity.SimilarityFunction;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +28,9 @@ public class QueryPool extends HashMap<String, Query> {
     private final boolean useRawDataSet;
     private final Set<String> queryUsed;
     private final String preferedDistFunc;
-
+    private final String preferedIndex;
     private Mapper mapper;
     private EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
-    private VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex();
-    private VertexGridIndex vertexGridIndex;
     private LEVI LEVI;
 
     private Map<String, String[]> trajectoryPool = new HashMap<>();
@@ -51,8 +46,8 @@ public class QueryPool extends HashMap<String, Query> {
         //set client preference
         useRawDataSet = props.dataUsed();
         queryUsed = props.queryUsed();
-        preferedDistFunc = props.getSimilarityMeasure();
-
+        preferedDistFunc = props.similarityMeasure();
+        preferedIndex = props.preferedIndex();
         //initialize queries and map-matching algorithm
         init();
     }
@@ -60,28 +55,23 @@ public class QueryPool extends HashMap<String, Query> {
 
     private void init() {
 
-
         MemoryUsage.start();
         buildMapper();
         MemoryUsage.printCurrentMemUsage("after build mapper");
-        loadTrajectories();
-        MemoryUsage.printCurrentMemUsage("after loadTrajectories");
-        vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
-
+        loadEdgeRepresentedTrajectories();
+        MemoryUsage.printCurrentMemUsage("after loadEdgeRepresentedTrajectories");
 
         if (queryUsed.contains(Torch.QueryType.PathQ))
             put(Torch.QueryType.PathQ, initPathQuery());
 
-
         if (queryUsed.contains(Torch.QueryType.RangeQ))
             put(Torch.QueryType.RangeQ, initRangeQuery());
-
 
         if (queryUsed.contains(Torch.QueryType.TopK))
             put(Torch.QueryType.TopK, initTopKQuery());
     }
 
-    private void loadTrajectories() {
+    private void loadEdgeRepresentedTrajectories() {
 
         //read meta properties
         try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
@@ -128,6 +118,35 @@ public class QueryPool extends HashMap<String, Query> {
 
     private Query initPathQuery() {
 
+        checkAndBuildForTrajLookup();
+
+        return new PathQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
+    }
+
+    private Query initTopKQuery() {
+
+        if (preferedIndex.equals(Torch.Index.EDGE_INVERTED_INDEX)) {
+            checkAndBuildForTrajLookup();
+            return new TopKQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
+        }
+
+        //LEVI topK
+        if (LEVI== null) {
+            initLEVI();
+            SimilarityFunction.DEFAULT.measure = preferedDistFunc;
+        }
+        return new TopKQuery(LEVI, mapper, trajectoryPool, idVertexLookup, SimilarityFunction.DEFAULT);
+    }
+
+    private Query initRangeQuery() {
+        checkAndBuildForTrajLookup();
+        if (LEVI == null) initLEVI();
+        MemoryUsage.printCurrentMemUsage("after build up LEVI");
+        return new WindowQuery(LEVI,
+                idVertexLookup, trajectoryPool, rawEdgeLookup);
+    }
+
+    private void checkAndBuildForTrajLookup() {
         if (!edgeInvertedIndex.loaded) {
             if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
@@ -138,8 +157,6 @@ public class QueryPool extends HashMap<String, Query> {
         if (rawEdgeLookup.size() == 0)
             initRawEdgeLookupTable();
         MemoryUsage.printCurrentMemUsage("after load rawEdgeLookupTable");
-
-        return new PathQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
     }
 
     private void initRawEdgeLookupTable() {
@@ -165,40 +182,16 @@ public class QueryPool extends HashMap<String, Query> {
 
     }
 
-    private Query initTopKQuery() {
-
-        //edge topK
-//        if (!edgeInvertedIndex.loaded) {
-//            if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
-//                throw new RuntimeException("some critical data is missing, system on exit...");
-//            edgeInvertedIndex.loaded = true;
-//        }
-//        return new TopKQuery(edgeInvertedIndex, mapper, idVertexLookup, trajectoryPool);
-
-        //LEVI topK
-        if (LEVI!= null) return new TopKQuery(LEVI, mapper, idVertexLookup, trajectoryPool);
-
-        initLEVI();
-        return new TopKQuery(LEVI, mapper, idVertexLookup, trajectoryPool);
-    }
-
-    private Query initRangeQuery() {
-
-        if (LEVI!= null) return new WindowQuery(LEVI,
-                idVertexLookup, trajectoryPool);
-
-        initLEVI();
-
-        return new WindowQuery(LEVI,
-                idVertexLookup, trajectoryPool);
-    }
-
     private void initLEVI() {
-        if (!vertexGridIndex.loaded){
-            if (!vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX))
-                throw new RuntimeException("some critical data is missing, system on exit...");
-            edgeInvertedIndex.loaded = true;
-        }
+
+        VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex();
+        VertexGridIndex vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
+
+
+        if (!vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX))
+            throw new RuntimeException("some critical data is missing, system on exit...");
+        vertexInvertedIndex.loaded = true;
+
 
         if (!vertexGridIndex.loaded){
             if (!vertexGridIndex.build(Torch.URI.GRID_INDEX))
@@ -218,4 +211,5 @@ public class QueryPool extends HashMap<String, Query> {
 
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
     }
+
 }

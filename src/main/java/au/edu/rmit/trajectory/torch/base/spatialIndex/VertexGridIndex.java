@@ -63,7 +63,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
     @Override
     public boolean build(String path) {
         
-        logger.info("build spatial vertexInvertedIndex");
+        logger.info("build spatial vertexGridIndex");
         //if (load(path)) return true;
         
         _build();
@@ -98,7 +98,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         this.deltaLat = (upperLat - lowerLat) / this.verticalTileNumber;
         this.deltaLon = (rightLng - leftLng) / this.horizontalTileNumber;
 
-        logger.info("start to insert points, (lowerLat,leftLng)=({},{}), (upperLat,rightLng)=({},{}), (deltaLat,deltaLon,horizontalTileNumber,verticalTileNumber)=({},{},{},{})  grid size: {}*{}={}, point size: {}", lowerLat, leftLng, upperLat, rightLng, deltaLat, deltaLon, horizontalTileNumber, verticalTileNumber, this.horizontalTileNumber, this.verticalTileNumber, this.horizontalTileNumber * this.verticalTileNumber, allTrajEntrys.size());
+        logger.info("start to insert points, grid location: (lowerLat,leftLng)=({},{}), (upperLat,rightLng)=({},{}), (deltaLat,deltaLon,horizontalTileNumber,verticalTileNumber)=({},{},{},{})  grid size: {}*{}={}, point size: {}", lowerLat, leftLng, upperLat, rightLng, deltaLat, deltaLon, horizontalTileNumber, verticalTileNumber, this.horizontalTileNumber, this.verticalTileNumber, this.horizontalTileNumber * this.verticalTileNumber, allTrajEntrys.size());
 
         //key for tile id, value for point id list
         Map<Integer, Set<Integer>> grid = new HashMap<>(this.horizontalTileNumber * this.verticalTileNumber + 1);
@@ -271,6 +271,11 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         int rightUpperID = calculateTileID(window.upperLat, window.rightLng);
         int leftLowerID = calculateTileID(window.lowerLat, window.leftLng);
 
+        int leftBorder = leftUpperID % horizontalTileNumber == 0 ? horizontalTileNumber : leftUpperID % horizontalTileNumber;
+        int rightBorder = rightUpperID % horizontalTileNumber == 0 ? horizontalTileNumber : rightUpperID % horizontalTileNumber;
+        int upperBorder = leftUpperID / horizontalTileNumber;
+        int lowerBorder = leftLowerID / horizontalTileNumber;
+
         //getList all the vertices in the range.
         Set<Integer> qualified = new HashSet<>();
         Set<Integer> uncertain = new HashSet<>();
@@ -278,18 +283,23 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         for (int i = leftUpperID; i <= rightUpperID; ++i) {
             int id = i;
             int numRows = (leftLowerID - leftUpperID) / horizontalTileNumber + 1;
-            int theRow = numRows;
 
-            while (theRow > 0) {
-                if ( i == leftUpperID ||
-                        i == rightUpperID ||
-                        theRow == numRows ||
-                        theRow == 1){
-                    uncertain.addAll(get(id));
-                }else
-                    qualified.addAll(get(id));
+            while (numRows > 0) {
+                int column = id % horizontalTileNumber == 0 ? horizontalTileNumber : id % horizontalTileNumber;
+                int row = id / horizontalTileNumber;
+
+                Collection<Integer> verticesOnTile = get(id);
+
+                if (verticesOnTile != null) {
+                    if (column == leftBorder || column == rightBorder ||
+                            row == upperBorder || row == lowerBorder)
+                        uncertain.addAll(get(id));
+                    else
+                        qualified.addAll(get(id));
+                }
+
                 id += horizontalTileNumber;
-                --theRow;
+                --numRows;
             }
         }
 
