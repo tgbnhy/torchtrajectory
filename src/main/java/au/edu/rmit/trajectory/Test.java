@@ -24,7 +24,7 @@ public class Test {
         Engine engine = Engine.Builder.getBuilder()
                 .addQuery(Torch.QueryType.TopK)
                 .preferedIndex(Torch.Index.LEVI)
-                .preferedSimilarityMeasure(Torch.Algorithms.Hausdorff)
+                .preferedSimilarityMeasure(Torch.Algorithms.DTW)
                 .build();
 
         QueryResult ret = engine.findTopK(queries.get(1), 10);

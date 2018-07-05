@@ -22,9 +22,8 @@ public interface Query {
      * If search on the raw trajectory set, the query trajectory will be unchanged.
      *
      * @param raw the query trajectory
-     * @param <T> any class extends TrajEntry could be added in the list passed in.
      * @return true if the query trajectory mapped successfully, or no map-matching is required.
      *         false if the query trajectory cannot be mapped properly.
      */
-    <T extends TrajEntry> boolean prepare(List<T> raw);
+     boolean prepare(List<? extends TrajEntry> raw);
 }

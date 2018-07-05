@@ -12,14 +12,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-class WindowQuery implements Query {
+class WindowQuery extends QueryImpl {
 
-    WindowQueryIndex index;
-    TrajectoryResolver resolver;
+    private WindowQueryIndex index;
 
     WindowQuery(WindowQueryIndex index, TrajectoryResolver resolver){
+        super(null, resolver);
         this.index = index;
-        this.resolver = resolver;
     }
 
     @Override
@@ -30,12 +29,12 @@ class WindowQuery implements Query {
                     "which indicates the range to search within");
 
         SearchWindow window = (SearchWindow) windowRange;
-        Collection<String> trajIds = index.findInRange(window);
-        return resolver.resolve(trajIds);
+        List<String> trajIds = index.findInRange(window);
+        return resolver.resolve(trajIds, null, null);
     }
 
     @Override
-    public <T extends TrajEntry> boolean prepare(List<T> raw) {
+    public boolean prepare(List<? extends TrajEntry> raw) {
         return true;
     }
 }

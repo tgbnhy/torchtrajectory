@@ -62,7 +62,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
     //todo
     @Override
-    public Collection<String> findInRange(SearchWindow window) {
+    public List<String> findInRange(SearchWindow window) {
 
         Collection<Integer> points = gridIndex.pointsInWindow(window);
         Set<String> ret = new HashSet<>();
@@ -70,7 +70,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         for (Integer pointId : points)
             ret.addAll(vertexInvertedIndex.getKeys(pointId));
 
-        return ret;
+        return new ArrayList<>(ret);
     }
 
     @Override
@@ -200,7 +200,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         gridIndex.incrementallyFind(queryVertex, round, vertices);
         for (Integer vertexId : vertices){
             Double dist = GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
-            logger.info("dist between queryVertex and vertices: {}", dist);
             List<String> l= vertexInvertedIndex.getKeys(vertexId);
             for (String trajId : l){
 

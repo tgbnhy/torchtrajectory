@@ -12,26 +12,54 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class TrajectoryResolver {
+class TrajectoryResolver {
 
-    Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
-    Map<String, String[]> trajectoryPool;
-    Map<Integer, String[]> rawEdgeLookup;
+    private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
+    private Map<String, String[]> trajectoryPool;
+    private Map<Integer, String[]> rawEdgeLookup;
 
     public TrajectoryResolver(Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
         this.trajectoryPool = trajectoryPool;
         this.rawEdgeLookup = rawEdgeLookup;
     }
 
-    public TrajectoryResolver(){
+    TrajectoryResolver(){
         trajectoryPool = new HashMap<>();
         rawEdgeLookup = new HashMap<>();
         loadEdgeRepresentedTrajectories();
         loadRawEdgeLookupTable();
     }
 
-    public QueryResult resolve (Collection<String> trajIds){
+    QueryResult resolve (List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
 
+        List<Trajectory<TrajEntry>> retSet = resolveRet(trajIds);
+        List<TrajEntry> mappedQuery = null;
+
+        if (_mappedQuery != null)
+            mappedQuery = resolveMappedQuery(_mappedQuery);
+
+        return new QueryResult(retSet, rawQuery, mappedQuery);
+    }
+
+    private List<TrajEntry> resolveMappedQuery(Trajectory<TrajEntry> mappedQuery) {
+
+        List<TrajEntry> l = new Trajectory<>();
+        int queryLen = mappedQuery.edges.size();
+
+        for (int i = 1; i < queryLen; i++) {
+
+            String[] tokens = rawEdgeLookup.get(mappedQuery.edges.get(i).id);
+            String[] lats = tokens[0].split(",");
+            String[] lngs = tokens[1].split(",");
+
+            for (int j = 0; j < lats.length; j++) {
+                l.add(new Coordinate(Double.parseDouble(lats[j]),Double.parseDouble(lngs[j])));
+            }
+        }
+        return l;
+    }
+
+    private List<Trajectory<TrajEntry>> resolveRet(Collection<String> trajIds) {
         List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
         for (String trajId : trajIds){
 
@@ -56,8 +84,7 @@ public class TrajectoryResolver {
             }
             ret.add(t);
         }
-
-        return new QueryResult(ret);
+        return ret;
     }
 
     private void loadEdgeRepresentedTrajectories() {

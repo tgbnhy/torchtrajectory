@@ -11,18 +11,14 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-class PathQuery implements Query {
+class PathQuery extends QueryImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(PathQuery.class);
     private PathQueryIndex index;
-    private Mapper mapper;
-    private Trajectory<TrajEntry> mapped;
-    private TrajectoryResolver resolver;
 
     PathQuery(PathQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
+        super(mapper, resolver);
         this.index = index;
-        this.mapper = mapper;
-        this.resolver = resolver;
     }
 
     @Override
@@ -36,23 +32,6 @@ class PathQuery implements Query {
 
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-        return resolver.resolve(trajIds);
-    }
-
-
-    @Override
-    public <T extends TrajEntry> boolean prepare(List<T> raw){
-
-        Trajectory<T> t = new Trajectory<>();
-        t.addAll(raw);
-
-        try {
-            mapped = (Trajectory<TrajEntry>)(Object)mapper.match(t);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return resolver.resolve(trajIds, raw, mapped);
     }
 }

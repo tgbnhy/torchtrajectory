@@ -112,7 +112,7 @@ public class QueryPool extends HashMap<String, Query> {
 
         // point based topK with GVI
         initLEVI();
-        return new TopKQuery(LEVI, mapper, resolver, SimilarityFunction.DEFAULT);
+        return new TopKQuery(LEVI, mapper, resolver);
     }
 
     private Query initRangeQuery() {
@@ -151,14 +151,19 @@ public class QueryPool extends HashMap<String, Query> {
         }
 
         SimilarityFunction.MeasureType measureType;
-        if (preferedDistFunc.equals(Torch.Algorithms.DTW))
-            measureType = SimilarityFunction.MeasureType.DTW;
-        else if (preferedDistFunc.equals(Torch.Algorithms.Frechet))
-            measureType = SimilarityFunction.MeasureType.Frechet;
-        else if (preferedDistFunc.equals(Torch.Algorithms.Hausdorff))
-            measureType = SimilarityFunction.MeasureType.Hausdorff;
-        else
-            throw new IllegalStateException("please lookup Torch.Algorithms for valid measure type");
+        switch (preferedDistFunc) {
+            case Torch.Algorithms.DTW:
+                measureType = SimilarityFunction.MeasureType.DTW;
+                break;
+            case Torch.Algorithms.Frechet:
+                measureType = SimilarityFunction.MeasureType.Frechet;
+                break;
+            case Torch.Algorithms.Hausdorff:
+                measureType = SimilarityFunction.MeasureType.Hausdorff;
+                break;
+            default:
+                throw new IllegalStateException("please lookup Torch.Algorithms for valid measure type");
+        }
 
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
     }

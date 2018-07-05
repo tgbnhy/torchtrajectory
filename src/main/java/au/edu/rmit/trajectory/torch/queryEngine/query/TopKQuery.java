@@ -15,44 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class TopKQuery implements Query{
+class TopKQuery extends QueryImpl{
 
     private static final Logger logger = LoggerFactory.getLogger(TopKQuery.class);
     private boolean useEdge;
     private TopKQueryIndex index;
-    private Trajectory<TrajEntry> mapped;
-    private Mapper mapper;
-    private Map<Integer, TowerVertex> idVertexLookup;
-    private TrajectoryResolver resolver;
-    private SimilarityFunction simFunc;
-
 
     TopKQuery(TopKQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
+        super(mapper, resolver);
+
         this.index = index;
-        this.mapper = mapper;
-        this.resolver = resolver;
         useEdge = true;
-    }
-
-    TopKQuery(TopKQueryIndex index, Mapper mapper, TrajectoryResolver resolver , SimilarityFunction simFunc){
-        this.index = index;
-        this.mapper = mapper;
-        this.simFunc = simFunc;
-        this.resolver = resolver;
-        useEdge = false;
-    }
-
-    @Override
-    public <T extends TrajEntry> boolean prepare(List<T> raw) {
-        Trajectory<T> t = new Trajectory<>();
-        t.addAll(raw);
-
-        try {
-            mapped = (Trajectory<TrajEntry>)(Object)mapper.match(t);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -75,7 +48,7 @@ class TopKQuery implements Query{
 
         logger.info("total qualified trajectories: {}", trajIds.size());
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
-        return resolver.resolve(trajIds);
+        return resolver.resolve(trajIds, raw, mapped);
     }
 
 
@@ -83,6 +56,6 @@ class TopKQuery implements Query{
 
         List<String> trajIds = index.findTopK(k, mapped, null);
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
-        return resolver.resolve(trajIds);
+        return resolver.resolve(trajIds, raw, mapped);
     }
 }
