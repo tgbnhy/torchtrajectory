@@ -15,7 +15,7 @@ public class QueryResult {
     private static final Logger logger = LoggerFactory.getLogger(QueryResult.class);
     private List<Trajectory<TrajEntry>> trajectories;
 
-    private QueryResult(List<Trajectory<TrajEntry>> trajectories){
+    QueryResult(List<Trajectory<TrajEntry>> trajectories){
         this.trajectories = trajectories;
     }
 
@@ -25,39 +25,5 @@ public class QueryResult {
 
     public List<Trajectory<TrajEntry>> getResultTrajectory(){
         return trajectories;
-    }
-
-    static QueryResult construct(Collection<String> trajIds, Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
-
-        logger.info("total qualified trajectories: {}", trajIds.size());
-        logger.info("matched trajectory id set: {}",trajIds);
-
-        List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
-        for (String trajId : trajIds){
-
-            String[] edges = trajectoryPool.get(trajId);
-            if (edges == null) {
-                logger.debug("cannot find edge id {}, this should not be happened");
-                continue;
-            }
-
-            Trajectory<TrajEntry> t = new Trajectory<>();
-            t.id = trajId;
-
-            for (int i = 1; i < edges.length; i++) {
-
-                String[] tokens = rawEdgeLookup.get(Integer.valueOf(edges[i]));
-                String[] lats = tokens[0].split(",");
-                String[] lngs = tokens[1].split(",");
-
-                for (int j = 0; j < lats.length; j++) {
-                    t.add(new Coordinate(Double.parseDouble(lats[j]),Double.parseDouble(lngs[j])));
-                }
-            }
-//            logger.debug("result trajectory: {}", t);
-            ret.add(t);
-        }
-
-        return new QueryResult(ret);
     }
 }

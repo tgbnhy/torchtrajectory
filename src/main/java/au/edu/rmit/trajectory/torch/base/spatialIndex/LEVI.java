@@ -73,42 +73,52 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         return ret;
     }
 
-
+    @Override
     public <T extends TrajEntry> List<String> findTopK(int k, List<T> pointQuery,  List<LightEdge> edgeQuery){
 
-        double bestSoFar = Double.MAX_VALUE, unseenLowerBound = 0;
-        int step = 0;
+        double bestKthSoFar = Double.MAX_VALUE, unseenBound = 0;
+        int round = 0;
         //trajectory hash and score
         PriorityQueue<Pair> topKHeap = new PriorityQueue<>((p1, p2) -> Double.compare(p2.score, p1.score));
         Set<String> visitTrajectorySet = new HashSet<>();
 
+        Set<Integer> visitedGrid = new HashSet<>();
+
         int check = 0;
         while (check == 0) {
 
-            unseenLowerBound = 0;
+            unseenBound = 0;
             //each query point match with the nearest point of a trajectory,
             // and the lower bound is the maximun distance between a query and existing points of a trajectory
-            Map<String, Double> trajLowerBound = new HashMap<>();
+            Map<String, Double> trajBound = new HashMap<>();
             Map<String, Map<TrajEntry, Double>> trajLowerBoundForDTW = new HashMap<>();
 
-            //findMoreVertices candiates incrementally and calculate their lowerbound
+            //findMoreVertices candiates incrementally and calculate their lower bound
             for (T queryPoint : pointQuery) {
-                double curRadius = findMoreVertices(queryPoint, step, measureType, trajLowerBound,trajLowerBoundForDTW, idVertexLookup);
+
+                int tileId = gridIndex.calculateTileID(queryPoint);
+                if (!visitedGrid.contains(tileId))
+                    findMoreVertices(queryPoint, round, measureType, trajBound, trajLowerBoundForDTW);
+
+                visitedGrid.add(tileId);
+
+                double curRadius = gridIndex.findBound(queryPoint, round);
                 switch (measureType) {
                     case DTW:
-                        unseenLowerBound += curRadius;
+                        unseenBound += curRadius;
                         break;
                     case Hausdorff:
-                        if (unseenLowerBound < curRadius) unseenLowerBound = curRadius;
+                        if (unseenBound < curRadius) unseenBound = curRadius;
                         break;
                     case Frechet:
-                        if (unseenLowerBound < curRadius) unseenLowerBound = curRadius;
+                        if (unseenBound < curRadius) unseenBound = curRadius;
                         break;
                 }
             }
+            visitedGrid.clear();
 
             //rank trajectories by their lower bound
-            List<Map.Entry<String, Double>> tempList = new ArrayList<>(trajLowerBound.entrySet());
+            List<Map.Entry<String, Double>> tempList = new ArrayList<>(trajBound.entrySet());
 
             PriorityQueue<Map.Entry<String, Double>> rankedTrajectories = new PriorityQueue<>(Map.Entry.comparingByValue());
             for (Map.Entry<String, Double> entry : tempList) {
@@ -116,23 +126,28 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                     rankedTrajectories.add(entry);
             }
             //mark visited trajectories
-            visitTrajectorySet.addAll(trajLowerBound.keySet());
+            visitTrajectorySet.addAll(trajBound.keySet());
+            logger.debug("total number of candidate trajectories in {}th round: {}", round, rankedTrajectories.size());
+
 
             //calculate exact distance for each candidate
+            int j = 0;
             while (!rankedTrajectories.isEmpty()) {
-                Map.Entry<String, Double> entry = rankedTrajectories.poll();
-                String trajID = entry.getKey();
+                if (++j % 1000 == 0 && (measureType == MeasureType.Frechet || measureType == MeasureType.Hausdorff))
+                    logger.info("has processed trajectories: {}, current kth score: {}, bound: {}", j, bestKthSoFar, unseenBound );
+                Map.Entry<String, Double> entry1 = rankedTrajectories.poll();
+                String trajID = entry1.getKey();
                 String[] trajectory = trajectoryPool.get(trajID);
                 Trajectory<TrajEntry> t = new Trajectory<>();
                 t.id = trajID;
-                for (int i = 1; i < trajectory.length; i++)
+                for (int i = 1; i < trajectory.length; i++) {
                     t.add(idVertexLookup.get(Integer.valueOf(trajectory[i])));
-
+                }
 
                 double score = 0;
                 switch (measureType) {
                     case DTW:
-                        score = similarityFunction.fastDynamicTimeWarping(t, (List<TrajEntry>)pointQuery, 10, bestSoFar);
+                        score = similarityFunction.fastDynamicTimeWarping(t, (List<TrajEntry>)pointQuery, 10, bestKthSoFar);
                         break;
                     case Hausdorff:
                         score = similarityFunction.Hausdorff(t, (List<TrajEntry>)pointQuery);
@@ -144,24 +159,26 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
                 Pair pair = new Pair(trajID, score);
                 topKHeap.add(pair);
+
                 if (topKHeap.size() > k) {
                     topKHeap.poll();
-                    bestSoFar = topKHeap.peek().score;
+                    bestKthSoFar = topKHeap.peek().score;
                     if (rankedTrajectories.size() == 0) break;
-                    if (bestSoFar < rankedTrajectories.peek().getValue()){
+                    if (bestKthSoFar < unseenBound){
                         check = 1;
                         break;
                     }
-
                 }
             }
 
-            bestSoFar = topKHeap.peek().score;
-            ++step;
-            if (step == 3) {
-                logger.error("step = 3");
+            bestKthSoFar = topKHeap.peek().score;
+            logger.info("round: {}, kth score: {}, unseen bound: {}", round, bestKthSoFar, unseenBound);
+
+            if (round == 5) {
+                logger.error("round = 5");
                 break;
             }
+            ++round;
         }
 
 
@@ -173,17 +190,17 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         return resIDList;
     }
 
-    private double findMoreVertices(TrajEntry queryVertex, int round, MeasureType measureType, Map<String, Double> existingTrajLowerBound, Map<String, Map<TrajEntry, Double>> existingTrajIDLowerBoundForDTW, Map<Integer, TowerVertex> idVertexLookup) {
 
-        double unseenBound = 0;
+
+    private void findMoreVertices(TrajEntry queryVertex, int round, MeasureType measureType, Map<String, Double> existingTrajBound, Map<String, Map<TrajEntry, Double>> existingTrajIDLowerBoundForDTW) {
+
         //findMoreVertices the nearest pair between a trajectory and query queryVertex
         //trajectory hash, queryVertex hash vertices
         Set<Integer> vertices = new HashSet<>();
-        unseenBound = gridIndex.incrementallyFind(queryVertex, round, vertices);
-
-
+        gridIndex.incrementallyFind(queryVertex, round, vertices);
         for (Integer vertexId : vertices){
             Double dist = GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
+            logger.info("dist between queryVertex and vertices: {}", dist);
             List<String> l= vertexInvertedIndex.getKeys(vertexId);
             for (String trajId : l){
 
@@ -203,18 +220,17 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                     for (Double d : map.values())
                         temp += d;
 
-                    existingTrajLowerBound.put(trajId, temp);
+                    existingTrajBound.put(trajId, temp);
                 } else{
-                    if (existingTrajLowerBound.get(trajId) == null){
-                        existingTrajLowerBound.put(trajId, dist);
+                    if (existingTrajBound.get(trajId) == null){
+                        existingTrajBound.put(trajId, dist);
                     }else {
-                        double pre = existingTrajLowerBound.get(trajId);
-                        existingTrajLowerBound.put(trajId, Math.max(dist, pre));
+                        double pre = existingTrajBound.get(trajId);
+                        existingTrajBound.put(trajId, Math.min(dist, pre));
                     }
                 }
             }
         }
-        return unseenBound;
     }
 
     class Pair {

@@ -247,7 +247,12 @@ public class SimilarityFunction<T extends TrajEntry> {
 
         for (int i = 1; i <= T1.size(); ++i) {
             for (int j = Math.max(1, i - warpingWindowSize); j <= Math.min(T2.size(), i + warpingWindowSize); ++j) {
-                dpInts[i][j] = distFunc.apply(T1.get(i - 1), T2.get(j - 1)) + min(dpInts[i - 1][j - 1], dpInts[i - 1][j], dpInts[i][j - 1]);
+                try{
+                    dpInts[i][j] = distFunc.apply(T1.get(i - 1), T2.get(j - 1)) + min(dpInts[i - 1][j - 1], dpInts[i - 1][j], dpInts[i][j - 1]);
+                }catch (Exception e){
+                    logger.info("first point is null? {}",null == T1.get(i-1));
+                    logger.info("second point is null? {}",null == T2.get(j-1));
+                }
                 if (dpInts[i][j] > bestSoFar) return dpInts[i][j];
             }
         }

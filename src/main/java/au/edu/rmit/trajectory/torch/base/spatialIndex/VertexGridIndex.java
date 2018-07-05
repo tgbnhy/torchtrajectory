@@ -69,7 +69,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         _build();
         loaded = true;
         //save();
-        logger.info("Exit build");
+        logger.info("grid index build complete");
         return true;
     }
     
@@ -319,23 +319,29 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         return qualified;
     }
 
-    double incrementallyFind(TrajEntry point, int round, Set<Integer> vertices) {
+    public double findBound(TrajEntry queryPoint, int round) {
 
-        int tileId = calculateTileID(point);
+        int tileId = calculateTileID(queryPoint);
         Tile t = tileInfo.get(tileId);
-        double dist2nearestEdge = t.dist2nearestEdge(point);
+        double dist2nearestEdge = t.dist2nearestEdge(queryPoint);
         double radius = dist2nearestEdge + tileLen * round;
 
+        return radius;
+    }
+
+    void incrementallyFind(TrajEntry point, int round, Set<Integer> vertices) {
+
+        int tileID = calculateTileID(point);
+
         if (round == 0){
-            vertices.addAll(get(tileId));
-            return radius;
+            vertices.addAll(get(tileID));
+            return;
         }
 
-        int pos = calculateTileID(point.getLat(), point.getLng());
-        int upperLeftPos = pos;
-        int upperRightPos = pos;
-        int lowerLeftPos = pos;
-        int lowerRightPos = pos;
+        int upperLeftPos = tileID;
+        int upperRightPos = tileID;
+        int lowerLeftPos = tileID;
+        int lowerRightPos = tileID;
 
         while (round-- > 0) {
             upperLeftPos = computeUpperLeft(upperLeftPos);
@@ -364,8 +370,6 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
             if (idList != null)
                 vertices.addAll(idList);
         }
-
-        return radius;
     }
 
     private int computeUpperLeft(int pos) {

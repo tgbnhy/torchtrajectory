@@ -20,29 +20,25 @@ class TopKQuery implements Query{
     private static final Logger logger = LoggerFactory.getLogger(TopKQuery.class);
     private boolean useEdge;
     private TopKQueryIndex index;
-    private TrajectoryMap trajectoryMap;
     private Trajectory<TrajEntry> mapped;
     private Mapper mapper;
     private Map<Integer, TowerVertex> idVertexLookup;
-    private Map<String, String[]> trajectoryPool;
-    private Map<Integer, String[]> rawEdgeLookup;
+    private TrajectoryResolver resolver;
     private SimilarityFunction simFunc;
 
 
-    TopKQuery(TopKQueryIndex index, Mapper mapper, Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
+    TopKQuery(TopKQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
         this.index = index;
         this.mapper = mapper;
-        this.rawEdgeLookup = rawEdgeLookup;
-        this.trajectoryPool = trajectoryPool;
+        this.resolver = resolver;
         useEdge = true;
     }
 
-    TopKQuery(TopKQueryIndex index, Mapper mapper, Map<String, String[]> trajectoryPool, Map<Integer, TowerVertex> idVertexLookup, SimilarityFunction simFunc){
+    TopKQuery(TopKQueryIndex index, Mapper mapper, TrajectoryResolver resolver , SimilarityFunction simFunc){
         this.index = index;
         this.mapper = mapper;
-        this.trajectoryPool = trajectoryPool;
         this.simFunc = simFunc;
-        this.idVertexLookup = idVertexLookup;
+        this.resolver = resolver;
         useEdge = false;
     }
 
@@ -76,28 +72,17 @@ class TopKQuery implements Query{
     private QueryResult topKusingEdge(int k) {
 
         List<String> trajIds = index.findTopK(k, null, LightEdge.copy(mapped.edges));
+
+        logger.info("total qualified trajectories: {}", trajIds.size());
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
-        return QueryResult.construct(trajIds, trajectoryPool, rawEdgeLookup);
+        return resolver.resolve(trajIds);
     }
 
 
     private QueryResult topkusingVertex(int k) {
-        List<String> trajIds;
 
-        trajIds = index.findTopK(k, mapped, null);
-
-        List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
-        for (String trajId : trajIds){
-
-            String[] trajectory = trajectoryPool.get(trajId);
-            Trajectory<TrajEntry> t = new Trajectory<>();
-            t.id = trajId;
-            for (int i = 1; i < trajectory.length; i++)
-                t.add(idVertexLookup.get(Integer.valueOf(trajectory[i])));
-
-            ret.add(t);
-        }
-
-        return QueryResult.construct(trajIds, trajectoryPool, rawEdgeLookup);
+        List<String> trajIds = index.findTopK(k, mapped, null);
+        logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
+        return resolver.resolve(trajIds);
     }
 }

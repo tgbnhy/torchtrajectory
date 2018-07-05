@@ -108,7 +108,7 @@ public class Engine {
             return this;
         }
 
-        public Builder setPreferedIndex(String index){
+        public Builder preferedIndex(String index){
             if (!index.equals(Torch.Index.EDGE_INVERTED_INDEX)&&
                     !index.equals(Torch.Index.LEVI))
                 throw new IllegalStateException("checkout supported index type options at Torch.Index");
@@ -157,7 +157,7 @@ public class Engine {
 
 
         @Override
-        public String similarityMeasure() {
+        public String getSimilarityMeasure() {
             return similarityMeasure;
         }
 
@@ -167,13 +167,13 @@ public class Engine {
         }
 
         @Override
-        public String preferedIndex() {
+        public String getPreferedIndex() {
             return preferedIndex;
         }
 
 
         @Override
-        public Set<String> queryUsed() {
+        public Set<String> getQueryUsed() {
             return queryUsed;
         }
     }

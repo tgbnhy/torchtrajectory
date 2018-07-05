@@ -3,13 +3,11 @@ package au.edu.rmit.trajectory;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.queryEngine.Engine;
-import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
 
 import java.io.*;
@@ -25,9 +23,11 @@ public class Test {
 
         Engine engine = Engine.Builder.getBuilder()
                 .addQuery(Torch.QueryType.TopK)
+                .preferedIndex(Torch.Index.LEVI)
+                .preferedSimilarityMeasure(Torch.Algorithms.Hausdorff)
                 .build();
 
-        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.157401714266875,-8.648042015315042),10));
+        QueryResult ret = engine.findTopK(queries.get(1), 10);
         System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
     }
 

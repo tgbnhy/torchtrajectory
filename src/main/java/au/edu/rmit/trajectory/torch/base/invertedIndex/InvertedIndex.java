@@ -113,6 +113,7 @@ public abstract class InvertedIndex implements Index {
      */
     public boolean build(String path) {
 
+        logger.info("build up inverted index");
         if (!path.equals(Torch.URI.EDGE_INVERTED_INDEX) &&
                 !path.equals(Torch.URI.VERTEX_INVERTED_INDEX))
             throw new IllegalStateException("base path got to be "+Torch.URI.EDGE_INVERTED_INDEX+" or "+Torch.URI.VERTEX_INVERTED_INDEX);
@@ -135,25 +136,15 @@ public abstract class InvertedIndex implements Index {
                     trajId2beCompressed[i] = Integer.parseInt(trajArray[i]);
                     pos2beCompressed[i] = Integer.parseInt(posArray[i]);
                 }
-                if (path.equals(Torch.URI.VERTEX_INVERTED_INDEX)) {
-                    if (idString.equals("27072")){
-                        logger.info("equal 27072");
-                        logger.info("{}", trajIdLine);
-                    }
-                }
+
                 CompressedPair p = new CompressedPair();
                 p.trajIds = iic.compress(trajId2beCompressed);
                 p.posis = iic.compress(pos2beCompressed);
                 compressedIndex.put(Integer.valueOf(idString), p);
-                if (path.equals(Torch.URI.VERTEX_INVERTED_INDEX)) {
-                    if (idString.equals("27072")){
-                        logger.info("inver list for 27072 is null? {}",compressedIndex.get(27072).trajIds==null);
-                    }
-                }
             }
 
             loaded = true;
-            logger.info("inverted index build complete - ");
+            logger.info("inverted index build complete");
             return true;
         } catch (IOException e) {
             e.printStackTrace();

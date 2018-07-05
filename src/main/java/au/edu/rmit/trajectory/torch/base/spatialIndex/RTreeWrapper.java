@@ -113,13 +113,13 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 //
 //        //calculate the distance between the trajectory and the query
 //        PriorityQueue<Pair> topkHeap = new PriorityQueue<>((p1, p2) -> Double.compare(p2.score, p1.score));
-//        SimilarityFunction<TorPoint> similarityMeasure = SimilarityFunction.DEFAULT;
+//        SimilarityFunction<TorPoint> getSimilarityMeasure = SimilarityFunction.DEFAULT;
 //        double bestSoFar = 0;
 //
 //        while (!rankedCandidates.isEmpty()) {
 //            Pair pair = rankedCandidates.poll();
 //            if (pair.score > bestSoFar && topkHeap.size() >= k) break;
-//            pair.score = similarityMeasure.fastDynamicTimeWarping(trajectoryMap.getList(pair.trajectoryID), (List<TorPoint>)query, 10, bestSoFar);
+//            pair.score = getSimilarityMeasure.fastDynamicTimeWarping(trajectoryMap.getList(pair.trajectoryID), (List<TorPoint>)query, 10, bestSoFar);
 //            topkHeap.add(pair);
 //            if (topkHeap.size() > k) topkHeap.poll();
 //        }

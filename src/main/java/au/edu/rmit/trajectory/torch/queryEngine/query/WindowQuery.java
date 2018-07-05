@@ -15,15 +15,11 @@ import java.util.Map;
 class WindowQuery implements Query {
 
     WindowQueryIndex index;
-    Map<Integer, TowerVertex> idVertexLookup;
-    Map<String, String[]> trajectoryPool;
-    Map<Integer, String[]> rawEdgeLookup;
+    TrajectoryResolver resolver;
 
-    WindowQuery(WindowQueryIndex index, Map<Integer, TowerVertex> idVertexLookup, Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
+    WindowQuery(WindowQueryIndex index, TrajectoryResolver resolver){
         this.index = index;
-        this.idVertexLookup = idVertexLookup;
-        this.trajectoryPool = trajectoryPool;
-        this.rawEdgeLookup = rawEdgeLookup;
+        this.resolver = resolver;
     }
 
     @Override
@@ -35,10 +31,7 @@ class WindowQuery implements Query {
 
         SearchWindow window = (SearchWindow) windowRange;
         Collection<String> trajIds = index.findInRange(window);
-
-        List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
-
-        return QueryResult.construct(trajIds, trajectoryPool, rawEdgeLookup);
+        return resolver.resolve(trajIds);
     }
 
     @Override

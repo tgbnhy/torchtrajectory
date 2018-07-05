@@ -43,6 +43,47 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
         }
     }
 
+    @Override
+    public List<String> findByPath(List<LightEdge> path) {
+
+        Set<String> ret = new HashSet<>();
+        for (LightEdge edge : path) {
+            List<String> l = getKeys(edge.id);
+
+            if (l != null) {
+                ret.addAll(l);
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+
+    @Override
+    public List<String> findByStrictPath(List<LightEdge> edges) {
+
+        logger.info("start find trajectories has been on the strict path");
+
+        //key is trajectory id, value is number of different query edges
+        Map<String, Integer> map = new HashMap<>();
+
+        for (LightEdge edge : edges) {
+            List<String> l = getKeys(edge.id);
+            if (l != null) {
+                for (String trajId : l) {
+                    map.merge(trajId, 1, (a, b) -> a + b);
+                }
+            }
+        }
+
+        List<String> ret = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == edges.size()) {
+                ret.add(entry.getKey());
+            }
+        }
+
+        return new ArrayList<>(ret);
+    }
+
     /**
      * LEVI( Longest Overlapping Road Segments) algorithm.
      * Find top K trajectories that has the max score( similarity) against query trajectory( represented by a list of edges).
@@ -130,50 +171,6 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
         return retList;
     }
 
-    @Override
-    public boolean useEdge() {
-        return true;
-    }
-
-    public List<String> findByPath(List<LightEdge> path) {
-
-        Set<String> ret = new HashSet<>();
-        for (LightEdge edge : path) {
-            List<String> l = getKeys(edge.id);
-
-            if (l != null) {
-                ret.addAll(l);
-            }
-        }
-        return new ArrayList<>(ret);
-    }
-
-    public List<String> findByStrictPath(List<LightEdge> edges) {
-
-        logger.info("start find trajectories has been on the strict path");
-
-        //key is trajectory id, value is number of different query edges
-        Map<String, Integer> map = new HashMap<>();
-
-        for (LightEdge edge : edges) {
-            List<String> l = getKeys(edge.id);
-            if (l != null) {
-                for (String trajId : l) {
-                    map.merge(trajId, 1, (a, b) -> a + b);
-                }
-            }
-        }
-
-        List<String> ret = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue() == edges.size()) {
-                ret.add(entry.getKey());
-            }
-        }
-
-        return new ArrayList<>(ret);
-    }
-
     /**
      * LEVI stands for longest overlapped road segments.<p>
      * It is LCSS algorithm twitched for computing similarity between two sequences over edges.
@@ -228,5 +225,10 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
         }
 
         return dpInts[qEdges.size() - 1][cEdges.size() - 1];
+    }
+
+    @Override
+    public boolean useEdge() {
+        return true;
     }
 }

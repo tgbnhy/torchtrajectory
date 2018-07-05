@@ -33,10 +33,9 @@ public class QueryPool extends HashMap<String, Query> {
     private EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
     private LEVI LEVI;
 
-    private Map<String, String[]> trajectoryPool = new HashMap<>();
 
     private Map<Integer, TowerVertex> idVertexLookup;
-    private Map<Integer, String[]> rawEdgeLookup = new HashMap<>();
+    private TrajectoryResolver resolver;
 
     /**
      * initilize supported indexes for the 4 types of queries.
@@ -45,9 +44,9 @@ public class QueryPool extends HashMap<String, Query> {
     public QueryPool(QueryProperties props) {
         //set client preference
         useRawDataSet = props.dataUsed();
-        queryUsed = props.queryUsed();
-        preferedDistFunc = props.similarityMeasure();
-        preferedIndex = props.preferedIndex();
+        queryUsed = props.getQueryUsed();
+        preferedDistFunc = props.getSimilarityMeasure();
+        preferedIndex = props.getPreferedIndex();
         //initialize queries and map-matching algorithm
         init();
     }
@@ -57,8 +56,9 @@ public class QueryPool extends HashMap<String, Query> {
 
         MemoryUsage.start();
         buildMapper();
+        resolver = new TrajectoryResolver();
+
         MemoryUsage.printCurrentMemUsage("after build mapper");
-        loadEdgeRepresentedTrajectories();
         MemoryUsage.printCurrentMemUsage("after loadEdgeRepresentedTrajectories");
 
         if (queryUsed.contains(Torch.QueryType.PathQ))
@@ -71,27 +71,6 @@ public class QueryPool extends HashMap<String, Query> {
             put(Torch.QueryType.TopK, initTopKQuery());
     }
 
-    private void loadEdgeRepresentedTrajectories() {
-
-        //read meta properties
-        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
-            BufferedReader reader = new BufferedReader(fr)){
-
-            String line;
-            String[] tokens;
-            String trajId;
-
-            while((line = reader.readLine()) != null){
-                tokens = line.split("\t");
-                trajId = tokens[0];
-                trajectoryPool.put(trajId, tokens[1].split(","));
-            }
-
-        }catch (IOException e){
-            logger.error("some critical data is missing, system on exit...");
-            System.exit(-1);
-        }
-    }
 
     private void buildMapper() {
         if (mapper != null)
@@ -118,75 +97,47 @@ public class QueryPool extends HashMap<String, Query> {
 
     private Query initPathQuery() {
 
-        checkAndBuildForTrajLookup();
+        initEdgeInvertedIndex();
 
-        return new PathQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
+        return new PathQuery(edgeInvertedIndex, mapper, resolver);
     }
 
     private Query initTopKQuery() {
 
+        // edge based top K
         if (preferedIndex.equals(Torch.Index.EDGE_INVERTED_INDEX)) {
-            checkAndBuildForTrajLookup();
-            return new TopKQuery(edgeInvertedIndex, mapper, trajectoryPool, rawEdgeLookup);
+            initEdgeInvertedIndex();
+            return new TopKQuery(edgeInvertedIndex, mapper, resolver);
         }
 
-        //LEVI topK
-        if (LEVI== null) {
-            initLEVI();
-            SimilarityFunction.DEFAULT.measure = preferedDistFunc;
-        }
-        return new TopKQuery(LEVI, mapper, trajectoryPool, idVertexLookup, SimilarityFunction.DEFAULT);
+        // point based topK with GVI
+        initLEVI();
+        return new TopKQuery(LEVI, mapper, resolver, SimilarityFunction.DEFAULT);
     }
 
     private Query initRangeQuery() {
-        checkAndBuildForTrajLookup();
+        initEdgeInvertedIndex();
         if (LEVI == null) initLEVI();
         MemoryUsage.printCurrentMemUsage("after build up LEVI");
-        return new WindowQuery(LEVI,
-                idVertexLookup, trajectoryPool, rawEdgeLookup);
+        return new WindowQuery(LEVI, resolver);
     }
 
-    private void checkAndBuildForTrajLookup() {
+    private void initEdgeInvertedIndex() {
         if (!edgeInvertedIndex.loaded) {
             if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             edgeInvertedIndex.loaded = true;
         }
-        MemoryUsage.printCurrentMemUsage("after load edgeInvertedIndex");
-
-        if (rawEdgeLookup.size() == 0)
-            initRawEdgeLookupTable();
-        MemoryUsage.printCurrentMemUsage("after load rawEdgeLookupTable");
     }
 
-    private void initRawEdgeLookupTable() {
-
-        try(FileReader fr = new FileReader(Torch.URI.ID_EDGE_RAW);
-            BufferedReader reader = new BufferedReader(fr)){
-            String line;
-            String[] tokens;
-            int id;
-            String lats;
-            String lngs;
-            while((line = reader.readLine())!=null){
-                tokens = line.split(";");
-                id = Integer.parseInt(tokens[0]);
-                lats = tokens[1];
-                lngs = tokens[2];
-
-                rawEdgeLookup.put(id, new String[]{lats, lngs});
-            }
-        }catch (IOException e){
-            throw new RuntimeException("some critical data is missing, system on exit...");
-        }
-
-    }
 
     private void initLEVI() {
 
+        if (LEVI!=null) return;
+
         VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex();
         VertexGridIndex vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
-
+        Map<String, String[]> trajectoryPool = loadVertexRepresentedTrajectories();
 
         if (!vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX))
             throw new RuntimeException("some critical data is missing, system on exit...");
@@ -210,6 +161,31 @@ public class QueryPool extends HashMap<String, Query> {
             throw new IllegalStateException("please lookup Torch.Algorithms for valid measure type");
 
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
+    }
+
+    private Map<String, String[]> loadVertexRepresentedTrajectories() {
+
+        Map<String, String[]> trajectoryPool = new HashMap<>();
+
+        //read meta properties
+        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000);
+            BufferedReader reader = new BufferedReader(fr)){
+
+            String line;
+            String[] tokens;
+            String trajId;
+
+            while((line = reader.readLine()) != null){
+                tokens = line.split("\t");
+                trajId = tokens[0];
+                trajectoryPool.put(trajId, tokens[1].split(","));
+            }
+
+        }catch (IOException e){
+            logger.error("some critical data is missing, system on exit...");
+            System.exit(-1);
+        }
+        return trajectoryPool;
     }
 
 }

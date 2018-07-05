@@ -7,11 +7,11 @@ import java.util.Set;
  */
 public interface QueryProperties {
 
-    String preferedIndex();
+    String getPreferedIndex();
 
-    String similarityMeasure();
+    String getSimilarityMeasure();
 
-    Set<String> queryUsed();
+    Set<String> getQueryUsed();
 
     boolean dataUsed();
 

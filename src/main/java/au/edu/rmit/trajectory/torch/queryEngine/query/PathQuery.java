@@ -17,14 +17,12 @@ class PathQuery implements Query {
     private PathQueryIndex index;
     private Mapper mapper;
     private Trajectory<TrajEntry> mapped;
-    private Map<String, String[]> trajectoryPool;
-    Map<Integer, String[]> rawEdgeLookup;
+    private TrajectoryResolver resolver;
 
-    PathQuery(PathQueryIndex index, Mapper mapper, Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
+    PathQuery(PathQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
         this.index = index;
         this.mapper = mapper;
-        this.trajectoryPool = trajectoryPool;
-        this.rawEdgeLookup = rawEdgeLookup;
+        this.resolver = resolver;
     }
 
     @Override
@@ -34,13 +32,11 @@ class PathQuery implements Query {
         if (!(_isStrict instanceof Boolean))
             throw new IllegalStateException("parameter passed to PathQuery should be of type SearchWindow, " +
                 "which indicates top k results to return");
-
         boolean isStrictPath = (Boolean) _isStrict;
+
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
-
-
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-        return QueryResult.construct(trajIds, trajectoryPool, rawEdgeLookup);
+        return resolver.resolve(trajIds);
     }
 
 
