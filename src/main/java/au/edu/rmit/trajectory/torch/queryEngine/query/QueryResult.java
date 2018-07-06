@@ -15,11 +15,17 @@ import java.util.Map;
 public class QueryResult {
     private static final Logger logger = LoggerFactory.getLogger(QueryResult.class);
 
+    private boolean succeed;
     private List<TrajEntry> rawQuery;
     private List<TrajEntry> mappedQuery;
     private List<Trajectory<TrajEntry>> ret;
 
+    public QueryResult(boolean succeed){
+        this.succeed = succeed;
+    }
+
     QueryResult(List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        this.succeed = true;
         this.ret = ret;
         this.rawQuery = rawQuery;
         this.mappedQuery = mappedQuery;

@@ -19,7 +19,7 @@ abstract class TrajJsonFormater {
 
         models.add(new TrajJsonModel(raw, "grey"));
         models.add(new TrajJsonModel(mapped, "red"));
-        //models.addAll(getModels(retTrajs));
+        models.addAll(getModels(retTrajs));
 
         return gson.toJson(models);
     }

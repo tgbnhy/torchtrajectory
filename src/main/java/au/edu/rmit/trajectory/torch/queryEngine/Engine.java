@@ -4,7 +4,7 @@ import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
-import au.edu.rmit.trajectory.torch.queryEngine.model.QueryProperties;
+import au.edu.rmit.trajectory.torch.queryEngine.query.QueryProperties;
 import au.edu.rmit.trajectory.torch.queryEngine.query.Query;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryPool;
 import org.slf4j.Logger;
@@ -12,8 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
+/**
+ * Engine class contains high level APIs to query on trajectory data-set
+ */
 public class Engine {
     private QueryPool pool;
     private static final Logger logger = LoggerFactory.getLogger(Engine.class);
@@ -23,15 +27,22 @@ public class Engine {
     }
 
     /**
-     * top K similarity search could either be performed over map-matched or raw data-set
+     * Method for finding top-k most similar trajectories with the given query.
+     * Subroutine will first mapping
      *
-     * @param raw
-     * @return
+     * @param raw A list of points representing the query.
+     *            T-Torch provides your simple class {@code Coordinate}
+     *            But you can use any class type which implements TrajEntry interface.
+     *            only longitude and latitude is required.
+     *
+     * @param k number of results to be returned.
+     * @return results modeled by QueryResult
      */
     public QueryResult findTopK(List<? extends TrajEntry> raw, int k){
 
         Query topK = pool.get(Torch.QueryType.TopK);
-        topK.prepare(raw);
+        if (!topK.prepare(raw))
+            return new QueryResult(false);
         return topK.execute(k);
     }
 
@@ -43,7 +54,8 @@ public class Engine {
      */
     public QueryResult findOnPath(List<? extends TrajEntry> raw){
         Query pathQ = pool.get(Torch.QueryType.PathQ);
-        pathQ.prepare(raw);
+        if(!pathQ.prepare(raw))
+            return new QueryResult(false);
         return pathQ.execute(false);
     }
 
@@ -55,7 +67,8 @@ public class Engine {
      */
     public QueryResult findOnStrictPath(List<? extends TrajEntry> raw){
         Query strictPathQ = pool.get(Torch.QueryType.PathQ);
-        strictPathQ.prepare(raw);
+        if (!strictPathQ.prepare(raw))
+            return new QueryResult(false);
         return strictPathQ.execute(true);
     }
 
@@ -71,28 +84,12 @@ public class Engine {
         return rangeQ.execute(window);
     }
 
-    public static class Builder implements QueryProperties {
+    public static class Builder{
 
         private static Builder builder = new Builder();
-        private String similarityMeasure = Torch.Algorithms.DTW;
-        private String preferedIndex = Torch.Index.EDGE_INVERTED_INDEX;
-        private boolean useRaw = false;
-        private Set<String> queryUsed = new HashSet<>();
+        QueryProperties properties = new QueryProperties();
 
         private Builder(){}
-        private Builder(Builder builder){
-            this.similarityMeasure = builder.similarityMeasure;
-            this.preferedIndex = builder.preferedIndex;
-
-            // if user does not specify what kind of query will be used,
-            // we initialize all supported queries.
-            queryUsed.addAll(builder.queryUsed);
-            if (queryUsed.size() == 0){
-                queryUsed.add(Torch.QueryType.TopK);
-                queryUsed.add(Torch.QueryType.RangeQ);
-                queryUsed.add(Torch.QueryType.PathQ);
-            }
-        }
 
         public static Builder getBuilder(){
             return builder;
@@ -104,7 +101,7 @@ public class Engine {
                     !similarityMeasure.equals(Torch.Algorithms.Frechet))
                 throw new IllegalStateException("checkout supported index type options at Torch.Algorithms");
 
-            this.similarityMeasure = similarityMeasure;
+            properties.similarityMeasure = similarityMeasure;
             return this;
         }
 
@@ -112,7 +109,7 @@ public class Engine {
             if (!index.equals(Torch.Index.EDGE_INVERTED_INDEX)&&
                     !index.equals(Torch.Index.LEVI))
                 throw new IllegalStateException("checkout supported index type options at Torch.Index");
-            preferedIndex = index;
+            properties.preferedIndex = index;
             return this;
         }
 
@@ -140,7 +137,7 @@ public class Engine {
                     !queryType.equals(Torch.QueryType.RangeQ) &&
                     !queryType.equals(Torch.QueryType.TopK))
                 throw new IllegalStateException("checkout supported query type options at Torch.QueryType");
-            queryUsed.add(queryType);
+            properties.queryUsed.add(queryType);
             return this;
         }
 
@@ -150,31 +147,7 @@ public class Engine {
          * @return object of type Engine
          */
         public Engine build(){
-            QueryProperties props = new Builder(builder);
-            return new Engine(props);
-        }
-
-
-
-        @Override
-        public String getSimilarityMeasure() {
-            return similarityMeasure;
-        }
-
-        @Override
-        public boolean dataUsed() {
-            return useRaw;
-        }
-
-        @Override
-        public String getPreferedIndex() {
-            return preferedIndex;
-        }
-
-
-        @Override
-        public Set<String> getQueryUsed() {
-            return queryUsed;
+            return new Engine(new QueryProperties(properties));
         }
     }
 }

@@ -10,7 +10,6 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
-import au.edu.rmit.trajectory.torch.queryEngine.model.QueryProperties;
 import au.edu.rmit.trajectory.torch.queryEngine.similarity.SimilarityFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +42,10 @@ public class QueryPool extends HashMap<String, Query> {
      */
     public QueryPool(QueryProperties props) {
         //set client preference
-        useRawDataSet = props.dataUsed();
-        queryUsed = props.getQueryUsed();
-        preferedDistFunc = props.getSimilarityMeasure();
-        preferedIndex = props.getPreferedIndex();
+        useRawDataSet = props.useRaw;
+        queryUsed = props.queryUsed;
+        preferedDistFunc = props.similarityMeasure;
+        preferedIndex = props.preferedIndex;
         //initialize queries and map-matching algorithm
         init();
     }
