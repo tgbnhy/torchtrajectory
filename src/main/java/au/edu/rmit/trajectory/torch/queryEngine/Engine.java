@@ -27,8 +27,12 @@ public class Engine {
     }
 
     /**
-     * Method for finding top-k most similar trajectories with the given query.
-     * Subroutine will first mapping
+     * API for finding top-k most similar trajectories with the given query.<p>
+     *
+     * The subroutine will first map convert trajectory to map-matched trajectory,
+     * which the similarity search algorithm performed on. If it can not be converted,
+     * {@code QueryResult} indicates error with be returned.
+     * @see QueryResult#succeed
      *
      * @param raw A list of points representing the query.
      *            T-Torch provides your simple class {@code Coordinate}
@@ -36,7 +40,7 @@ public class Engine {
      *            only longitude and latitude is required.
      *
      * @param k number of results to be returned.
-     * @return results modeled by QueryResult
+     * @return qualified trajectories modeled by QueryResult
      */
     public QueryResult findTopK(List<? extends TrajEntry> raw, int k){
 
@@ -47,10 +51,17 @@ public class Engine {
     }
 
     /**
-     * path query could only performs on map-matched data-set.
+     *  API for loosen path query.<p>
      *
-     * @param raw
-     * @return
+     *  Given a raw trajectory as query, the subroutine will first map convert trajectory to map-matched trajectory,
+     *  and then find all the trajectories in data-set that at least has a same edge( road segment) with the query trajectory.
+     *  Same as previous, If the raw query can not be map-matched, {@code QueryResult} will indicates error with be returned.
+     *
+     * @param raw A list of points representing the query.
+     *            T-Torch provides your simple class {@code Coordinate}
+     *            But you can use any class type which implements TrajEntry interface.
+     *            only longitude and latitude is required.
+     * @return qualified trajectories modeled by QueryResult
      */
     public QueryResult findOnPath(List<? extends TrajEntry> raw){
         Query pathQ = pool.get(Torch.QueryType.PathQ);
@@ -60,10 +71,17 @@ public class Engine {
     }
 
     /**
-     * Strict path query could only performs on map-matched data-set.
+     *  API for strict path query.<p>
      *
-     * @param raw
-     * @return
+     *  Given a raw trajectory as query, the subroutine will first map convert trajectory to map-matched trajectory,
+     *  and then find all the trajectories in data-set that contain all same edges( road segment) with the query trajectory.
+     *  Same as previous, If the raw query can not be map-matched, {@code QueryResult} will indicates error with be returned.
+     *
+     * @param raw A list of points representing the query.
+     *            T-Torch provides your simple class {@code Coordinate}
+     *            But you can use any class type which implements TrajEntry interface.
+     *            only longitude and latitude is required.
+     * @return qualified trajectories modeled by QueryResult
      */
     public QueryResult findOnStrictPath(List<? extends TrajEntry> raw){
         Query strictPathQ = pool.get(Torch.QueryType.PathQ);
@@ -72,11 +90,17 @@ public class Engine {
         return strictPathQ.execute(true);
     }
 
+    public static Builder getBuilder(){
+        return Builder.builder;
+    }
+
     /**
-     * Range query could either be performed over map-matched or raw data-set
+     * API for finding all trajectories passing the given range.<p>
      *
-     * @param window
-     * @return
+     * Given a square region, the subroutine will find all the trajectories from data-set that across it.
+     *
+     * @param window a square region modeled by {@code SearchWindow}
+     * @return qualified trajectories modeled by QueryResult
      */
     public QueryResult findInRange(SearchWindow window){
 
@@ -91,11 +115,15 @@ public class Engine {
 
         private Builder(){}
 
-        public static Builder getBuilder(){
-            return builder;
-        }
-
+        /**
+         * For top K query, call the API to specify what similarity function to use.
+         * The default similarity measure is Dynamic Time Wrapping.
+         *
+         * @param similarityMeasure similarityMeasure to use for Top K retrieval
+         * @see Torch.Algorithms for currently supported similarity measure.
+         */
         public Builder preferedSimilarityMeasure(String similarityMeasure){
+
             if (!similarityMeasure.equals(Torch.Algorithms.DTW) &&
                     !similarityMeasure.equals(Torch.Algorithms.Hausdorff) &&
                     !similarityMeasure.equals(Torch.Algorithms.Frechet))
@@ -105,6 +133,14 @@ public class Engine {
             return this;
         }
 
+        /**
+         * For some queryType, there are more than one indexes capable to support it.
+         * For example, TopK similarity search could be performed over Edge or Vertex,
+         * and the corresponding indexes are {@code EdgeInvertedIndex} and {@code LEVI}
+         *
+         * @param index the index you prefer over others.
+         * @see Torch.Index for currently implemented indexes.
+         */
         public Builder preferedIndex(String index){
             if (!index.equals(Torch.Index.EDGE_INVERTED_INDEX)&&
                     !index.equals(Torch.Index.LEVI))
@@ -114,19 +150,9 @@ public class Engine {
         }
 
         /**
-         * T-Torch use map-matched trajectories as default data-set.
-         * However you could tell it to perform queries over raw trajectories by calling this method.
-         */
-//        public Builder useRawData(){
-//            useRaw = true;
-//            return this;
-//        }
-
-        /**
-         * It is recommended to set this param.
-         * <p>
-         * The method tells engine what kind of query will be performed at application runtime.
-         * If no specified queries is found. The engine will build all of the data to support all kinds of queries,
+         * Inform search engine the specific query used.<p>
+         *
+         * If no specified queries is found. The engine will load all of the data and indexes to support all kinds of queries,
          * which is more expensive than build certain data to support the specified queries.
          *
          * @param queryType The query to be prepared.
@@ -143,11 +169,20 @@ public class Engine {
 
         /**
          * Method to instantiate Engine object.
-         * <p>
          * @return object of type Engine
          */
         public Engine build(){
             return new Engine(new QueryProperties(properties));
         }
+
+        /**
+         * todo support top K over raw trajectory data-set.
+         * T-Torch use map-matched trajectories as default data-set.
+         * However you could tell it to perform queries over raw trajectories by calling this method.
+         */
+//        public Builder useRawData(){
+//            useRaw = true;
+//            return this;
+//        }
     }
 }

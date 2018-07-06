@@ -21,7 +21,7 @@ public class Test {
 
         List<List<TrajEntry>> queries = read();
 
-        Engine engine = Engine.Builder.getBuilder().build();
+        Engine engine = Engine.getBuilder().build();
 
         QueryResult ret = engine.findTopK(queries.get(0), 1);
         System.out.println(ret.getMapVFormat());

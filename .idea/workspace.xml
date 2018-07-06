@@ -5,11 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/model/LightEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/model/LightEdge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/model/QueryProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/TrajJsonFormater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/TrajJsonFormater.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,15 +32,27 @@
       <file leaf-file-name="Engine.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+            <state relative-caret-position="1927">
+              <caret line="170" column="47" selection-start-line="170" selection-start-column="47" selection-end-line="170" selection-end-column="47" />
               <folding>
                 <element signature="e#832#833#0" expanded="true" />
                 <element signature="e#875#876#0" expanded="true" />
-                <element signature="e#2377#2378#0" expanded="true" />
-                <element signature="e#2415#2416#0" expanded="true" />
-                <element signature="e#5361#5362#0" expanded="true" />
-                <element signature="e#5409#5410#0" expanded="true" />
+                <element signature="e#4068#4069#0" expanded="true" />
+                <element signature="e#4098#4099#0" expanded="true" />
+                <element signature="e#6737#6738#0" expanded="true" />
+                <element signature="e#6811#6812#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Torch.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/Torch.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="47">
+              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+              <folding>
+                <element signature="docComment;class#URI#0;class#Torch#0" />
               </folding>
             </state>
           </provider>
@@ -84,8 +91,8 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="29" selection-start-line="29" selection-end-line="29" />
+            <state relative-caret-position="167">
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -105,8 +112,8 @@
       <file leaf-file-name="QueryProperties.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryProperties.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+            <state relative-caret-position="180">
+              <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#244#245#0" expanded="true" />
@@ -233,8 +240,8 @@
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/model/LightEdge.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryPool.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryProperties.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryResult.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java" />
       </list>
     </option>
@@ -264,7 +271,6 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="796" />
@@ -357,6 +363,61 @@
               <item name="rmit" type="462c0819:PsiDirectoryNode" />
               <item name="trajectory" type="462c0819:PsiDirectoryNode" />
               <item name="torch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="invertedIndex" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="torch" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="spatialIndex" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
@@ -763,7 +824,7 @@
       <workItem from="1530687483205" duration="13649000" />
       <workItem from="1530709235853" duration="28527000" />
       <workItem from="1530783689582" duration="17637000" />
-      <workItem from="1530836346238" duration="7176000" />
+      <workItem from="1530836346238" duration="11018000" />
     </task>
     <servers />
   </component>
@@ -779,7 +840,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="337645000" />
+    <option name="totallyTimeSpent" value="341487000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -791,19 +852,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="23" width="1440" height="796" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="796" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" x="30" y="319" width="1377" height="229" id="TODO" order="6" weight="0.32761088" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.21316166" />
+      <window_info anchor="bottom" id="Messages" order="12" visible="true" weight="0.21316166" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50095236" side_tool="true" weight="0.37195995" />
       <window_info anchor="right" id="Maven Projects" order="7" weight="0.32972974" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4990476" visible="true" weight="0.07868383" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4990476" weight="0.07868383" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32904148" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.1602289" />
       <window_info id="Capture Tool" order="5" />
@@ -938,16 +999,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
           <caret line="291" column="44" selection-start-line="291" selection-start-column="44" selection-end-line="291" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/Torch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
-          <folding>
-            <element signature="docComment;class#URI#0;class#Torch#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1147,16 +1198,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryPool.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
@@ -1178,14 +1219,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryProperties.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+        <state relative-caret-position="300">
+          <caret line="20" column="46" lean-forward="true" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#244#245#0" expanded="true" />
-            <element signature="e#266#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1201,27 +1250,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryProperties.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="46" lean-forward="true" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
+        <state relative-caret-position="180">
+          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#244#245#0" expanded="true" />
+            <element signature="e#266#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/Torch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="47">
+          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+          <folding>
+            <element signature="docComment;class#URI#0;class#Torch#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+        <state relative-caret-position="1927">
+          <caret line="170" column="47" selection-start-line="170" selection-start-column="47" selection-end-line="170" selection-end-column="47" />
           <folding>
             <element signature="e#832#833#0" expanded="true" />
             <element signature="e#875#876#0" expanded="true" />
-            <element signature="e#2377#2378#0" expanded="true" />
-            <element signature="e#2415#2416#0" expanded="true" />
-            <element signature="e#5361#5362#0" expanded="true" />
-            <element signature="e#5409#5410#0" expanded="true" />
+            <element signature="e#4068#4069#0" expanded="true" />
+            <element signature="e#4098#4099#0" expanded="true" />
+            <element signature="e#6737#6738#0" expanded="true" />
+            <element signature="e#6811#6812#0" expanded="true" />
           </folding>
         </state>
       </provider>
