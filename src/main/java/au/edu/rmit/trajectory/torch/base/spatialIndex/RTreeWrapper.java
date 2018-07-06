@@ -47,7 +47,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
     }
 
 
-    public Collection<String> findInRange(SearchWindow window) {
+    public List<String> findInRange(SearchWindow window) {
 
         rx.Observable<Entry<String, Geometry>> entries = this.rTree.search(
                 Geometries.rectangleGeographic(window.leftLng, window.lowerLat, window.rightLng, window.upperLat));
@@ -62,7 +62,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 //            ret.add(trajectoryMap.getList(trajId));
 //        });
 
-        return trajIDSet;
+        return new ArrayList<>(trajIDSet);
     }
 
 

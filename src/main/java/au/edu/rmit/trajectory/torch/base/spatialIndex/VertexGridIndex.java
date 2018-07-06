@@ -267,35 +267,29 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
     }
 
     Collection<Integer> pointsInWindow(SearchWindow window) {
+
+        int pos = calculateTileID(window.middle);
         int leftUpperID = calculateTileID(window.upperLat, window.leftLng);
         int rightUpperID = calculateTileID(window.upperLat, window.rightLng);
         int leftLowerID = calculateTileID(window.lowerLat, window.leftLng);
 
-        int leftBorder = leftUpperID % horizontalTileNumber == 0 ? horizontalTileNumber : leftUpperID % horizontalTileNumber;
-        int rightBorder = rightUpperID % horizontalTileNumber == 0 ? horizontalTileNumber : rightUpperID % horizontalTileNumber;
-        int upperBorder = leftUpperID / horizontalTileNumber;
-        int lowerBorder = leftLowerID / horizontalTileNumber;
+        logger.debug("pos: {}", pos);
+        logger.debug("leftUpperID: {}", leftUpperID);
+        logger.debug("rightUpperID: {}", rightUpperID);
+        logger.debug("leftLowerID: {}", leftLowerID);
 
         //getList all the vertices in the range.
-        Set<Integer> qualified = new HashSet<>();
-        Set<Integer> uncertain = new HashSet<>();
+        Set<Integer> vertices = new HashSet<>();
 
         for (int i = leftUpperID; i <= rightUpperID; ++i) {
             int id = i;
             int numRows = (leftLowerID - leftUpperID) / horizontalTileNumber + 1;
 
             while (numRows > 0) {
-                int column = id % horizontalTileNumber == 0 ? horizontalTileNumber : id % horizontalTileNumber;
-                int row = id / horizontalTileNumber;
 
                 Collection<Integer> verticesOnTile = get(id);
-
                 if (verticesOnTile != null) {
-                    if (column == leftBorder || column == rightBorder ||
-                            row == upperBorder || row == lowerBorder)
-                        uncertain.addAll(get(id));
-                    else
-                        qualified.addAll(get(id));
+                    vertices.addAll(verticesOnTile);
                 }
 
                 id += horizontalTileNumber;
@@ -304,7 +298,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         }
 
         //refine
-        Iterator<Integer> iter = uncertain.iterator();
+        Iterator<Integer> iter = vertices.iterator();
         while (iter.hasNext()){
             Integer vertexId = iter.next();
             TowerVertex point = allPointMap.get(vertexId);
@@ -315,8 +309,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
                 iter.remove();
         }
 
-        qualified.addAll(uncertain);
-        return qualified;
+        return vertices;
     }
 
     public double findBound(TrajEntry queryPoint, int round) {
@@ -326,7 +319,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         double dist2nearestEdge = t.dist2nearestEdge(queryPoint);
         double radius = dist2nearestEdge + tileLen * round;
 
-        return radius;
+        return -radius;
     }
 
     void incrementallyFind(TrajEntry point, int round, Set<Integer> vertices) {

@@ -25,7 +25,7 @@ class TopKQuery extends QueryImpl{
         super(mapper, resolver);
 
         this.index = index;
-        useEdge = true;
+        useEdge = index.useEdge();
     }
 
     @Override

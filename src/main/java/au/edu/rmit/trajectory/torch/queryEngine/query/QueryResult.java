@@ -25,11 +25,11 @@ public class QueryResult {
         this.mappedQuery = mappedQuery;
     }
 
-    public List<String> getMapVFormat(){
+    public String getMapVFormat(){
+        if (rawQuery == null)  // this indicates the query type is window query, which do not have second and third params
+            return TrajJsonFormater.toJSON(ret);
 
-
-        Gson gson = new Gson();
-        return null;
+        return TrajJsonFormater.toJSON(ret, rawQuery, mappedQuery);
     }
 
     public List<Trajectory<TrajEntry>> getResultTrajectory(){
