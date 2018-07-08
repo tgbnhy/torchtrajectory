@@ -137,7 +137,7 @@ gridIndex.delete();
 if (!gridIndex.load()) {
     gridIndex.buildIndex(allPointMap, epsilon);
 nodeIndex.findTopK(gridIndex, query, k, measureType, trajLenMap);
-
+```
 
 ## Main Contributors
   * Yunzhuang Shen
