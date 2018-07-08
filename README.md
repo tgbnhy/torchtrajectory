@@ -116,10 +116,8 @@ double[] restDistance = new double[querySegments.size()];
 for (int i = querySegments.size() - 2; i >= 0 && i + 1 < querySegments.size(); --i)
     restDistance[i] = restDistance[i + 1] + querySegments.get(i + 1).getLength();
 edgeIndex.findTopK(querySegments, k, allEdges, restDistance);
-
 ```
 
-```
 Using DTW:  
 ```
 gridIndex.delete();
@@ -129,6 +127,7 @@ if (!gridIndex.load()) {
 ...
 List<Integer> trajectoryID = gridIndex.findTopK(trajectoryMap, allPointMap, query, k, measureType);
 ```
+
 Using LCSS and EDR:
 ```
 if (!nodeIndex.load()) {
@@ -137,9 +136,8 @@ if (!nodeIndex.load()) {
 gridIndex.delete();
 if (!gridIndex.load()) {
     gridIndex.buildIndex(allPointMap, epsilon);
-...
 nodeIndex.findTopK(gridIndex, query, k, measureType, trajLenMap);
-
+...
 
 ## Main Contributors
 Yunzhuang Shen
