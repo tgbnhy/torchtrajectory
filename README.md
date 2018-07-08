@@ -143,9 +143,22 @@ for (int i = querySegments.size() - 2; i >= 0 && i + 1 < querySegments.size(); -
 edgeIndex.findTopK(querySegments, k, allEdges, restDistance);
 
 ```
-## Benchmark
+### Cite the paper
+---
+If you use this code for your scientific work, please cite it as:
 
+```
+Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for Trajectory Data. SIGIR 2018: 535-544
+```
 
-[1]: https://wiki.openstreetmap.org/wiki/PBF_Format
-[2]: https://dl.acm.org/citation.cfm?id=2666413 "Krogh, B., Pelekis, N., Theodoridis, Y., & Torp, K. (2014, November). Path-based queries on trajectory data. In Proceedings of the 22nd ACM SIGSPATIAL International Conference on Advances in Geographic Information Systems (pp. 341-350). ACM."
+```
+@inproceedings{wang2018torch,
+  author          = {{Wang}, Sheng and {Bao}, Zhifeng and {Culpepper}, J. Shane and {Xie}, Zizhe and {Liu}, Qizhi and {Qin}, Xiaolin},
+  title           = "{Torch: {A} Search Engine for Trajectory Data}",
+  booktitle       = {Proceedings of the 41th International ACM SIGIR Conference on Research & Development in Information Retrieval},
+  organization    = {ACM},
+  pages     = {535--544},
+  year            = 2018,
+}
 
+```
