@@ -1,5 +1,8 @@
 # T-Torch
-T-Torch is the world's first search engine for trajectory data, which is built above our research paper: Torch: A Search Engine for Trajectory Data.
+T-Torch is the world's first search engine for trajectory data, which is built above our research paper below:
+```
+Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for Trajectory Data. SIGIR 2018: 535-544
+```
 
 ## Supported queries 
 T-torch is able to efficiently answer two typical types of queries:
@@ -15,20 +18,20 @@ T-torch is able to efficiently answer two typical types of queries:
   * Hausdorff distance
   * Discrete Fréchet Distance
 
+## Features of framework
+* T-Torch performs trajectory search over the mapped trajectories.
+  * Various map-matching algorithms and implementations
+  * Ligtweight data storage
+* Fast search with
+  * Compressiable index
+  * Various similarity functions
+* Trajectory visualization on real road network
+  * Comming soon...
 
-## Features
-* T-Torch performs trajectory retrieval over the mapped trajectories. 
-Although map-matching process is slow, is could increase both efficiency 
-and effectiveness in query processing part.
-* edge based search
-* data visualization on real graph built from road network
-* various map-matching algorithms and implementations
-* various indexes
-* various similarity functions
 
 ## Getting started
 
-##### 1. Map matching
+### 1. Map matching
 
 Map matching is the technique for projecting raw trajectories onto real road network.
 
@@ -41,7 +44,7 @@ The first argument is to specify your raw trajectory data src, while the second 
 After setup, start() method is to convert raw trajectories to mapped trajectories. and the results 
 be stored in *Torch* folder under CWD, which will be used for query processing part later.
 
-###### Note:
+#### Note:
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
@@ -79,23 +82,23 @@ edgeIndex.load(); // or
 edgeIndex.loadCompressedForm();
 ```
 Under three types of indices, Torch supports four types of queries:
-#### Range query
+#### 1) Range query
 Range query is used to retrieve trajectories passing through a specified rectangle area.
 Given a torPoint and a radius r, it can be done with the help of NodeIndex and GridIndex.
 ```
 List<Integer> trajectoryIDs = nodeIndex.rangeQuery(gridIndex, torPoint, r, null);
 ```
-#### Path query
+#### 2) Path query
 Path<sup>[2]</sup> is used to retrieve trajectories containing any edge of the given path.
 ```
 List<Integer> trajectoryIDs = edgeIndex.pathQuery(originalSegments, null);
 ```
-#### Strict path query
+#### 3) Strict path query
 Strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passing through the entire path from beginning to end.
 ```
 List<Integer> trajectoryIDs = edgeIndex.strictPathQuery(querySegments, null);
 ```
-#### Top-k trajectory similarity query
+#### 4) Top-k trajectory similarity query
 A top-k trajectory similarity search query returns
 the k highest ranked trajectories based on the specified similarity metric.
 Torch supports six similarity metrics: DTW, LCSS, EDR, and LORS.  
