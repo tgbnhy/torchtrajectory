@@ -162,5 +162,4 @@ Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: 
   pages     = {535--544},
   year            = 2018,
 }
-
 ```
