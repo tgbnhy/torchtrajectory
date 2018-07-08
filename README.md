@@ -1,23 +1,19 @@
 # T-Torch
-T-Torch is a search engine for
-trajectory data retrieval. 
+T-Torch is the world's first search engine for trajectory data, which is built above our research paper: Torch: A Search Engine for Trajectory Data.
 
-## supported query 
-T-torch is able to efficiently
-counter two typical types of queries:
-* Boolean retrieval
+## Supported queries 
+T-torch is able to efficiently answer two typical types of queries:
+* Boolean search
   * range query
   * path query
   * strict path query
-* Top K similarity retrieval
-
-and it also support a list of well-known similarity functions:
+* Top K similarity search, we support a list of well-known similarity functions:
   * Longest overlapped road segments
   * Longest common sub-sequence
   * Edit distance with real penalty
   * Dynamic time wrapping
-  * Hausdorff
-  * Frechet
+  * Hausdorff distance
+  * Discrete Fréchet Distance
 
 
 ## Features
@@ -25,7 +21,7 @@ and it also support a list of well-known similarity functions:
 Although map-matching process is slow, is could increase both efficiency 
 and effectiveness in query processing part.
 * edge based search
-* data visualization on real graph
+* data visualization on real graph built from road network
 * various map-matching algorithms and implementations
 * various indexes
 * various similarity functions
@@ -50,14 +46,11 @@ be stored in *Torch* folder under CWD, which will be used for query processing p
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
  1. the format of trajectory data should be the same as it in sample dataset, and there is a **"\t"** separating trajectory id and content of it
- 2. it is your part to take care of data cleansing, as high length trajectory(over 200) could slow down mapping process rapidly, and low quality trajectory leads to low projection rate. 
- 
+ 2. it is your part to take care of data cleansing, as high length trajectory (over 200) could slow down mapping process rapidly, and low quality trajectory leads to low projection rate. 
 
 
-todo
 
-
-### Build vertexInvertedIndex
+### 2. Build Index
 After preprocessing, Torch can build indices for map matched trajectories.
 Torch supports three types of indices in total:  
 1. **GridIndex** is used for indexing trajectory points. It first uniformly partitions the whole area into small rectangles. Then build the inverted vertexInvertedIndex of trajectory points based on those rectangles.  
@@ -75,10 +68,11 @@ GridIndex gridIndex;
 ...
 ```
 After declaring, buildIndex() should be called to build the vertexInvertedIndex.
-### Compress vertexInvertedIndex
+#### Index compression
 After invoking buildIndex(), all indices will be stored in the disk in plain text. Because the vertexInvertedIndex consists of a sequence of integers, it can be compressed by delta encoding and re-stored in binary form in the disk.
 This can be done by calling compress() for each vertexInvertedIndex.
-### Queries
+
+### 3. Queries
 After the vertexInvertedIndex is built, it can be loaded in the plain text form or compressed binary form using the following code:
 ```
 edgeIndex.load(); // or
@@ -143,7 +137,7 @@ for (int i = querySegments.size() - 2; i >= 0 && i + 1 < querySegments.size(); -
 edgeIndex.findTopK(querySegments, k, allEdges, restDistance);
 
 ```
-### Cite the paper
+## Cite the paper
 ---
 If you use this code for your scientific work, please cite it as:
 
