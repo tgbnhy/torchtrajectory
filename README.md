@@ -96,7 +96,7 @@ Strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passin
 ```
 List<Integer> trajectoryIDs = edgeIndex.strictPathQuery(querySegments, null);
 ```
-#### 4) Top-k trajectory similarity query
+#### 4) Top-k trajectory similarity search
 A top-k trajectory similarity search query returns
 the k highest ranked trajectories based on the specified similarity metric.
 Torch supports six similarity metrics: DTW, LCSS, EDR, and LORS.  
