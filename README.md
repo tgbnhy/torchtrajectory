@@ -10,13 +10,13 @@ T-Torch is able to efficiently answer two typical types of queries now:
   * Range query
   * Path query
   * Strict path query
-* Top K similarity search, we support a list of well-known similarity measures:
-  * Longest overlapped road segments (LORS)
+* Top-k similarity search, we support a list of similarity measures:
   * Dynamic time wrapping (DTW)
   * Longest common sub-sequence (LCSS)
   * Edit distance with real penalty (EDR)
   * Hausdorff distance
   * Discrete Fréchet Distance
+  * Longest overlapped road segments (LORS)
 
 ## Features of framework
 * T-Torch performs trajectory search over the mapped trajectories.
