@@ -32,112 +32,77 @@ T-Torch is able to efficiently answer two typical types of queries now:
 ## Getting started
 ### 1. Map matching
 
-Map matching is the technique for projecting raw trajectories onto real road network.
-
 ```
+Usage: 
 MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 mm.start();
 ```
 
-The first argument is to specify your raw trajectory data src, while the second argument *"Resources/porto.osm.pbf"* is an PBF file<sup>[1]</sup>
-After setup, start() method is to convert raw trajectories to mapped trajectories. and the results 
-be stored in *Torch* folder under CWD, which will be used for query processing part later.
+Map matching is the technique for projecting raw trajectories onto real road network.
+
+The first argument is the URI of raw trajectory data-set, while the second argument **"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
+After setup, call start() method to convert raw trajectories to mapped trajectories.
 
 #### Note:
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
- 1. the format of trajectory data should be the same as it in sample dataset, and there is a **"\t"** separating trajectory id and content of it
+ 1. the format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
  2. it is your part to take care of data cleansing, as high length trajectory (over 200) could slow down mapping process rapidly, and low quality trajectory leads to low projection rate. 
 
 
-### 2. Index construction
-After preprocessing, Torch can build indices for map matched trajectories.
-Torch supports three types of indices in total:  
-1. **GridIndex** is used for indexing trajectory points. It first uniformly partitions the whole area into small rectangles. Then build the inverted vertexInvertedIndex of trajectory points based on those rectangles.  
-2. **EdgeIndex (EdgII)** is an inverted vertexInvertedIndex for trajectory edges.  
-3. **NodeIndex (VerII)** is an inverted vertexInvertedIndex for trajectory points.  
+### 2. query
+After map-matching, we could perform trajectory retrieval over mapped trajectories.
 
-Before using any vertexInvertedIndex, please first declare them as follows:
+T-Torch provides high level class *Engine* containing simple APIs for query processing. To get the engine ready, 
+only a line of code is required: 
 ```
-@Autowired
-NodeIndex nodeIndex;
-@Autowired
-EdgeIndex edgeIndex;
-@Autowired
-GridIndex gridIndex;
-...
-```
-After declaring, buildIndex() should be called to build the vertexInvertedIndex.
-#### Index compression (optional)
-After invoking buildIndex(), all indices will be stored in the disk in plain text. Because the vertexInvertedIndex consists of a sequence of integers, it can be compressed by delta encoding and re-stored in binary form in the disk.
-This can be done by calling compress() for each vertexInvertedIndex.
+Engine engine = Engine.getBuilder().build();
+``` 
 
-### 3. Queries
-After the vertexInvertedIndex is built, it can be loaded in the plain text form or compressed binary form using the following code:
-```
-edgeIndex.load(); // or
-edgeIndex.loadCompressedForm();
-```
-Under three types of indices, Torch supports four types of queries:
 #### 1) Range query
+```
+   QueryResult ret = engine.findInRange(50, 50, 50);
+```
 Range query is used to retrieve trajectories passing through a specified rectangle area.
-Given a torPoint and a radius r, it can be done with the help of NodeIndex and GridIndex.
-```
-List<Integer> trajectoryIDs = nodeIndex.rangeQuery(gridIndex, torPoint, r, null);
-```
+To define a window area, three args are needed. 
+Latitude and longitude pin the middle point, with radius( in meters) together do the work.
+
 #### 2) Path query
-Path<sup>[2]</sup> is used to retrieve trajectories containing any edge of the given path.
 ```
-List<Integer> trajectoryIDs = edgeIndex.pathQuery(originalSegments, null);
+   QueryResult ret = engine.findOnPath(query);
 ```
+Path<sup>[2]</sup> query is used to retrieve trajectories having at least one common edge with the query.
+The argument it takes is a "path" represented by a list of *Coordinate*.
+
 #### 3) Strict path query
-Strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passing through the entire path from beginning to end.
 ```
-List<Integer> trajectoryIDs = edgeIndex.strictPathQuery(querySegments, null);
+   QueryResult ret = engine.findOnStrictPath(query)
 ```
+Strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passing through the entire query from beginning to end.
+The argument it takes is a "path" represented by a list of *Coordinate*.
+
 #### 4) Top-k trajectory similarity search
+```
+   QueryResult ret = engine.findTopK(query, 3);
+```
 A top-k trajectory similarity search query returns
 the k highest ranked trajectories based on the specified similarity metric.
-Torch supports six similarity metrics: DTW, LCSS, EDR, and LORS.  
-```
-Map<Integer, MMEdge> allEdgeMap = new HashMap<>();
-Map<Integer, MMPoint> allPointMap = new HashMap<>();
-getGraphMap(allEdgeMap, allPointMap);
-Map<Integer, Trajectory> trajectoryMap = loadTrajectoryTxtFile(trajectoryFile, pointFile, edgeFile, true);
-Trajectory query; //This is the query
+First argument is a "query trajectory" represented by a list of *Coordinate*, 
+the second is number of top results to return.
 
+### 3. QueryResult
 ```
-Using our new proposed similarity model LORS:
-```
-edgeIndex.load(); //or edgeIndex.loadCompressedForm();
-List<MMEdge> querySegments = query.getMapMathedTrajectory(allEdges);
-double[] restDistance = new double[querySegments.size()];
-for (int i = querySegments.size() - 2; i >= 0 && i + 1 < querySegments.size(); --i)
-    restDistance[i] = restDistance[i + 1] + querySegments.get(i + 1).getLength();
-edgeIndex.findTopK(querySegments, k, allEdges, restDistance);
+if (ret.succeed){
+String mapVformat = ret.getResultTrajectory();
+List<Trajectory<TrajEntry>> l = ret.getResultTrajectory();
+}else{ //do something}
 ```
 
-Using DTW:  
-```
-gridIndex.delete();
-if (!gridIndex.load()) {
-    gridIndex.buildIndex(allPointMap, epsilon);
-}
-...
-List<Integer> trajectoryID = gridIndex.findTopK(trajectoryMap, allPointMap, query, k, measureType);
-```
+After query is performed, object of type QueryResult is returned uniformly. 
+It contains trajectories that meet the requirement.
 
-Using LCSS and EDR:
-```
-if (!nodeIndex.load()) {
-    nodeIndex.buildIndex(trajectoryMap.values()); //or use nodeIndex.loadCompressedForm();
-}
-gridIndex.delete();
-if (!gridIndex.load()) {
-    gridIndex.buildIndex(allPointMap, epsilon);
-nodeIndex.findTopK(gridIndex, query, k, measureType, trajLenMap);
-```
+
 
 ## Main contributors
   * Yunzhuang Shen
@@ -161,3 +126,8 @@ Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: 
   year            = 2018,
 }
 ```
+
+[1]: https://wiki.openstreetmap.org/wiki/PBF_Format
+[2]: https://dl.acm.org/citation.cfm?id=2666413 "Krogh, B., Pelekis, N., Theodoridis, Y., & Torp, K. (2014, November). Path-based queries on trajectory data. In Proceedings of the 22nd ACM SIGSPATIAL International Conference on Advances in Geographic Information Systems (pp. 341-350). ACM."
+[3]: http://mapv.baidu.com/
+

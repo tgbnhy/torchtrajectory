@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.queryEngine;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
@@ -106,6 +107,12 @@ public class Engine {
 
         Query rangeQ = pool.get(Torch.QueryType.RangeQ);
         return rangeQ.execute(window);
+    }
+
+    public QueryResult findInRange(double lat, double lng, double squareRadius ){
+
+        Query rangeQ = pool.get(Torch.QueryType.RangeQ);
+        return rangeQ.execute(new SearchWindow(new Coordinate(lat, lng), squareRadius));
     }
 
     public static class Builder{

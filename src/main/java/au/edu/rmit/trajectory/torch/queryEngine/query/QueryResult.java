@@ -15,7 +15,7 @@ import java.util.Map;
 public class QueryResult {
     private static final Logger logger = LoggerFactory.getLogger(QueryResult.class);
 
-    private boolean succeed;
+    public final boolean succeed;
     private List<TrajEntry> rawQuery;
     private List<TrajEntry> mappedQuery;
     private List<Trajectory<TrajEntry>> ret;

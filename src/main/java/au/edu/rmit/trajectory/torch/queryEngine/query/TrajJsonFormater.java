@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract class TrajJsonFormater {
-    private static  final Logger logger = LoggerFactory.getLogger(TrajJsonFormater.class);
-    static Gson gson = new Gson();
+
+    private static final Logger logger = LoggerFactory.getLogger(TrajJsonFormater.class);
+    final static Gson gson = new Gson();
 
     static String toJSON(List<Trajectory<TrajEntry>> retTrajs, List<TrajEntry> raw, List<TrajEntry> mapped){
 
