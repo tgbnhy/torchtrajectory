@@ -7,11 +7,11 @@ import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
-import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.Engine;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
+import net.sourceforge.sizeof.SizeOf;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,10 +22,9 @@ public class Test {
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
+        SizeOf.setMinSizeToLog(Long.MAX_VALUE);
         List<List<TrajEntry>> queries = read();
-
         Engine engine = Engine.getBuilder().build();
-
         QueryResult ret = engine.findOnStrictPath(queries.get(0));
         System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
 //        genEdgeInvertedIndex();

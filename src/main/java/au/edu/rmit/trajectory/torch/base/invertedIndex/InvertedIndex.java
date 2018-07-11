@@ -2,6 +2,7 @@ package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.Index;
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import me.lemire.integercompression.IntCompressor;
@@ -194,8 +195,8 @@ public abstract class InvertedIndex implements Index {
             }
 
             loaded = true;
-            logger.info("size of inverted index: {}", SizeOf.humanReadable(SizeOf.deepSizeOf(compressedIndex)));
             logger.info("inverted index build complete");
+            MemoryUsage.printObjectMemUsage("inverted index", compressedIndex);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
