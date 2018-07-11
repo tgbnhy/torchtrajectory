@@ -33,7 +33,6 @@ T-Torch is able to efficiently answer two typical types of queries now:
 ### 1. Map matching
 
 ```
-Usage: 
 MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 mm.start();
 ```
@@ -94,13 +93,13 @@ the second is number of top results to return.
 ### 3. QueryResult
 ```
 if (ret.succeed){
-String mapVformat = ret.getResultTrajectory();
 List<Trajectory<TrajEntry>> l = ret.getResultTrajectory();
+String mapVformat = ret.getMapVFormat();
 }else{ //do something}
 ```
 
 After query is performed, object of type QueryResult is returned uniformly. 
-It contains trajectories that meet the requirement.
+It contains trajectories that meet the requirement. Also, you can project these on MapV<sup>[3]</sup> for visualization purpose.
 
 
 
