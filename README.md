@@ -37,9 +37,7 @@ MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.
 mm.start();
 ```
 
-Map matching is the technique for projecting raw trajectories onto real road network.
-
-The first argument is the URI of raw trajectory data-set, while the second argument **"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
+Map matching is the technique for projecting raw trajectories onto real road network.The first argument is the URI of raw trajectory data-set, while the second argument **"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
 After setup, call start() method to convert raw trajectories to mapped trajectories.
 
 #### Note:
@@ -51,9 +49,7 @@ trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 
 
 ### 2. query
-After map-matching, we could perform trajectory retrieval over mapped trajectories.
-
-T-Torch provides high level class *Engine* containing simple APIs for query processing. To get the engine ready, 
+After map-matching, we could perform trajectory retrieval over mapped trajectories.T-Torch provides high level class *Engine* containing simple APIs for query processing. To get the engine ready, 
 only a line of code is required: 
 ```
 Engine engine = Engine.getBuilder().build();
@@ -63,8 +59,7 @@ Engine engine = Engine.getBuilder().build();
 ```
    QueryResult ret = engine.findInRange(50, 50, 50);
 ```
-Range query is used to retrieve trajectories passing through a specified rectangle area.
-To define a window area, three args are needed. 
+Range query is used to retrieve trajectories passing through a specified rectangle area.To define a window area, three args are needed. 
 Latitude and longitude pin the middle point, with radius( in meters) together do the work.
 
 #### 2) Path query
