@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SizeOf">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/local-lib/SizeOf.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -74,14 +74,14 @@ public interface Torch {
         String ID_EDGE_LOOKUP = TORCH_META_PREFIX +"/id_edge.txt";
         String ID_EDGE_RAW = TORCH_META_PREFIX +"/id_edge_raw.txt";
 
+        String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/invertedIndex/edgeInvertedIdx";
+        String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/invertedIndex/vertexInvertedIdx";
+
         String TRAJECTORY_VERTEX_REPRESENTATION_PATH = TORCH_META_PREFIX +"/trajectory_vertex";
         String TRAJECTORY_EDGE_REPRESENTATION_PATH = TORCH_META_PREFIX +"/trajectory_edge";
 
         String TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000 = TORCH_META_PREFIX+"/trajectory_vertex_200000.txt";
         String TRAJECTORY_EDGE_REPRESENTATION_PATH_200000 = TORCH_META_PREFIX+"/trajectory_edge_200000.txt";
-
-        String EDGE_INVERTED_INDEX = TORCH_META_PREFIX+"/invertedIndex/edgeInvertedIdx";
-        String VERTEX_INVERTED_INDEX=  TORCH_META_PREFIX+"/invertedIndex/vertexInvertedIdx";
 
         String RAW_TRAJECTORY_INDEX = TORCH_META_PREFIX + "/raw_trajectories";
 

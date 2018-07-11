@@ -68,7 +68,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         
         _build();
         loaded = true;
-        //save();
+        //saveUncompressed();
         logger.info("grid index build complete");
         return true;
     }

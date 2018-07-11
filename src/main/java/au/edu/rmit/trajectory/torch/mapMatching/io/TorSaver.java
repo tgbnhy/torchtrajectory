@@ -56,7 +56,7 @@ public class TorSaver {
     }
 
     /**
-     * Once a batch of trajectories have been mapped, we save it using a separate thread.
+     * Once a batch of trajectories have been mapped, we saveUncompressed it using a separate thread.
      *
      * @param mappedTrajectories trajectories to be saved
      * @param saveAll false -- asyncSave trajectory data only
@@ -92,8 +92,8 @@ public class TorSaver {
             saveMeta();
             saveIdVertexLookupTable();
             saveEdges();
-            edgeInvertedList.save(Torch.URI.EDGE_INVERTED_INDEX);
-            vertexInvertedIndex.save(Torch.URI.VERTEX_INVERTED_INDEX);
+            edgeInvertedList.saveCompressed(Torch.URI.EDGE_INVERTED_INDEX);
+            vertexInvertedIndex.saveCompressed(Torch.URI.VERTEX_INVERTED_INDEX);
 
 
             //trajectoryMap.cleanUp();

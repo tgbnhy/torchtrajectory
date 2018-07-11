@@ -4,6 +4,9 @@ import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 
+/**
+ * SearchWindow class models a window used for window query
+ */
 public class SearchWindow {
 
     public final TorPoint middle;

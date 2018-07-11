@@ -3,13 +3,14 @@ package au.edu.rmit.trajectory;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
-import au.edu.rmit.trajectory.torch.base.model.Coordinate;
+import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
+import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.queryEngine.Engine;
-import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 import au.edu.rmit.trajectory.torch.queryEngine.query.QueryResult;
 
 import java.io.*;
@@ -25,10 +26,10 @@ public class Test {
 
         Engine engine = Engine.getBuilder().build();
 
-        QueryResult ret = engine.findTopK(queries.get(0), 1);
-        ret.succeed
-        System.out.println(ret.getMapVFormat());
+        QueryResult ret = engine.findOnStrictPath(queries.get(0));
         System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
+//        genEdgeInvertedIndex();
+//        genVertexInvertedIndex();
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
@@ -128,9 +129,9 @@ public class Test {
         writer.close();
     }
 
-    private static void genInvertedIndex() throws IOException {
+    private static void genEdgeInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
         EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
 
         String line;
@@ -161,6 +162,42 @@ public class Test {
         }
         MemoryUsage.printCurrentMemUsage("");
 
-        edgeInvertedIndex.save(Torch.URI.EDGE_INVERTED_INDEX);
+        edgeInvertedIndex.saveCompressed(Torch.URI.EDGE_INVERTED_INDEX);
+    }
+
+    private static void genVertexInvertedIndex() throws IOException {
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000));
+        VertexInvertedIndex vertexInvertedIndex= new VertexInvertedIndex();
+
+        String line;
+        String[] tokens;
+        String[] vertices;
+
+        MemoryUsage.start();
+
+        int i = 0;
+        while((line = bufferedReader.readLine()) != null){
+
+            if (++i % 100000 == 0){
+                System.err.println("current progress: "+i);
+                MemoryUsage.printCurrentMemUsage("");
+                if (i == 200000) break;
+            }
+            tokens = line.split("\t");
+            vertices = tokens[1].split(",");
+
+            Trajectory<TrajEntry> t = new Trajectory<>();
+            t.id = tokens[0];
+
+            for (String vertex : vertices)
+               t.add(new TowerVertex(0,0, Integer.valueOf(vertex)));
+
+
+            vertexInvertedIndex.index(t);
+        }
+        MemoryUsage.printCurrentMemUsage("");
+
+        vertexInvertedIndex.saveCompressed(Torch.URI.VERTEX_INVERTED_INDEX);
     }
 }

@@ -4,7 +4,9 @@ import au.edu.rmit.trajectory.torch.base.Index;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
+import me.lemire.integercompression.IntCompressor;
 import me.lemire.integercompression.differential.IntegratedIntCompressor;
+import net.sourceforge.sizeof.SizeOf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +20,12 @@ public abstract class InvertedIndex implements Index {
 
     private static Logger logger = LoggerFactory.getLogger(InvertedIndex.class);
     public boolean loaded = false;
-    HashMap<Integer, Map<String, Integer>> index = new HashMap<>();
-    HashMap<Integer, CompressedPair> compressedIndex = new HashMap<>();
-    IntegratedIntCompressor iic = new IntegratedIntCompressor();
 
+    HashMap<Integer, Map<String, Integer>> index = new HashMap<>();
+    HashMap<Integer, CompressedPairs> compressedIndex = new HashMap<>();
+
+    IntegratedIntCompressor sortedIntCodec = new IntegratedIntCompressor();
+    IntCompressor unsortedIntCodec = new IntCompressor();
 
     /**
      * invertedIndex a list of trajectories, either by edges or vertices.
@@ -37,15 +41,14 @@ public abstract class InvertedIndex implements Index {
 
     /**
      * write inverted indexes to disk in a specific format
-     * @param path URI to save the indexes
+     * @param path URI to saveUncompressed the indexes
      */
-    public final void save(String path){
+    public final void saveUncompressed(String path){
         ensureExistence(path);
 
         try (BufferedWriter idBufWriter = new BufferedWriter((new FileWriter(path + "_id.txt", false)));
              BufferedWriter trajBufWriter = new BufferedWriter((new FileWriter(path + "_trajId.txt", false)));
              BufferedWriter posBufWriter = new BufferedWriter((new FileWriter(path+ "_pos.txt", false)))) {
-
             for (Map.Entry<Integer, Map<String, Integer>> entry : index.entrySet()) {
 
                 //write id
@@ -79,11 +82,60 @@ public abstract class InvertedIndex implements Index {
         }
     }
 
+    public final void saveCompressed(String path){
+        ensureExistence(path);
+
+        try (BufferedWriter idBufWriter = new BufferedWriter((new FileWriter(path + "_id.compressed")));
+             BufferedWriter trajBufWriter = new BufferedWriter((new FileWriter(path + "_trajId.compressed")));
+             BufferedWriter posBufWriter = new BufferedWriter((new FileWriter(path+ "_pos.compressed")))) {
+
+            for (Map.Entry<Integer, Map<String, Integer>> entry : index.entrySet()) {
+
+                // write id
+                idBufWriter.write(String.valueOf(entry.getKey()));
+
+                // sort inverted list
+                List<Pair> pairs = new ArrayList<>(entry.getValue().size());
+                for(Map.Entry<String, Integer> entry1 : entry.getValue().entrySet())
+                    pairs.add(new Pair(entry1));
+                pairs.sort(Comparator.comparingInt(p -> p.trajid));
+
+                // compress
+                int pairSize = pairs.size();
+                int[] trajId = new int[pairSize];
+                int[] pos = new int[pairSize];
+                for (int i = 0; i < pairSize; i++){
+                    trajId[i] = pairs.get(i).trajid;
+                    pos[i] = pairs.get(i).pos;
+                }
+
+                int[] compressedTrajID = sortedIntCodec.compress(trajId);
+                int[] compressedPos = unsortedIntCodec.compress(pos);
+
+                //write inverted list
+                for (int aCompressedTrajID : compressedTrajID) trajBufWriter.write(aCompressedTrajID + SEPARATOR);
+                for (int aCompressedPos : compressedPos) posBufWriter.write(aCompressedPos + SEPARATOR);
+
+                idBufWriter.newLine();
+                trajBufWriter.newLine();
+                posBufWriter.newLine();
+            }
+
+            idBufWriter.flush();
+            trajBufWriter.flush();
+            posBufWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
      public List<Pair> getPairs(int vertexId){
 
-        CompressedPair compressedPair = compressedIndex.get(vertexId);
-        int[] trajIds = iic.uncompress(compressedPair.trajIds);
-        int[] posis = iic.uncompress(compressedPair.posis);
+        CompressedPairs compressedPairs = compressedIndex.get(vertexId);
+        int[] trajIds = sortedIntCodec.uncompress(compressedPairs.trajIds);
+        int[] posis = unsortedIntCodec.uncompress(compressedPairs.posis);
         List<Pair> pairs = new LinkedList<>();
         for (int i = 0; i < trajIds.length; i++){
             pairs.add(new Pair(trajIds[i], posis[i]));
@@ -92,11 +144,11 @@ public abstract class InvertedIndex implements Index {
     }
 
     public List<String> getKeys(int vertexId){
-        CompressedPair compressedPair = compressedIndex.get(vertexId);
-        if (compressedPair == null)
+        CompressedPairs compressedPairs = compressedIndex.get(vertexId);
+        if (compressedPairs == null)
             return new ArrayList<>();
 
-        int[] trajIds = iic.uncompress(compressedPair.trajIds);
+        int[] trajIds = sortedIntCodec.uncompress(compressedPairs.trajIds);
         List<String> l = new LinkedList<>();
         for (int trajId: trajIds)
             l.add(String.valueOf(trajId));
@@ -118,9 +170,9 @@ public abstract class InvertedIndex implements Index {
                 !path.equals(Torch.URI.VERTEX_INVERTED_INDEX))
             throw new IllegalStateException("base path got to be "+Torch.URI.EDGE_INVERTED_INDEX+" or "+Torch.URI.VERTEX_INVERTED_INDEX);
 
-        try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.txt"));
-             BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.txt"));
-             BufferedReader posBufReader = new BufferedReader(new FileReader(path + "_pos.txt"))) {
+        try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.compressed"));
+             BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.compressed"));
+             BufferedReader posBufReader = new BufferedReader(new FileReader(path + "_pos.compressed"))) {
 
             //idString either be edge id or tower point id.
             String trajIdLine, posLine, idString;
@@ -130,20 +182,19 @@ public abstract class InvertedIndex implements Index {
                 posLine = posBufReader.readLine();
 
                 String[] trajArray = trajIdLine.split(SEPARATOR), posArray = posLine.split(SEPARATOR);
-                int[] trajId2beCompressed = new int[trajArray.length], pos2beCompressed = new int[posArray.length];
+                int[] trajIDs = new int[trajArray.length], posis = new int[posArray.length];
+                for (int i = 0; i < trajIDs.length; i++) trajIDs[i] = Integer.parseInt(trajArray[i]);
+                for (int i = 0; i < posArray.length; i++) posis[i] = Integer.parseInt(posArray[i]);
 
-                for (int i = 0; i < trajId2beCompressed.length; i++){
-                    trajId2beCompressed[i] = Integer.parseInt(trajArray[i]);
-                    pos2beCompressed[i] = Integer.parseInt(posArray[i]);
-                }
 
-                CompressedPair p = new CompressedPair();
-                p.trajIds = iic.compress(trajId2beCompressed);
-                p.posis = iic.compress(pos2beCompressed);
+                CompressedPairs p = new CompressedPairs();
+                p.trajIds = trajIDs;
+                p.posis = posis;
                 compressedIndex.put(Integer.valueOf(idString), p);
             }
 
             loaded = true;
+            logger.info("size of inverted index: {}", SizeOf.humanReadable(SizeOf.deepSizeOf(compressedIndex)));
             logger.info("inverted index build complete");
             return true;
         } catch (IOException e) {
@@ -154,7 +205,7 @@ public abstract class InvertedIndex implements Index {
         return false;
     }
 
-    public static class CompressedPair {
+    public static class CompressedPairs {
         public int[] trajIds;
         public int[] posis;
     }
