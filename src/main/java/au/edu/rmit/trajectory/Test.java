@@ -25,7 +25,7 @@ public class Test {
         SizeOf.setMinSizeToLog(Long.MAX_VALUE);
         List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().build();
-        QueryResult ret = engine.findOnStrictPath(queries.get(0));
+        QueryResult ret = engine.findTopK(queries.get(1), 3);
         System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();

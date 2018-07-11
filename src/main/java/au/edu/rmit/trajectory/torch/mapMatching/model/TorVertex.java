@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching.model;
 
+import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import com.github.davidmoten.geo.GeoHash;
 
@@ -11,32 +12,16 @@ import com.github.davidmoten.geo.GeoHash;
  * @see TowerVertex
  * @see PillarVertex
  */
-public abstract class TorVertex implements TrajEntry {
+public abstract class TorVertex extends Coordinate {
 
-    public final double lat;
-    public final double lng;
     public final String hash;
     public final boolean isTower;
 
     public TorVertex(double lat, double lng, boolean isTower) {
-        this.lat = lat;
-        this.lng = lng;
+        super(lat, lng);
         this.isTower = isTower;
         this.hash = GeoHash.encodeHash(lat, lng);
     }
-
-    @Override
-    public double getLat(){
-        return lat;
-    }
-
-    @Override
-    public double getLng(){
-        return lng;
-    }
-
-    @Override
-    public int getId(){return 0;};
 
     @Override
     public boolean equals(Object o) {

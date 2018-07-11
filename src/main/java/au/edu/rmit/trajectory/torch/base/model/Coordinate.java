@@ -1,14 +1,18 @@
 package au.edu.rmit.trajectory.torch.base.model;
 
-public class Coordinate extends TorPoint{
+public class Coordinate implements TrajEntry{
+
+    public final double lat;
+    public final double lng;
 
     public Coordinate(double lat, double lng){
-        super(lat,lng);
+        this.lat = lat;
+        this.lng = lng;
     }
 
     @Override
     public int getId() {
-        return id;
+        return -1;
     }
 
     @Override

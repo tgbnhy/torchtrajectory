@@ -50,6 +50,7 @@ public abstract class InvertedIndex implements Index {
         try (BufferedWriter idBufWriter = new BufferedWriter((new FileWriter(path + "_id.txt", false)));
              BufferedWriter trajBufWriter = new BufferedWriter((new FileWriter(path + "_trajId.txt", false)));
              BufferedWriter posBufWriter = new BufferedWriter((new FileWriter(path+ "_pos.txt", false)))) {
+
             for (Map.Entry<Integer, Map<String, Integer>> entry : index.entrySet()) {
 
                 //write id

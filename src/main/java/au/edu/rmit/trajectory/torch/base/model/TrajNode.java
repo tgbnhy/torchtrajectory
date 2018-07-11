@@ -9,18 +9,15 @@ import java.util.List;
  * However, algorithm from raw trajectory nodes to graph vertices for other kind of information requires further research and experiment.
  * This function is expected to be developed in future.
  */
-public class TrajNode implements TrajEntry{
+public class TrajNode extends Coordinate{
 
     public int id;
-    public double lat = -1;
-    public double lng = -1;
 
     private long _time = -1;
     List<String> _bundle = new ArrayList<>(3);
 
     public TrajNode(double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
+        super(lat,lng);
     }
 
     public TrajNode(double lat, double lng, long time) {

@@ -1,13 +1,10 @@
 package au.edu.rmit.trajectory.torch.base.persistance;
 
-import au.edu.rmit.trajectory.torch.base.model.Coordinate;
-import au.edu.rmit.trajectory.torch.base.model.TorPoint;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import org.mapdb.BTreeMap;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
-import org.mapdb.QueueLong;
 
 import java.util.*;
 
