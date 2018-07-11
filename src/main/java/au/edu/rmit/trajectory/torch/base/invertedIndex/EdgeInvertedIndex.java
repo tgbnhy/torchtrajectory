@@ -2,7 +2,7 @@ package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.PathQueryIndex;
 import au.edu.rmit.trajectory.torch.base.TopKQueryIndex;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;

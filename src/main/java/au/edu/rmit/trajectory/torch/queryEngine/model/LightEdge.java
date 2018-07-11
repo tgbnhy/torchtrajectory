@@ -1,6 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine.model;
 
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
 
 import java.util.ArrayList;
 import java.util.List;

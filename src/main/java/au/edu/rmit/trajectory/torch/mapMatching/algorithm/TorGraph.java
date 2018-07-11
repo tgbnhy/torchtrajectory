@@ -3,12 +3,12 @@ package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.mapMatching.MMProperties;
 import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.mapMatching.model.PillarVertex;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
-import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
 import com.github.davidmoten.geo.GeoHash;
 import com.github.davidmoten.rtree.RTree;
 import com.github.davidmoten.rtree.geometry.Geometries;
@@ -122,7 +122,7 @@ public class TorGraph {
     /**
      * build torGraph.
      */
-    public TorGraph build(MapMatching.Builder props){
+    public TorGraph build(MMProperties props){
 
         if (hopper == null)
             throw new IllegalStateException("please invoke " +
@@ -137,8 +137,8 @@ public class TorGraph {
         buildTorGraph();
         initLookUpTable();
 
-        if (props.getMmAlg().equals(Torch.Algorithms.HMM_PRECOMPUTED))
-            buildShortestPathCache(props.getPreComputationRange());
+        if (props.mmAlg.equals(Torch.Algorithms.HMM_PRECOMPUTED))
+            buildShortestPathCache(props.preComputationRange);
 
         return this;
     }

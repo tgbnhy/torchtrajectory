@@ -1,5 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching.model;
 
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
+
 /**
  * An pillar vertex is the vertex that is neither at the joint position of the roads, nor at the end of a road.
  * It does not contribute much to routing, but it adds accuracy for modeling the real world road rather than a straight line

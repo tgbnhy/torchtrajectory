@@ -1,6 +1,5 @@
-package au.edu.rmit.trajectory.torch.mapMatching.io;
+package au.edu.rmit.trajectory.torch.mapMatching;
 
-import au.edu.rmit.trajectory.torch.mapMatching.MapMatching;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.TrajNode;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
@@ -27,8 +26,8 @@ public class TrajReader {
         BATCH_SIZE = 100000;
     }
 
-    public TrajReader(MapMatching.Builder props){
-        BATCH_SIZE = props.getBatchSize();
+    public TrajReader(MMProperties props){
+        BATCH_SIZE = props.batchSize;
     }
 
     /**

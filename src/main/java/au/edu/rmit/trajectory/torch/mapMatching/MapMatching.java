@@ -4,10 +4,8 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorDijkstra;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
-import au.edu.rmit.trajectory.torch.mapMatching.io.TrajReader;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.Torch;
-import au.edu.rmit.trajectory.torch.mapMatching.io.TorSaver;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
@@ -34,16 +32,18 @@ import java.util.List;
 public class MapMatching {
 
     private static Logger logger = LoggerFactory.getLogger(MapMatching.class);
-    private static Builder props = new Builder();
-
+    private static Builder builder = new Builder();
+    private MMProperties props;
     private TorGraph graph;
     private Mapper mapper;
 
     public static Builder getBuilder(){
-        return props;
+        return builder;
     }
 
-    private MapMatching(){
+    private MapMatching(MMProperties props){
+
+        this.props = props;
 
         //check trajSrcPath file
         File trajFile = new File(props.trajSrcPath);
@@ -145,20 +145,14 @@ public class MapMatching {
      */
     public static class Builder {
 
-        String vehicleType = Torch.vehicleType.CAR;
-        String mmAlg = Torch.Algorithms.HMM_PRECOMPUTED;
-        MapMatching mm;
-        String trajSrcPath;
-        String osmPath;
-        int batchSize = 10000;
-        int preComputationRange = 1000;
+        MMProperties props = new MMProperties();
 
         /**
          * @param algorithm the algorithm used in map-matching
          * @see Torch.Algorithms
          */
         public Builder setMapMatchingAlgorithm(String algorithm){
-            mmAlg = algorithm;
+            props.mmAlg = algorithm;
             return this;
         }
 
@@ -168,7 +162,7 @@ public class MapMatching {
          * @see Torch.vehicleType
          */
         public Builder setVehicleType(String vehicle){
-            vehicleType = vehicle;
+            props.vehicleType = vehicle;
             return this;
         }
 
@@ -178,7 +172,7 @@ public class MapMatching {
          * @see TorDijkstra#run(TowerVertex)
          */
         public Builder setPrecomputationRange(int range){
-            this.preComputationRange = range;
+            props.preComputationRange = range;
             return this;
         }
 
@@ -189,7 +183,7 @@ public class MapMatching {
          * @see TrajReader
          */
         public Builder setBatchSize(int batchSize){
-            this.batchSize = batchSize;
+            props.batchSize = batchSize;
             return this;
         }
 
@@ -206,21 +200,12 @@ public class MapMatching {
          */
         public MapMatching build(String trajSrcPath, String osmPath){
 
-            if ( mm != null )return mm;
-            this.trajSrcPath = trajSrcPath;
-            this.osmPath = osmPath;
-            mm = new MapMatching();
-            return mm;
-        }
+            props.trajSrcPath = trajSrcPath;
+            props.osmPath = osmPath;
 
-        public int getBatchSize() {
-            return batchSize;
-        }
-        public int getPreComputationRange() {
-            return preComputationRange;
-        }
-        public String getMmAlg() {
-            return mmAlg;
+            MapMatching mm = new MapMatching(new MMProperties(props));
+            props.reset();
+            return mm;
         }
     }
 }

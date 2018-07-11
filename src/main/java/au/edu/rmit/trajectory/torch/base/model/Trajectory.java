@@ -1,10 +1,6 @@
 package au.edu.rmit.trajectory.torch.base.model;
 
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
-
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 

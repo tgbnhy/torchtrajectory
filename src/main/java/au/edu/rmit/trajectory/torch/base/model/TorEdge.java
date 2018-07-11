@@ -1,7 +1,11 @@
-package au.edu.rmit.trajectory.torch.mapMatching.model;
+package au.edu.rmit.trajectory.torch.base.model;
 
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.Torch;
+import au.edu.rmit.trajectory.torch.mapMatching.model.PillarVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
+import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
+
 import java.util.*;
 
 /**

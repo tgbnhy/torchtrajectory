@@ -12,7 +12,6 @@ import java.util.List;
 public class TrajNode extends Coordinate{
 
     public int id;
-
     private long _time = -1;
     List<String> _bundle = new ArrayList<>(3);
 

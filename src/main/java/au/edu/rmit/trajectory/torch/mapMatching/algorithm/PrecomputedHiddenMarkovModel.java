@@ -1,7 +1,7 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TorVertex;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.*;

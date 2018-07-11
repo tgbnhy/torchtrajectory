@@ -1,4 +1,4 @@
-package au.edu.rmit.trajectory.torch.mapMatching.io;
+package au.edu.rmit.trajectory.torch.mapMatching;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
@@ -6,7 +6,7 @@ import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.VertexInvertedIndex;
-import au.edu.rmit.trajectory.torch.mapMatching.model.TorEdge;
+import au.edu.rmit.trajectory.torch.base.model.TorEdge;
 import au.edu.rmit.trajectory.torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.trajectory.torch.base.model.*;
 import com.github.davidmoten.geo.GeoHash;
