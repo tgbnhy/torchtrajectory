@@ -1,7 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching;
 
 import au.edu.rmit.trajectory.torch.base.Torch;
-import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.InvertedIndex;
@@ -47,12 +46,10 @@ public class TorSaver {
     public InvertedIndex edgeInvertedList;
     public InvertedIndex vertexInvertedIndex;
 
-    private TrajectoryMap trajectoryMap;
 
     public TorSaver(){
         edgeInvertedList = new EdgeInvertedIndex();
         vertexInvertedIndex = new VertexInvertedIndex();
-        trajectoryMap = new TrajectoryMap(Torch.URI.RAW_TRAJECTORY_INDEX);
     }
 
     /**

@@ -18,13 +18,14 @@ import static au.edu.rmit.trajectory.torch.base.Torch.SEPARATOR;
 import static au.edu.rmit.trajectory.torch.base.helper.FileUtil.*;
 
 public abstract class InvertedIndex implements Index {
-
     private static Logger logger = LoggerFactory.getLogger(InvertedIndex.class);
+
     public boolean loaded = false;
 
-    HashMap<Integer, Map<String, Integer>> index = new HashMap<>();
-    HashMap<Integer, CompressedPairs> compressedIndex = new HashMap<>();
 
+    HashMap<Integer, Map<String, Integer>> index = new HashMap<>();
+
+    HashMap<Integer, CompressedPairs> compressedIndex = new HashMap<>();
     IntegratedIntCompressor sortedIntCodec = new IntegratedIntCompressor();
     IntCompressor unsortedIntCodec = new IntCompressor();
 

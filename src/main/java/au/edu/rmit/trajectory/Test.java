@@ -21,8 +21,8 @@ public class Test {
 //        mm.start();
 
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
-        QueryResult ret = engine.findTopK(queries.get(0), 5);
+        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.Hausdorff).build();
+        QueryResult ret = engine.findTopK(queries.get(1), 5);
         //System.out.println(ret.getMapVFormat());
         ret.getMapVFormat();
 

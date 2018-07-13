@@ -6,7 +6,6 @@ import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
-import au.edu.rmit.trajectory.torch.base.persistance.TrajectoryMap;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 import com.github.davidmoten.rtree.*;
 import com.github.davidmoten.rtree.geometry.Geometries;
@@ -37,11 +36,9 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
     private static final int POINT_NUMBER_IN_MBR = 10;
 
     private RTree<String, Geometry> rTree;
-    private TrajectoryMap trajectoryMap;
 
-    public RTreeWrapper(TrajectoryMap trajectoryMap){
+    public RTreeWrapper(){
         this.rTree = RTree.star().maxChildren(6).create();
-        this.trajectoryMap = trajectoryMap;
     }
 
 

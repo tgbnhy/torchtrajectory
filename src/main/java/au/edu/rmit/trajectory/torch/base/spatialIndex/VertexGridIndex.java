@@ -19,7 +19,6 @@ import java.util.*;
  * Vertex Grid Index( VGI) for LEVI
  * It is for indexing all the points on virtual graph into the grid.
  *
- * @author forrest0402
  */
 public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> implements Index {
 
