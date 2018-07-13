@@ -17,14 +17,15 @@ import java.util.List;
 
 public class Test {
     public static void main(String[] args)throws IOException{
-        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
-        mm.start();
+//        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
+//        mm.start();
 
-//        SizeOf.setMinSizeToLog(Long.MAX_VALUE);
-//        List<List<TrajEntry>> queries = read();
-//        Engine engine = Engine.getBuilder().build();
-//        QueryResult ret = engine.findTopK(queries.get(1), 3);
-//        System.out.println("size of result trajectories: "+ret.getResultTrajectory().size());
+        List<List<TrajEntry>> queries = read();
+        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
+        QueryResult ret = engine.findTopK(queries.get(0), 5);
+        //System.out.println(ret.getMapVFormat());
+        ret.getMapVFormat();
+
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
     }

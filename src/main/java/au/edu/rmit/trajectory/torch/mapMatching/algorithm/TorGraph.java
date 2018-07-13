@@ -36,7 +36,6 @@ import java.util.*;
 public class TorGraph {
 
     private static TorGraph torGraph = new TorGraph();
-
     private static final double SPARSE_THRESHOLD = 50;
 
     public String vehicleType;

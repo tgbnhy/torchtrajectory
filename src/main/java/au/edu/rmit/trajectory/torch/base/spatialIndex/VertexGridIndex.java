@@ -318,7 +318,6 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         Tile t = tileInfo.get(tileId);
         double dist2nearestEdge = t.dist2nearestEdge(queryPoint);
         double radius = dist2nearestEdge + tileLen * round;
-
         return -radius;
     }
 

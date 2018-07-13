@@ -29,6 +29,7 @@ public class MemoryUsage {
     }
 
     public static void setDebugOn(){
+        SizeOf.setMinSizeToLog(Long.MAX_VALUE);
         debug = true;
     }
 

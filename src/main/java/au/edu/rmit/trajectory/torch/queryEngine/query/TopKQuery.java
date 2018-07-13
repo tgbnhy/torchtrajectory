@@ -35,7 +35,6 @@ class TopKQuery extends QueryImpl{
             throw new IllegalStateException(
                     "parameter passed to windowQuery should be of type SearchWindow, " +
                             "which indicates top k results to return");
-
         if (useEdge)
             return topKusingEdge((int)K);
         else

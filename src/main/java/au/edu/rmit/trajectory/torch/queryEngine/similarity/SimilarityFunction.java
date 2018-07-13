@@ -231,35 +231,6 @@ public class SimilarityFunction<T extends TrajEntry> {
         return dpInts[T1.size()][T2.size()];
     }
 
-    public double fastDynamicTimeWarping(List<T> T1, List<T> T2, int warpingWindowSize, double bestSoFar) {
-        if (T1.size() == 0 && T2.size() == 0) return 0;
-        if (T1.size() == 0 || T2.size() == 0) return Integer.MAX_VALUE;
-
-        double[][] dpInts = new double[T1.size() + 1][T2.size() + 1];
-
-        warpingWindowSize = Math.max(warpingWindowSize, Math.abs(T1.size() - T2.size()));
-
-        for (int i = 0; i <= T1.size(); ++i)
-            for (int j = 0; j <= T2.size(); ++j)
-                dpInts[i][j] = Integer.MAX_VALUE;
-
-        dpInts[0][0] = 0;
-
-        for (int i = 1; i <= T1.size(); ++i) {
-            for (int j = Math.max(1, i - warpingWindowSize); j <= Math.min(T2.size(), i + warpingWindowSize); ++j) {
-                try{
-                    dpInts[i][j] = distFunc.apply(T1.get(i - 1), T2.get(j - 1)) + min(dpInts[i - 1][j - 1], dpInts[i - 1][j], dpInts[i][j - 1]);
-                }catch (Exception e){
-                    logger.info("first point is null? {}",null == T1.get(i-1));
-                    logger.info("second point is null? {}",null == T2.get(j-1));
-                }
-                if (dpInts[i][j] > bestSoFar) return dpInts[i][j];
-            }
-        }
-
-        return dpInts[T1.size()][T2.size()];
-    }
-
     public double Hausdorff(List<T> t1, List<T> t2) {
         double[][] dist_matrix;
         dist_matrix = new double[t2.size()][t1.size()];
@@ -319,20 +290,20 @@ public class SimilarityFunction<T extends TrajEntry> {
     }
 
     private double c(int i, int j, double[][] ca, List<T> t1, List<T> t2) {
-        if (ca[i][j] > -1.0D) {
+        if (ca[i][j] > -1.0D)
             return ca[i][j];
+
+        if (i == 0 && j == 0) {
+            ca[i][j] = distFunc.apply(t1.get(0),t2.get(0));
+        } else if (j == 0) {
+            ca[i][j] = Math.max(c(i - 1, 0, ca, t1, t2), distFunc.apply(t2.get(i), t1.get(0)));
+        } else if (i == 0) {
+            ca[i][j] = Math.max(c(0, j - 1, ca, t1, t2), distFunc.apply(t2.get(0), t1.get(j)));
         } else {
-            if (i == 0 && j == 0) {
-                ca[i][j] = distFunc.apply(t2.get(i), t1.get(j));
-            } else if (i > 0 && j == 0) {
-                ca[i][j] = Math.max(c(i - 1, 0, ca, t1, t2), distFunc.apply(t2.get(i), t1.get(j)));
-            } else if (i == 0) {
-                ca[i][j] = Math.max(c(0, j - 1, ca, t1, t2), distFunc.apply(t2.get(i), t1.get(j)));
-            } else {
-                ca[i][j] = Math.max(Math.min(Math.min(c(i - 1, j, ca, t1, t2), c(i - 1, j - 1, ca, t1, t2)), c(i, j - 1, ca, t1, t2)), distFunc.apply(t2.get(i), t1.get(j)));
-            }
-            return ca[i][j];
+            ca[i][j] = Math.max(Math.min(Math.min(c(i - 1, j, ca, t1, t2), c(i - 1, j - 1, ca, t1, t2)), c(i, j - 1, ca, t1, t2)), distFunc.apply(t2.get(i), t1.get(j)));
         }
+        return ca[i][j];
+
     }
 
     /**
