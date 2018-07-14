@@ -320,9 +320,9 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         return -radius;
     }
 
-    void incrementallyFind(TrajEntry point, int round, Set<Integer> vertices) {
+    void incrementallyFind(TrajEntry vertex, int round, Set<Integer> vertices, boolean findAll) {
 
-        int tileID = calculateTileID(point);
+        int tileID = calculateTileID(vertex);
 
         if (round == 0){
             vertices.addAll(get(tileID));
@@ -341,38 +341,52 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
             lowerRightPos = computeLowerRight(lowerRightPos);
         }
 
-        for (int i = upperLeftPos; i < upperRightPos; ++i) {
-            Collection<Integer> idList = get(i);
-            if (idList != null)
-                vertices.addAll(idList);
-        }
-        for (int i = upperRightPos; i < lowerRightPos; i += this.horizontalTileNumber) {
-            Collection<Integer> idList = get(i);
-            if (idList != null)
-                vertices.addAll(idList);
-        }
-        for (int i = lowerRightPos; i < lowerLeftPos; --i) {
-            Collection<Integer> idList = get(i);
-            if (idList != null)
-                vertices.addAll(idList);
-        }
-        for (int i = lowerLeftPos; i < upperLeftPos; i -= this.horizontalTileNumber) {
-            Collection<Integer> idList = get(i);
-            if (idList != null)
-                vertices.addAll(idList);
+        if (findAll){
+            for (int left = upperLeftPos, right = upperRightPos; left <= lowerLeftPos; left += this.horizontalTileNumber, right += this.horizontalTileNumber) {
+                for (int cur = left; cur <= right; cur++) {
+                    Collection<Integer> idList = get(cur);
+                    if (idList != null)
+                        vertices.addAll(idList);
+                }
+            }
+        }else {
+            for (int i = upperLeftPos; i < upperRightPos; ++i) {
+                Collection<Integer> idList = get(i);
+
+                if (idList != null)
+                    vertices.addAll(idList);
+            }
+            for (int i = upperRightPos; i < lowerRightPos; i += this.horizontalTileNumber) {
+                Collection<Integer> idList = get(i);
+
+                if (idList != null)
+                    vertices.addAll(idList);
+            }
+            for (int i = lowerRightPos; i > lowerLeftPos; --i) {
+                Collection<Integer> idList = get(i);
+
+                if (idList != null)
+                    vertices.addAll(idList);
+            }
+            for (int i = lowerLeftPos; i > upperLeftPos; i -= this.horizontalTileNumber) {
+                Collection<Integer> idList = get(i);
+
+                if (idList != null)
+                    vertices.addAll(idList);
+            }
         }
     }
 
     private int computeUpperLeft(int pos) {
+        int ans;
         if (pos % this.horizontalTileNumber == 0) {
             if (pos < this.horizontalTileNumber) return pos;
-            int ans = pos - this.horizontalTileNumber;
-            return ans;
+            ans = pos - this.horizontalTileNumber;
         } else {
             if (pos < this.horizontalTileNumber) return pos - 1;
-            int ans = pos - this.horizontalTileNumber - 1;
-            return ans;
+            ans = pos - this.horizontalTileNumber - 1;
         }
+        return ans;
     }
 
     private int computeUpperRight(int pos) {

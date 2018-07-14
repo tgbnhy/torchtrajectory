@@ -25,6 +25,8 @@ import static au.edu.rmit.trajectory.torch.queryEngine.similarity.SimilarityFunc
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
+    private static final int INITIAL_ROUND_FOR_DTW = 3;
+
     private static Logger logger = LoggerFactory.getLogger(LEVI.class);
     private VertexInvertedIndex vertexInvertedIndex;
     private VertexGridIndex gridIndex;
@@ -90,9 +92,9 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         logger.debug("k: {}", k);
 
         PriorityQueue<Pair> topKHeap = new PriorityQueue<>(Comparator.comparingDouble(p -> p.score));
-        double bestKthSoFar = - Double.MAX_VALUE, overallUnseenUpperBound;
+        double bestKthSoFar, overallUnseenUpperBound;
         double[] unseenUpperBounds = new double[pointQuery.size()];
-        int round = 0;
+        int round = INITIAL_ROUND_FOR_DTW;
         Set<String> visitTrajectorySet = new HashSet<>();
 
 
@@ -115,11 +117,13 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 unseenUpperBounds[i] = upperBound;
                 overallUnseenUpperBound += upperBound;
 
-
                 //findMoreVertices the nearest pair between a trajectory and query queryVertex
                 //trajectory hash, queryVertex hash vertices
                 Set<Integer> vertices = new HashSet<>();
-                gridIndex.incrementallyFind(queryVertex, round, vertices);
+                if (round == INITIAL_ROUND_FOR_DTW) {
+                    gridIndex.incrementallyFind(queryVertex, round, vertices, true);
+                }else
+                    gridIndex.incrementallyFind(queryVertex, round, vertices, false);
                 for (Integer vertexId : vertices){
                     Double score = - GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
                     List<String> l = vertexInvertedIndex.getKeys(vertexId);
@@ -166,15 +170,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
             //calculate exact distance for each candidate
             int j = 0;
             while (!rankedCandidates.isEmpty()) {
-                if (++j % 5000 == 0) {
-                    logger.info("has processed trajectories: {}, current kth real score: {}, unseen trajectory upper bound: {}", j, bestKthSoFar, overallUnseenUpperBound);
-//                    Iterator<Pair> iter = topKHeap.iterator();
-//                    List<Pair> l = new ArrayList<>(topKHeap.size());
-//                    while(iter.hasNext()){
-//                        l.add(iter.next());
-//                    }
-//                    logger.debug("current top k: {}", l);
-                }
 
                 Map.Entry<String, Double> entry1 = rankedCandidates.poll();
                 String curTrajId = entry1.getKey();
@@ -203,6 +198,11 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
                     bestKthSoFar = topKHeap.peek().score;
 
+                    if (++j % 1000 == 0 || bestKthSoFar > curUpperBound)
+                        logger.info("have processed {} trajectories, current {}th trajectory upper bound: {}, " +
+                                        "top kth trajectory real score: {}, current unseen trajectory upper bound: {}",
+                                j + 1, j, curUpperBound, bestKthSoFar, overallUnseenUpperBound);
+
                     if (bestKthSoFar > overallUnseenUpperBound)
                         check = 1;
 
@@ -210,8 +210,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                         break;
                 }
             }
-
-            logger.info("round: {}, kth score: {}, unseen bound: {}", round, bestKthSoFar, overallUnseenUpperBound);
 
             if (round == 7) {
                 logger.error("round = 7, too much rounds");
@@ -256,7 +254,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 //findMoreVertices the nearest pair between a trajectory and query queryVertex
                 //trajectory hash, queryVertex hash vertices
                 Set<Integer> vertices = new HashSet<>();
-                gridIndex.incrementallyFind(queryVertex, round, vertices);
+                gridIndex.incrementallyFind(queryVertex, round, vertices, false);
                 for (Integer vertexId : vertices){
                     Double score = -GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
                     List<String> l = vertexInvertedIndex.getKeys(vertexId);
