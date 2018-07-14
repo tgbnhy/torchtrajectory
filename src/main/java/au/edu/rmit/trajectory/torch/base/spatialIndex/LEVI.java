@@ -26,6 +26,7 @@ import static au.edu.rmit.trajectory.torch.queryEngine.similarity.SimilarityFunc
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
     private static final int INITIAL_ROUND_FOR_DTW = 3;
+    private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
     private static Logger logger = LoggerFactory.getLogger(LEVI.class);
     private VertexInvertedIndex vertexInvertedIndex;
@@ -109,7 +110,9 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
             Map<String, Map<TrajEntry, Double>> trajUpperBoundForDTW = new HashMap<>();
 
             //findMoreVertices candiates incrementally and calculate their lower bound
-            for (int i = 0; i < pointQuery.size() - 1; i++) {
+            logger.info("finding and computing bound for candidate trajectories...");
+            int querySize = pointQuery.size();
+            for (int i = 0; i < querySize; i++) {
 
                 TrajEntry queryVertex = pointQuery.get(i);
 
@@ -141,7 +144,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 }
             }
 
-            int querySize = pointQuery.size();
             for (Map.Entry<String, Map<TrajEntry, Double>> entry: trajUpperBoundForDTW.entrySet()) {
                 String trajId = entry.getKey();
                 Map<TrajEntry, Double> map = entry.getValue();
@@ -198,7 +200,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
                     bestKthSoFar = topKHeap.peek().score;
 
-                    if (++j % 1000 == 0 || bestKthSoFar > curUpperBound)
+                    if (++j % 1500 == 0 || bestKthSoFar > curUpperBound)
                         logger.info("have processed {} trajectories, current {}th trajectory upper bound: {}, " +
                                         "top kth trajectory real score: {}, current unseen trajectory upper bound: {}",
                                 j + 1, j, curUpperBound, bestKthSoFar, overallUnseenUpperBound);
@@ -232,7 +234,9 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
         PriorityQueue<Pair> topKHeap = new PriorityQueue<>(Comparator.comparingDouble(p -> p.score));
         double bestKthSoFar = - Double.MAX_VALUE, overallUnseenUpperBound;
-        int round = 0;
+        double[] unseenUpperBounds = new double[pointQuery.size()];
+
+        int round = INITIAL_ROUND_FOR_H_OR_F;
         Set<String> visitTrajectorySet = new HashSet<>();
 
 
@@ -244,31 +248,55 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
             //each query point match with the nearest point of a trajectory,
             // and the lower bound is the maximum distance between a query and existing points of a trajectory
             Map<String, Double> trajUpperBound = new HashMap<>();
+            Map<String, Map<TrajEntry, Double>> trajUpperBoundDetailed = new HashMap<>();
 
             //findMoreVertices candiates incrementally and calculate their lower bound
-            for (int i = 0; i < pointQuery.size() - 1; i++) {
+            logger.info("finding and computing bound for candidate trajectories...");
+            int querySize = pointQuery.size();
+            for (int i = 0; i < querySize; i++) {
 
                 TrajEntry queryVertex = pointQuery.get(i);
+
                 double upperBound = gridIndex.findBound(queryVertex, round);
+                unseenUpperBounds[i] = upperBound;
+                overallUnseenUpperBound = Math.min(upperBound, overallUnseenUpperBound);
 
                 //findMoreVertices the nearest pair between a trajectory and query queryVertex
                 //trajectory hash, queryVertex hash vertices
                 Set<Integer> vertices = new HashSet<>();
-                gridIndex.incrementallyFind(queryVertex, round, vertices, false);
-                for (Integer vertexId : vertices){
+
+                if (round == INITIAL_ROUND_FOR_H_OR_F) gridIndex.incrementallyFind(queryVertex, round, vertices, true);
+                else gridIndex.incrementallyFind(queryVertex, round, vertices, false);
+
+                for (Integer vertexId : vertices) {
                     Double score = -GeoUtil.distance(idVertexLookup.get(vertexId), queryVertex);
                     List<String> l = vertexInvertedIndex.getKeys(vertexId);
                     for (String trajId : l) {
-
-                        if (trajUpperBound.get(trajId) == null) {
-                            trajUpperBound.put(trajId, score);
+                        Map<TrajEntry, Double> map = trajUpperBoundDetailed.get(trajId);
+                        if (map != null) {
+                            if (!map.containsKey(queryVertex) ||
+                                    score > map.get(queryVertex))
+                                map.put(queryVertex, score);
                         } else {
-                            double pre = trajUpperBound.get(trajId);
-                            trajUpperBound.put(trajId, Math.max(score, pre));
+                            map = trajUpperBoundDetailed.computeIfAbsent(trajId, key -> new HashMap<>());
+                            map.put(queryVertex, score);
                         }
                     }
                 }
-                if (overallUnseenUpperBound > upperBound) overallUnseenUpperBound = upperBound;
+            }
+
+            for (Map.Entry<String, Map<TrajEntry, Double>> entry: trajUpperBoundDetailed.entrySet()) {
+                String trajId = entry.getKey();
+                Map<TrajEntry, Double> map = entry.getValue();
+                double score = Double.MAX_VALUE;
+                for (int i = 0; i < querySize; i++){
+                    TrajEntry cur = pointQuery.get(i);
+                    if (map.containsKey(cur))
+                        score = Math.min(map.get(cur), score);
+                    else
+                        score = Math.min(unseenUpperBounds[i], score);
+                }
+                trajUpperBound.put(trajId, score);
             }
 
             //rank trajectories by their upper bound
@@ -285,15 +313,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
             //calculate exact distance for each candidate
             int j = 0;
             while (!rankedCandidates.isEmpty()) {
-                if (++j % 5000 == 0) {
-                    logger.info("has processed trajectories: {}, current kth real score: {}, unseen trajectory upper bound: {}", j, bestKthSoFar, overallUnseenUpperBound);
-//                    Iterator<Pair> iter = topKHeap.iterator();
-//                    List<Pair> l = new ArrayList<>(topKHeap.size());
-//                    while(iter.hasNext()){
-//                        l.add(iter.next());
-//                    }
-//                    logger.debug("current top k: {}", l);
-                }
 
                 Map.Entry<String, Double> entry1 = rankedCandidates.poll();
                 String curTrajId = entry1.getKey();
@@ -328,6 +347,11 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                     }
 
                     bestKthSoFar = topKHeap.peek().score;
+
+                    if (++j % 1500 == 0 || bestKthSoFar > curUpperBound)
+                        logger.info("have processed {} trajectories, current {}th trajectory upper bound: {}, " +
+                                        "top kth trajectory real score: {}, current unseen trajectory upper bound: {}",
+                                j + 1, j, curUpperBound, bestKthSoFar, overallUnseenUpperBound);
 
                     if (bestKthSoFar > overallUnseenUpperBound)
                         check = 1;
