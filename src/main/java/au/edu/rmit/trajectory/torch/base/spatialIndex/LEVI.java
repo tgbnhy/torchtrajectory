@@ -21,11 +21,11 @@ import static au.edu.rmit.trajectory.torch.queryEngine.similarity.SimilarityFunc
 /**
  * ﻿LEVI stands for Lightweight edge & vertex vertexInvertedIndex.<p>
  * LEVI basically has two parts: grid vertexInvertedIndex and inverted vertexInvertedIndex on vertex.
- * This two level indexes structure supports range query as well as top k query over vertex.
+ * This two level indexes structure supports range query as well as top k query over vertices.
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
-    private static final int INITIAL_ROUND_FOR_DTW = 3;
+    private static final int INITIAL_ROUND_FOR_DTW = 4;
     private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
     private static Logger logger = LoggerFactory.getLogger(LEVI.class);
