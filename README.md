@@ -44,12 +44,13 @@ After setup, call start() method to convert raw trajectories to mapped trajector
 ```
 trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
- 1. the format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
- 2. it is your part to take care of data cleansing, as high length trajectory (over 200) could slow down mapping process rapidly, and low quality trajectory leads to low projection rate. 
+ 1. The format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
+ 2. It is your part to take care of data cleansing, as low quality trajectories leads to low projection rate, and high length trajectories (over 200) could affect query time.
 
 
 ### 2. query
-After map-matching, we could perform trajectory retrieval over mapped trajectories.T-Torch provides high level class *Engine* containing simple APIs for query processing. To get the engine ready, 
+After map-matching, we could perform trajectory retrieval over mapped trajectories. T-Torch provides high level class *Engine* containing simple APIs for query processing. 
+To get the engine ready( loading or building necessary indexes to support different types of query), 
 only a line of code is required: 
 ```
 Engine engine = Engine.getBuilder().build();
@@ -59,31 +60,31 @@ Engine engine = Engine.getBuilder().build();
 ```
    QueryResult ret = engine.findInRange(50, 50, 50);
 ```
-Range query is used to retrieve trajectories passing through a specified rectangle area.To define a window area, three args are needed. 
-Latitude and longitude pin the middle point, with radius( in meters) together do the work.
+The range query is used to retrieve trajectories passing through a specified rectangular area. To define the rectangular area, three arguments are needed. 
+Latitude and longitude defines the middle point, with radius( in meters) together representing the rectangular area.
 
 #### 2) Path query
 ```
    QueryResult ret = engine.findOnPath(query);
 ```
-Path<sup>[2]</sup> query is used to retrieve trajectories having at least one common edge with the query.
+The Path query<sup>[2]</sup> is used to retrieve trajectories having at least one common edge with the query.
 The argument it takes is a "path" represented by a list of *Coordinate*.
 
 #### 3) Strict path query
 ```
    QueryResult ret = engine.findOnStrictPath(query)
 ```
-Strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passing through the entire query from beginning to end.
+The strict path query<sup>[2]</sup> is used to retrieve trajectories strictly passing through the entire query from beginning to end.
 The argument it takes is a "path" represented by a list of *Coordinate*.
 
 #### 4) Top-k trajectory similarity search
 ```
    QueryResult ret = engine.findTopK(query, 3);
 ```
-A top-k trajectory similarity search query returns
-the k highest ranked trajectories based on the specified similarity metric.
+The top-k query returns
+k highest ranked trajectories based on the specified similarity measure.
 First argument is a "query trajectory" represented by a list of *Coordinate*, 
-the second is number of top results to return.
+and the second is number of top results to return.
 
 ### 3. QueryResult
 ```
@@ -93,8 +94,8 @@ String mapVformat = ret.getMapVFormat();
 }else{ //do something}
 ```
 
-After query is performed, object of type QueryResult is returned uniformly. 
-It contains trajectories that meet the requirement. Also, you can project these on MapV<sup>[3]</sup> for visualization purpose.
+After the query is processed, object of type QueryResult is returned uniformly. 
+It contains the query trajectory in raw form, the map-matched query trajectory, and all trajectories being retrieved. Also, you can project these on MapV<sup>[3]</sup> for visualization purpose.
 
 
 
