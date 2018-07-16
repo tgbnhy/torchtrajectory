@@ -26,8 +26,10 @@ public class Test {
         //System.out.println(ret.getMapVFormat());
         ret.getMapVFormat();
 
+//        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
+//        addLenToEdgeLookuptable();
     }
 
     private static List<List<TrajEntry>> read() throws IOException {

@@ -146,22 +146,22 @@ public class GeneralTest {
     @Test
     public void test3(){
         GraphHopper hopper = new GraphHopperOSM();
-        hopper.setDataReaderFile("map-data/Beijing.osm.pbf");
+        hopper.setDataReaderFile("Resources/Porto.osm.pbf");
         hopper.setGraphHopperLocation("./TorchMeta/HopperMeta_car");
         CarFlagEncoder encoder = new CarFlagEncoder();
         hopper.setEncodingManager(new EncodingManager(encoder));
         hopper.getCHFactoryDecorator().setEnabled(false);
         hopper.importOrLoad();
 
-        System.out.println("total number of tower nodes: "+hopper.getGraphHopperStorage().getNodes());
-
-        EdgeIterator iter = hopper.getGraphHopperStorage().getAllEdges();
-        int total_pillar = 0;
-        while (iter.next()){
-            total_pillar += iter.fetchWayGeometry(0).size();
-        }
-
-        System.out.println("total number of pillar nodes: "+total_pillar);
+//        System.out.println("total number of tower nodes: "+hopper.getGraphHopperStorage().getNodes());
+//
+//        EdgeIterator iter = hopper.getGraphHopperStorage().getAllEdges();
+//        int total_pillar = 0;
+//        while (iter.next()){
+//            total_pillar += iter.fetchWayGeometry(0).size();
+//        }
+//
+//        System.out.println("total number of pillar nodes: "+total_pillar);
     }
 
 
