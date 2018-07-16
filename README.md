@@ -48,7 +48,7 @@ trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
  2. It is your part to take care of data cleansing, as low quality trajectories leads to low projection rate, and high length trajectories (over 200) could affect query time.
 
 
-### 2. query
+### 2. Query
 After map-matching, we could perform trajectory retrieval over mapped trajectories. T-Torch provides high level class *Engine* containing simple APIs for query processing. 
 To get the engine ready( loading or building necessary indexes to support different types of query), 
 only a line of code is required: 
