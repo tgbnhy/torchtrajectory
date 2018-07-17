@@ -21,7 +21,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="SizeOf" level="project" />
     <orderEntry type="library" name="Maven: me.lemire.integercompression:JavaFastPFOR:0.1.11" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.github.davidmoten:geo:0.7.1" level="project" />

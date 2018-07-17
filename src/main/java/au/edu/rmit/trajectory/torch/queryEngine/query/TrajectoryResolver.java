@@ -30,9 +30,7 @@ class TrajectoryResolver {
         rawEdgeLookup = new HashMap<>();
         loadEdgeRepresentedTrajectories();
         loadRawEdgeLookupTable();
-
-        printStats();
-    }
+        }
 
     QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
 
@@ -137,14 +135,6 @@ class TrajectoryResolver {
         }catch (IOException e){
             throw new RuntimeException("some critical data is missing, system on exit...");
         }
-    }
-
-    /**
-     * for purpose of memory inspection
-     */
-    private void printStats() {
-        MemoryUsage.printObjectMemUsage("trajectory edge representation", trajectoryPool);
-        MemoryUsage.printObjectMemUsage("raw-edge-lookup-table", rawEdgeLookup);
     }
 
 }

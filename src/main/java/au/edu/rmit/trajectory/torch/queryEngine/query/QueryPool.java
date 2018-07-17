@@ -81,7 +81,6 @@ public class QueryPool extends HashMap<String, Query> {
 
             TorGraph graph = TorGraph.getInstance().
                     initGH(Instance.fileSetting.hopperURI, osmPath, vehicleType).buildFromDiskData();
-            MemoryUsage.printObjectMemUsage("graph", graph);
 
             idVertexLookup = graph.idVertexLookup;
             mapper = Mappers.getMapper(Torch.Algorithms.HMM, graph);
@@ -163,8 +162,6 @@ public class QueryPool extends HashMap<String, Query> {
         }
 
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
-
-        MemoryUsage.printObjectMemUsage("vertexGridIndex", vertexGridIndex);
     }
 
     private Map<String, String[]> loadVertexRepresentedTrajectories() {
@@ -184,8 +181,6 @@ public class QueryPool extends HashMap<String, Query> {
                 trajId = tokens[0];
                 trajectoryPool.put(trajId, tokens[1].split(","));
             }
-
-            MemoryUsage.printObjectMemUsage("trajectory vertex representation", trajectoryPool);
 
         }catch (IOException e){
             logger.error("some critical data is missing, system on exit...");
