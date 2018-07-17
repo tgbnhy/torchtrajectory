@@ -172,11 +172,26 @@ public class Engine {
             return this;
         }
 
+        /**
+         * Specify the path to T-Torch data.
+         * This is only required if you manually move the T-Torch folder away from its origin position<p>
+         *
+         * For instance, if the project structure looks like this:
+         * - project_name
+         *   - foo
+         *     - bar
+         *       - T-Torch
+         * Just pass "foo/bar" as the parameter.
+         *
+         * @param baseURI
+         * @return
+         */
         public Builder baseURI(String baseURI){
             if (baseURI.charAt(baseURI.length() - 1) != '/')
                 baseURI += "/";
 
-            Instance.fileSetting.baseURI = baseURI;
+            Instance.fileSetting.update(baseURI);
+
             return this;
         }
 
