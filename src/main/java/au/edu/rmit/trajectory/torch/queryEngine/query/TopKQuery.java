@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
 import au.edu.rmit.trajectory.torch.base.TopKQueryIndex;
+import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.queryEngine.model.LightEdge;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ class TopKQuery extends QueryImpl{
 
         logger.info("total qualified trajectories: {}", trajIds.size());
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
-        return resolver.resolve(trajIds, raw, mapped);
+        return resolver.resolve(Torch.QueryType.TopK, trajIds, raw, mapped);
     }
 
 
@@ -48,6 +49,6 @@ class TopKQuery extends QueryImpl{
 
         List<String> trajIds = index.findTopK(k, mapped, null);
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
-        return resolver.resolve(trajIds, raw, mapped);
+        return resolver.resolve(Torch.QueryType.TopK, trajIds, raw, mapped);
     }
 }

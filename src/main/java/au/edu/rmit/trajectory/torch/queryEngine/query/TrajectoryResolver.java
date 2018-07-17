@@ -33,15 +33,15 @@ class TrajectoryResolver {
         printStats();
     }
 
-    QueryResult resolve (List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
+    QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
 
         List<Trajectory<TrajEntry>> retSet = resolveRet(trajIds);
-        List<TrajEntry> mappedQuery = null;
+        List<TrajEntry> mappedQuery = _mappedQuery;
 
-        if (_mappedQuery != null)
+        if (!queryType.equals(Torch.QueryType.RangeQ))
             mappedQuery = resolveMappedQuery(_mappedQuery);
 
-        return new QueryResult(retSet, rawQuery, mappedQuery);
+        return new QueryResult(queryType, retSet, rawQuery, mappedQuery);
     }
 
     private List<TrajEntry> resolveMappedQuery(Trajectory<TrajEntry> mappedQuery) {

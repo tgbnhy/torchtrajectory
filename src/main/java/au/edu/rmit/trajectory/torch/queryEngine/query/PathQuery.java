@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
 import au.edu.rmit.trajectory.torch.base.PathQueryIndex;
+import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
 import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
@@ -32,6 +33,6 @@ class PathQuery extends QueryImpl {
 
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-        return resolver.resolve(trajIds, raw, mapped);
+        return resolver.resolve(Torch.QueryType.PathQ, trajIds, raw, mapped);
     }
 }

@@ -11,10 +11,7 @@ import au.edu.rmit.trajectory.torch.queryEngine.query.QueryPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * Engine class contains high level APIs to query on trajectory data-set
@@ -33,7 +30,7 @@ public class Engine {
      * The subroutine will first map convert trajectory to map-matched trajectory,
      * which the similarity search algorithm performed on. If it can not be converted,
      * {@code QueryResult} indicates error with be returned.
-     * @see QueryResult#succeed
+     * @see QueryResult#mappingSucceed
      *
      * @param raw A list of points representing the query.
      *            T-Torch provides your simple class {@code Coordinate}
@@ -47,7 +44,7 @@ public class Engine {
 
         Query topK = pool.get(Torch.QueryType.TopK);
         if (!topK.prepare(raw))
-            return new QueryResult(false);
+            return QueryResult.genFailedRet(Torch.QueryType.TopK, raw);
         return topK.execute(k);
     }
 
@@ -67,7 +64,7 @@ public class Engine {
     public QueryResult findOnPath(List<? extends TrajEntry> raw){
         Query pathQ = pool.get(Torch.QueryType.PathQ);
         if(!pathQ.prepare(raw))
-            return new QueryResult(false);
+            return QueryResult.genFailedRet(Torch.QueryType.PathQ, raw);
         return pathQ.execute(false);
     }
 
@@ -87,7 +84,7 @@ public class Engine {
     public QueryResult findOnStrictPath(List<? extends TrajEntry> raw){
         Query strictPathQ = pool.get(Torch.QueryType.PathQ);
         if (!strictPathQ.prepare(raw))
-            return new QueryResult(false);
+            return QueryResult.genFailedRet(Torch.QueryType.PathQ, raw);
         return strictPathQ.execute(true);
     }
 

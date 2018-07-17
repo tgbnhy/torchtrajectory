@@ -90,7 +90,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     }
 
     private <T extends TrajEntry> List<String> topKwithDTW(int k, List<T> pointQuery) {
-        logger.debug("k: {}", k);
 
         PriorityQueue<Pair> topKHeap = new PriorityQueue<>(Comparator.comparingDouble(p -> p.score));
         double bestKthSoFar, overallUnseenUpperBound;

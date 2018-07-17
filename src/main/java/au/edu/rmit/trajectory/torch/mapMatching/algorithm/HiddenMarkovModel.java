@@ -39,7 +39,7 @@ public class HiddenMarkovModel implements Mapper {
 
     @Override
     public Trajectory<TowerVertex> match(Trajectory<? extends TrajEntry> in) {
-        logger.debug("begin projecting query points onto graph");
+        logger.info("begin projecting query points onto graph");
 
         Trajectory<TowerVertex> mappedTrajectory = new Trajectory<>();
         Graph hopperGraph = torGraph.getGH().getGraphHopperStorage();

@@ -1,9 +1,12 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
+import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.WindowQueryIndex;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
+import au.edu.rmit.trajectory.torch.base.model.Trajectory;
 import au.edu.rmit.trajectory.torch.queryEngine.model.SearchWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class WindowQuery extends QueryImpl {
@@ -24,7 +27,7 @@ class WindowQuery extends QueryImpl {
 
         SearchWindow window = (SearchWindow) windowRange;
         List<String> trajIds = index.findInRange(window);
-        return resolver.resolve(trajIds, null, null);
+        return resolver.resolve(Torch.QueryType.RangeQ, trajIds, null, null);
     }
 
     @Override
