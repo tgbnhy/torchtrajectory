@@ -34,7 +34,7 @@ public class Test {
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("abc/T-Torch/query.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("T-Torch/query.txt"));
         List<List<TrajEntry>> list = new ArrayList<>(3);
 
         String line;
