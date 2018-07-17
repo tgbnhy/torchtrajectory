@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.model.Coordinate;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
@@ -170,6 +171,15 @@ public class Engine {
             properties.queryUsed.add(queryType);
             return this;
         }
+
+        public Builder baseURI(String baseURI){
+            if (baseURI.charAt(baseURI.length() - 1) != '/')
+                baseURI += "/";
+
+            Instance.fileSetting.baseURI = baseURI;
+            return this;
+        }
+
 
         /**
          * Method to instantiate Engine object.

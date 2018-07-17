@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorDijkstra;
@@ -60,14 +61,14 @@ public class MapMatching {
         }
 
         //check output directory
-        File dir = new File(Torch.URI.TORCH_META_PREFIX);
+        File dir = new File(Instance.fileSetting.TorchPrefixURI);
         if (!dir.exists()) {
             if (!dir.mkdirs()){
-                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", Torch.URI.TORCH_META_PREFIX);
+                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", Instance.fileSetting.TorchPrefixURI);
                 throw new RuntimeException();
             }
         }else if (!dir.isDirectory()){
-            logger.error("{} already exists and it is not a directory", Torch.URI.TORCH_META_PREFIX);
+            logger.error("{} already exists and it is not a directory", Instance.fileSetting.TorchPrefixURI);
             throw new RuntimeException();
         }
     }
@@ -88,7 +89,7 @@ public class MapMatching {
         //readBatch and build graph
         if (graph == null) {
             graph = TorGraph.getInstance().
-                    initGH(Torch.URI.HOPPER_META, props.osmPath, props.vehicleType);
+                    initGH(Instance.fileSetting.hopperURI, props.osmPath, props.vehicleType);
             MemoryUsage.printCurrentMemUsage("[after init graph hopper]");
             graph.build(props);
             MemoryUsage.printCurrentMemUsage("[after build tor graph]");

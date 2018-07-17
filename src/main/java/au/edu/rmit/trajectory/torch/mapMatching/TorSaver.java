@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
@@ -89,8 +90,8 @@ public class TorSaver {
             saveMeta();
             saveIdVertexLookupTable();
             saveEdges();
-            edgeInvertedList.saveCompressed(Torch.URI.EDGE_INVERTED_INDEX);
-            vertexInvertedIndex.saveCompressed(Torch.URI.VERTEX_INVERTED_INDEX);
+            edgeInvertedList.saveCompressed(Instance.fileSetting.EDGE_INVERTED_INDEX);
+            vertexInvertedIndex.saveCompressed(Instance.fileSetting.VERTEX_INVERTED_INDEX);
 
 
             //trajectoryMap.cleanUp();
@@ -98,8 +99,8 @@ public class TorSaver {
     }
 
     private void saveMeta() {
-        ensureExistence(Torch.URI.META);
-        try(FileWriter fw = new FileWriter(Torch.URI.META);
+        ensureExistence(Instance.fileSetting.metaURI);
+        try(FileWriter fw = new FileWriter(Instance.fileSetting.metaURI);
             BufferedWriter writer = new BufferedWriter(fw))
         {
             writer.write(graph.vehicleType);
@@ -119,9 +120,9 @@ public class TorSaver {
 
         NodeAccess nodeAccess = hopperGraph.getNodeAccess();
 
-        ensureExistence(Torch.URI.ID_VERTEX_LOOKUP);
+        ensureExistence(Instance.fileSetting.ID_VERTEX_LOOKUP);
 
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.ID_VERTEX_LOOKUP, false))){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.ID_VERTEX_LOOKUP, false))){
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < numNodes; i++){
                 builder.append(i).append(";")
@@ -146,10 +147,10 @@ public class TorSaver {
         List<TorEdge> edges = new ArrayList<>(allEdges);
         edges.sort(Comparator.comparing(e -> e.id));
 
-        ensureExistence(Torch.URI.ID_EDGE_RAW);
+        ensureExistence(Instance.fileSetting.ID_EDGE_RAW);
 
-        try(BufferedWriter rawWriter = new BufferedWriter(new FileWriter(Torch.URI.ID_EDGE_RAW));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.ID_EDGE_LOOKUP))) {
+        try(BufferedWriter rawWriter = new BufferedWriter(new FileWriter(Instance.fileSetting.ID_EDGE_RAW));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.ID_EDGE_LOOKUP))) {
 
             StringBuilder builder = new StringBuilder();
             Set<Integer> visited = new HashSet<>();
@@ -182,14 +183,14 @@ public class TorSaver {
 
     private void saveMappedTrajectories(List<Trajectory<TowerVertex>> mappedTrajectories){
 
-        if (!append) ensureExistence(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
+        if (!append) ensureExistence(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH);
 
         //invertedIndex trajectories
         vertexInvertedIndex.indexAll(mappedTrajectories);
         edgeInvertedList.indexAll(mappedTrajectories);
 
         //write vertex id representation of trajectories.
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH,append))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH,append))) {
 
             StringBuilder trajBuilder = new StringBuilder();
             String hash;
@@ -222,7 +223,7 @@ public class TorSaver {
         }
 
         //write edge id representation of trajectories.
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH, append))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH, append))) {
 
             StringBuilder trajBuilder = new StringBuilder();
             Iterator<TorEdge> iterator;

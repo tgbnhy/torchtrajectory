@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.model.Coordinate;
@@ -94,7 +95,7 @@ class TrajectoryResolver {
 
         logger.info("load edge represented trajectories");
         //read meta properties
-        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
+        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
             BufferedReader reader = new BufferedReader(fr)){
 
             String line;
@@ -117,7 +118,7 @@ class TrajectoryResolver {
 
         logger.info("load raw edge lookup table");
 
-        try(FileReader fr = new FileReader(Torch.URI.ID_EDGE_RAW);
+        try(FileReader fr = new FileReader(Instance.fileSetting.ID_EDGE_RAW);
             BufferedReader reader = new BufferedReader(fr)){
             String line;
             String[] tokens;

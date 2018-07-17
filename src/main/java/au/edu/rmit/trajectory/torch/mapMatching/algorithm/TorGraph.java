@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.mapMatching.algorithm;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.helper.GeoUtil;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.Torch;
@@ -154,7 +155,7 @@ public class TorGraph {
         idVertexLookup = new HashMap<>();
 
         //read id vertex lookup table
-        try(FileReader fr = new FileReader(Torch.URI.ID_VERTEX_LOOKUP);
+        try(FileReader fr = new FileReader(Instance.fileSetting.ID_VERTEX_LOOKUP);
             BufferedReader reader = new BufferedReader(fr)) {
 
             String line;
@@ -178,7 +179,7 @@ public class TorGraph {
         }
 
         //read id edge lookup table
-        try(FileReader fr = new FileReader(Torch.URI.ID_EDGE_LOOKUP);
+        try(FileReader fr = new FileReader(Instance.fileSetting.ID_EDGE_LOOKUP);
             BufferedReader reader = new BufferedReader(fr)){
 
             String line;

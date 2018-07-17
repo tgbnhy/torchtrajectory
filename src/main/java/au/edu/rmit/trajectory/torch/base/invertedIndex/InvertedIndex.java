@@ -1,6 +1,7 @@
 package au.edu.rmit.trajectory.torch.base.invertedIndex;
 
 import au.edu.rmit.trajectory.torch.base.Index;
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.model.TrajEntry;
@@ -169,9 +170,9 @@ public abstract class InvertedIndex implements Index {
     public boolean build(String path) {
 
         logger.info("build up inverted index");
-        if (!path.equals(Torch.URI.EDGE_INVERTED_INDEX) &&
-                !path.equals(Torch.URI.VERTEX_INVERTED_INDEX))
-            throw new IllegalStateException("base path got to be "+Torch.URI.EDGE_INVERTED_INDEX+" or "+Torch.URI.VERTEX_INVERTED_INDEX);
+        if (!path.equals(Instance.fileSetting.EDGE_INVERTED_INDEX) &&
+                !path.equals(Instance.fileSetting.VERTEX_INVERTED_INDEX))
+            throw new IllegalStateException("base path got to be "+Instance.fileSetting.EDGE_INVERTED_INDEX+" or "+Instance.fileSetting.VERTEX_INVERTED_INDEX);
 
         try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.compressed"));
              BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.compressed"));

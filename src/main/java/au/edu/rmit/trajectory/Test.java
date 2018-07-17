@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
@@ -67,8 +68,8 @@ public class Test {
     }
 
     private static void addLenToEdgeLookuptable() throws IOException{
-        BufferedReader edgeReader = new BufferedReader(new FileReader(Torch.URI.ID_EDGE_LOOKUP));
-        BufferedReader rawReader = new BufferedReader(new FileReader(Torch.URI.ID_EDGE_RAW));
+        BufferedReader edgeReader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_LOOKUP));
+        BufferedReader rawReader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
 
         List<String> edges = new ArrayList<>(10000);
         String line;
@@ -83,7 +84,7 @@ public class Test {
         edgeReader.close();
         rawReader.close();
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.ID_EDGE_LOOKUP));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.ID_EDGE_LOOKUP));
         for (String edge : edges){
 
             writer.write(edge);
@@ -96,8 +97,8 @@ public class Test {
 
     private static void getAfew() throws IOException {
 
-        BufferedReader edgeReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
-        BufferedReader vertexReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
+        BufferedReader edgeReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
+        BufferedReader vertexReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
 
         List<String> edgeList = new ArrayList<>(200001);
         List<String> vertexList = new ArrayList<>(200001);
@@ -112,7 +113,7 @@ public class Test {
             }
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH+"_"+200000+".txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+"_"+200000+".txt"));
         for (String line : vertexList){
             writer.write(line);
             writer.newLine();
@@ -120,7 +121,7 @@ public class Test {
         writer.flush();
         writer.close();
 
-        writer = new BufferedWriter(new FileWriter(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH+"_"+200000+".txt"));
+        writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH+"_"+200000+".txt"));
         for (String line:edgeList){
             writer.write(line);
             writer.newLine();
@@ -131,7 +132,7 @@ public class Test {
 
     private static void genEdgeInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
         EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
 
         String line;
@@ -162,12 +163,12 @@ public class Test {
         }
         MemoryUsage.printCurrentMemUsage("");
 
-        edgeInvertedIndex.saveCompressed(Torch.URI.EDGE_INVERTED_INDEX);
+        edgeInvertedIndex.saveCompressed(Instance.fileSetting.EDGE_INVERTED_INDEX);
     }
 
     private static void genVertexInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000));
         VertexInvertedIndex vertexInvertedIndex= new VertexInvertedIndex();
 
         String line;
@@ -198,6 +199,6 @@ public class Test {
         }
         MemoryUsage.printCurrentMemUsage("");
 
-        vertexInvertedIndex.saveCompressed(Torch.URI.VERTEX_INVERTED_INDEX);
+        vertexInvertedIndex.saveCompressed(Instance.fileSetting.VERTEX_INVERTED_INDEX);
     }
 }

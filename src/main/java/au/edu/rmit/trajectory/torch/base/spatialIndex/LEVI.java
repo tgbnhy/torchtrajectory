@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.base.spatialIndex;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.WindowQueryIndex;
 import au.edu.rmit.trajectory.torch.base.TopKQueryIndex;
@@ -50,8 +51,8 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     @Override
     public boolean build(String Null) {
         
-        if (!vertexInvertedIndex.loaded) vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX);
-        if (!gridIndex.loaded) gridIndex.build(Torch.URI.GRID_INDEX);
+        if (!vertexInvertedIndex.loaded) vertexInvertedIndex.build(Instance.fileSetting.VERTEX_INVERTED_INDEX);
+        if (!gridIndex.loaded) gridIndex.build(Instance.fileSetting.GRID_INDEX);
         
         return vertexInvertedIndex.loaded && gridIndex.loaded;
     }

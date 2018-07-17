@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.base.spatialIndex;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.WindowQueryIndex;
 import au.edu.rmit.trajectory.torch.base.TopKQueryIndex;
 import au.edu.rmit.trajectory.torch.base.Torch;
@@ -199,7 +200,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 
         logger.info("build rtree");
         Serializer<String, Geometry> serializer = Serializers.flatBuffers().javaIo();
-        File rtree = new File(Torch.URI.RTREE_INDEX);
+        File rtree = new File(Instance.fileSetting.RTREE_INDEX);
 
         try (InputStream is = new FileInputStream(rtree)) {
             this.rTree = serializer.read(is, rtree.length(), InternalStructure.DEFAULT);
@@ -251,7 +252,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
     public void Save(){
         logger.info("start to serialize dataStructure file to disk");
 
-        File rtree = new File(Torch.URI.RTREE_INDEX);
+        File rtree = new File(Instance.fileSetting.RTREE_INDEX);
         if (rtree.exists())
             rtree.delete();
 

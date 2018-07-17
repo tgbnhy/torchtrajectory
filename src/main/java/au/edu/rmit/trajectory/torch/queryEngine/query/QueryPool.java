@@ -1,5 +1,6 @@
 package au.edu.rmit.trajectory.torch.queryEngine.query;
 
+import au.edu.rmit.trajectory.torch.base.Instance;
 import au.edu.rmit.trajectory.torch.base.Torch;
 import au.edu.rmit.trajectory.torch.base.helper.MemoryUsage;
 import au.edu.rmit.trajectory.torch.base.invertedIndex.EdgeInvertedIndex;
@@ -73,13 +74,13 @@ public class QueryPool extends HashMap<String, Query> {
             return;
 
         //read meta properties
-        try(FileReader fr = new FileReader(Torch.URI.META);
+        try(FileReader fr = new FileReader(Instance.fileSetting.metaURI);
             BufferedReader reader = new BufferedReader(fr)){
             String vehicleType = reader.readLine();
             String osmPath = reader.readLine();
 
             TorGraph graph = TorGraph.getInstance().
-                    initGH(Torch.URI.HOPPER_META, osmPath, vehicleType).buildFromDiskData();
+                    initGH(Instance.fileSetting.hopperURI, osmPath, vehicleType).buildFromDiskData();
             MemoryUsage.printObjectMemUsage("graph", graph);
 
             idVertexLookup = graph.idVertexLookup;
@@ -120,7 +121,7 @@ public class QueryPool extends HashMap<String, Query> {
 
     private void initEdgeInvertedIndex() {
         if (!edgeInvertedIndex.loaded) {
-            if (!edgeInvertedIndex.build(Torch.URI.EDGE_INVERTED_INDEX))
+            if (!edgeInvertedIndex.build(Instance.fileSetting.EDGE_INVERTED_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             edgeInvertedIndex.loaded = true;
         }
@@ -135,13 +136,13 @@ public class QueryPool extends HashMap<String, Query> {
         VertexGridIndex vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
         Map<String, String[]> trajectoryPool = loadVertexRepresentedTrajectories();
 
-        if (!vertexInvertedIndex.build(Torch.URI.VERTEX_INVERTED_INDEX))
+        if (!vertexInvertedIndex.build(Instance.fileSetting.VERTEX_INVERTED_INDEX))
             throw new RuntimeException("some critical data is missing, system on exit...");
         vertexInvertedIndex.loaded = true;
 
 
         if (!vertexGridIndex.loaded){
-            if (!vertexGridIndex.build(Torch.URI.GRID_INDEX))
+            if (!vertexGridIndex.build(Instance.fileSetting.GRID_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             vertexGridIndex.loaded = true;
         }
@@ -171,7 +172,7 @@ public class QueryPool extends HashMap<String, Query> {
         Map<String, String[]> trajectoryPool = new HashMap<>();
 
         //read meta properties
-        try(FileReader fr = new FileReader(Torch.URI.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000);
+        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000);
             BufferedReader reader = new BufferedReader(fr)){
 
             String line;
