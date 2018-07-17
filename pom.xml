@@ -24,7 +24,7 @@
         <dependency>
             <groupId>me.lemire.integercompression</groupId>
             <artifactId>JavaFastPFOR</artifactId>
-            <version>[0.1,)</version>
+            <version>0.1.12</version>
         </dependency>
 
 
@@ -93,6 +93,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -100,6 +101,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
