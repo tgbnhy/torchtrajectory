@@ -4,19 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>rmit</groupId>
-    <artifactId>Torch</artifactId>
+    <groupId>au.edu.rmit.bdm</groupId>
+    <artifactId>TTorch</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Torch</name>
-    <url>http://maven.apache.org</url>
+    <name>TTorch</name>
+    <url></url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.11.RELEASE</spring.version>
-        <nd4j.version>0.9.1</nd4j.version>
-        <cglib.version>3.2.5</cglib.version>
     </properties>
 
     <dependencies>
@@ -88,7 +85,7 @@
 
     </dependencies>
     <build>
-        <finalName>Torch</finalName>
+        <finalName>TTorch</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,5 +1,6 @@
 out
-.DS_Store
+.*
+!/.gitignore
 local
 map-data
 T_set
