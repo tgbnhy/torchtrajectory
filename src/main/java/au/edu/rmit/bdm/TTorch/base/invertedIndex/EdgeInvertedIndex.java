@@ -60,7 +60,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
     @Override
     public List<String> findByStrictPath(List<LightEdge> edges) {
 
-        logger.info("start find trajectories has been on the strict path");
+        logger.info("start find trajectories on the strict path");
 
         //key is trajectory id, value is number of different query edges
         Map<String, Integer> map = new HashMap<>();
@@ -76,7 +76,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         List<String> ret = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue() > edges.size()) {
+            if (entry.getValue() >= edges.size()) {
                 ret.add(entry.getKey());
             }
         }

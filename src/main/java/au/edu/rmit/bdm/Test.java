@@ -30,10 +30,7 @@ public class Test {
 
         List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).build();
-        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.172717,-8.681304), new Coordinate(41.171306,-8.679867)));
-        //System.out.println(ret.getRetTrajMapVFormat());
-        System.out.println(ret.toJSON(1));
-
+        QueryResult ret = engine.findOnStrictPath(queries.get(0));
 
 //        getAfew();
 //        genEdgeInvertedIndex();
@@ -64,8 +61,8 @@ public class Test {
                 double lon = 0.;
 
                     latLng = trajTuples[i].split(",");
-                    lat = Double.parseDouble(latLng[1]);
-                    lon = Double.parseDouble(latLng[0]);
+                    lat = Double.parseDouble(latLng[0]);
+                    lon = Double.parseDouble(latLng[1]);
 
                 Coordinate node = new Coordinate(lat, lon);
 
