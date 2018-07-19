@@ -113,7 +113,7 @@ public class QueryResult {
      *         or null if the query type is RangeQuery
      */
     public String getRawQueryjMapVformat(){
-        if (queryType.equals(Torch.QueryType.RangeQ)) return null;
+        if (rawQuery == null) return null;
         return Formater.toJSON(rawQuery);
     }
 

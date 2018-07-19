@@ -18,11 +18,12 @@ class QueryRetJsonModel {
     QueryRetJsonModel(QueryResult queryResult){
         this.queryType = queryResult.queryType;
         this.mappingSucceed = queryResult.mappingSucceed;
-        this.raw = queryType.equals(Torch.QueryType.RangeQ) ? null : new TrajJsonModel(queryResult.rawQuery);
-        this.mapped = queryType.equals(Torch.QueryType.RangeQ) ? null : new TrajJsonModel(queryResult.mappedQuery);
+        this.raw = queryResult.rawQuery == null ? null : new TrajJsonModel(queryResult.rawQuery);
+        this.mapped = queryResult.mappedQuery == null ? null : new TrajJsonModel(queryResult.mappedQuery);
         this.retSize = queryResult.ret.size();
         this.ret = new ArrayList<>(queryResult.ret.size());
         ret.addAll(Formater.model(queryResult.ret));
+
     }
 
 }

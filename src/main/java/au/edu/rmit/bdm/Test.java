@@ -19,14 +19,13 @@ public class Test {
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
-        List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
-        QueryResult ret = engine.findTopK(queries.get(1), 3);
-        //System.out.println(ret.getRetTrajMapVFormat());
-        System.out.println(ret.getMappedQueryMapVformat());
-        System.out.println(ret.getRetMapVformat());
-        System.out.println(ret.toJSON());
-
+//        List<List<TrajEntry>> queries = read();
+//        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
+//        QueryResult ret = engine.findTopK(queries.get(1), 3);
+//        //System.out.println(ret.getRetTrajMapVFormat());
+//        System.out.println(ret.getMappedQueryMapVformat());
+//        System.out.println(ret.getRetMapVformat());
+//        System.out.println(ret.toJSON());
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();

@@ -14,7 +14,7 @@ class Geometry{
 
     Geometry(List<TrajEntry> path){
 
-        int pathLen = path.size();
+        int pathLen = path == null ? 0 : path.size();
         coordinates = new double[pathLen][2];
 
         for (int i = 0; i < pathLen; i++){
