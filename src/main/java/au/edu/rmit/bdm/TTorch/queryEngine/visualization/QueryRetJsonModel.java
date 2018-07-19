@@ -20,7 +20,7 @@ class QueryRetJsonModel {
         this.mappingSucceed = queryResult.mappingSucceed;
         this.raw = queryResult.rawQuery == null ? null : new TrajJsonModel(queryResult.rawQuery);
         this.mapped = queryResult.mappedQuery == null ? null : new TrajJsonModel(queryResult.mappedQuery);
-        this.retSize = queryResult.ret.size();
+        this.retSize = queryResult.retSize;
         this.ret = new ArrayList<>(queryResult.ret.size());
         ret.addAll(Formater.model(queryResult.ret));
     }
@@ -31,9 +31,12 @@ class QueryRetJsonModel {
         this.mappingSucceed = queryResult.mappingSucceed;
         this.raw = queryResult.rawQuery == null ? null : new TrajJsonModel(queryResult.rawQuery);
         this.mapped = queryResult.mappedQuery == null ? null : new TrajJsonModel(queryResult.mappedQuery);
-        this.retSize = queryResult.ret.size();
+        this.retSize = queryResult.retSize;
         this.ret = new ArrayList<>(queryResult.ret.size());
-        ret.addAll(Formater.model(queryResult.ret.subList(0,maximum)));
+        if (queryResult.retSize > maximum)
+            ret.addAll(Formater.model(queryResult.ret.subList(0,maximum)));
+        else
+            ret.addAll(Formater.model(queryResult.ret));
     }
 
 }

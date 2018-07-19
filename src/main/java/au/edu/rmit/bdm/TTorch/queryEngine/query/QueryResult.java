@@ -22,6 +22,7 @@ public class QueryResult {
     public final List<TrajEntry> rawQuery;
     public final List<TrajEntry> mappedQuery;
     public final List<Trajectory<TrajEntry>> ret;
+    public final int retSize;
 
     private QueryResult(String queryType, List<? extends TrajEntry> raw){
         this.mappingSucceed = false;
@@ -29,6 +30,7 @@ public class QueryResult {
         this.ret = new ArrayList<>();
         this.rawQuery = (List<TrajEntry>) raw;
         this.mappedQuery = null;
+        retSize = 0;
     }
 
     public static QueryResult genFailedRet(String queryType, List<? extends TrajEntry> raw){
@@ -41,6 +43,7 @@ public class QueryResult {
         this.ret = ret;
         this.rawQuery = rawQuery;
         this.mappedQuery = mappedQuery;
+        retSize = ret.size();
     }
 
     /**

@@ -9,6 +9,12 @@ import au.edu.rmit.bdm.TTorch.base.model.*;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.TTorch.queryEngine.Engine;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
+import com.graphhopper.GraphHopper;
+import com.graphhopper.reader.osm.GraphHopperOSM;
+import com.graphhopper.routing.util.CarFlagEncoder;
+import com.graphhopper.routing.util.EncodingManager;
+import com.graphhopper.routing.util.FlagEncoder;
+import com.graphhopper.storage.Graph;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,11 +28,10 @@ public class Test {
 //        mm.start();
 
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().baseURI(Test.class.getResource("/").getPath()).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
-        QueryResult ret = engine.findTopK(queries.get(1), 3);
+        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
+        QueryResult ret = engine.findOnPath(queries.get(1));
         //System.out.println(ret.getRetTrajMapVFormat());
-        System.out.println(ret.getMappedQueryMapVformat());
-        System.out.println(ret.getRetMapVformat());
+        System.out.println(ret.retSize);
 
         Map<String, String> map = new HashMap<>();
         map.put("index", Torch.Index.EDGE_INVERTED_INDEX);
@@ -39,10 +44,11 @@ public class Test {
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
 //        addLenToEdgeLookuptable();
+//        initGH();
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(Test.class.getResource("/").getPath()+"T-Torch/query.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("T-Torch/query.txt"));
         List<List<TrajEntry>> list = new ArrayList<>(3);
 
         String line;
@@ -208,5 +214,15 @@ public class Test {
         MemoryUsage.printCurrentMemUsage("");
 
         vertexInvertedIndex.saveCompressed(Instance.fileSetting.VERTEX_INVERTED_INDEX);
+    }
+
+    private static void initGH(){
+        GraphHopper hopper = new GraphHopperOSM();
+        hopper.setDataReaderFile("Resources/Porto.osm.pbf");
+        hopper.setGraphHopperLocation(Instance.fileSetting.hopperURI);
+        FlagEncoder vehicle = new CarFlagEncoder();
+        hopper.setEncodingManager(new EncodingManager(vehicle));
+        hopper.getCHFactoryDecorator().setEnabled(false);
+        hopper.importOrLoad();
     }
 }
