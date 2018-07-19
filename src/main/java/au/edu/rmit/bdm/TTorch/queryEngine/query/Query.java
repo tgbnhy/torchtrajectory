@@ -1,5 +1,6 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
+import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 
 import java.util.List;
@@ -26,4 +27,10 @@ public interface Query {
      *         false if the query trajectory cannot be mapped properly.
      */
      boolean prepare(List<? extends TrajEntry> raw);
+
+    /**
+     *
+     * @param idx
+     */
+    void updateIdx(Index idx);
 }

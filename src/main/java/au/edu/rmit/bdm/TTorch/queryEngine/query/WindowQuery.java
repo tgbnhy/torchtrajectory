@@ -1,5 +1,6 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
+import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.WindowQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
@@ -31,5 +32,13 @@ class WindowQuery extends QueryImpl {
     @Override
     public boolean prepare(List<? extends TrajEntry> raw) {
         return true;
+    }
+
+    @Override
+    public void updateIdx(Index idx) {
+        if (!(idx instanceof WindowQueryIndex))
+            throw new IllegalStateException("the index do not support windowQuery");
+
+        index = (WindowQueryIndex) idx;
     }
 }

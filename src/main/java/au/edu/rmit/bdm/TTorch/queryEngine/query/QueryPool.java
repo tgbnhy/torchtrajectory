@@ -1,5 +1,6 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
+import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.EdgeInvertedIndex;
@@ -145,21 +146,7 @@ public class QueryPool extends HashMap<String, Query> {
             vertexGridIndex.loaded = true;
         }
 
-        SimilarityFunction.MeasureType measureType;
-        switch (preferedDistFunc) {
-            case Torch.Algorithms.DTW:
-                measureType = SimilarityFunction.MeasureType.DTW;
-                break;
-            case Torch.Algorithms.Frechet:
-                measureType = SimilarityFunction.MeasureType.Frechet;
-                break;
-            case Torch.Algorithms.Hausdorff:
-                measureType = SimilarityFunction.MeasureType.Hausdorff;
-                break;
-            default:
-                throw new IllegalStateException("please lookup Torch.Algorithms for valid measure type");
-        }
-
+        SimilarityFunction.MeasureType measureType = convertMeasureType(preferedDistFunc);
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
     }
 
@@ -188,4 +175,46 @@ public class QueryPool extends HashMap<String, Query> {
         return trajectoryPool;
     }
 
+    public void update(String queryType, Map<String,String> props) {
+        Query q = get(queryType);
+
+        if (props.containsKey("simFunc"))
+            LEVI.updateMeasureType(convertMeasureType(props.get("simFunc")));
+        if (props.containsKey("index")){
+            q.updateIdx(convertIndex(props.get("index")));
+        }
+    }
+
+    private Index convertIndex(String indexType){
+        Index index;
+        switch (indexType){
+            case Torch.Index.EDGE_INVERTED_INDEX:
+                index = edgeInvertedIndex;
+                break;
+            case Torch.Index.LEVI:
+                index = LEVI;
+                break;
+            default:
+                throw new IllegalStateException("please lookup Torch.Index for currently supported index type");
+        }
+        return index;
+    }
+
+    private SimilarityFunction.MeasureType convertMeasureType(String preferedDistFunc) {
+        SimilarityFunction.MeasureType measureType;
+        switch (preferedDistFunc) {
+            case Torch.Algorithms.DTW:
+                measureType = SimilarityFunction.MeasureType.DTW;
+                break;
+            case Torch.Algorithms.Frechet:
+                measureType = SimilarityFunction.MeasureType.Frechet;
+                break;
+            case Torch.Algorithms.Hausdorff:
+                measureType = SimilarityFunction.MeasureType.Hausdorff;
+                break;
+            default:
+                throw new IllegalStateException("please lookup Torch.Algorithms for currently supported measure type");
+        }
+        return measureType;
+    }
 }

@@ -1,5 +1,6 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
+import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.PathQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mapper;
@@ -31,5 +32,13 @@ class PathQuery extends QueryImpl {
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
         return resolver.resolve(Torch.QueryType.PathQ, trajIds, raw, mapped);
+    }
+
+    @Override
+    public void updateIdx(Index idx) {
+        if (!(idx instanceof PathQueryIndex))
+            throw new IllegalStateException("the index do not support pathQuery");
+
+        index = (PathQueryIndex) idx;
     }
 }

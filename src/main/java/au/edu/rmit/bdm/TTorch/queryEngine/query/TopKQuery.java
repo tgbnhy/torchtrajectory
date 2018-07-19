@@ -1,5 +1,7 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
+import au.edu.rmit.bdm.TTorch.base.Index;
+import au.edu.rmit.bdm.TTorch.base.PathQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.TopKQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mapper;
@@ -12,14 +14,11 @@ import java.util.List;
 class TopKQuery extends QueryImpl{
 
     private static final Logger logger = LoggerFactory.getLogger(TopKQuery.class);
-    private boolean useEdge;
     private TopKQueryIndex index;
 
     TopKQuery(TopKQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
         super(mapper, resolver);
-
         this.index = index;
-        useEdge = index.useEdge();
     }
 
     @Override
@@ -27,12 +26,21 @@ class TopKQuery extends QueryImpl{
 
         if (!(K instanceof Integer))
             throw new IllegalStateException(
-                    "parameter passed to windowQuery should be of type SearchWindow, " +
+                    "parameter passed to windowQuery should be of type Integer, " +
                             "which indicates top k results to return");
-        if (useEdge)
+        if (index.useEdge())
             return topKusingEdge((int)K);
         else
             return topkusingVertex((int)K);
+    }
+
+    @Override
+
+    public void updateIdx(Index idx) {
+        if (!(idx instanceof TopKQueryIndex))
+            throw new IllegalStateException("the index do not support TopK search");
+
+        index = (TopKQueryIndex) idx;
     }
 
     private QueryResult topKusingEdge(int k) {

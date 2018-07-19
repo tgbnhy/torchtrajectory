@@ -382,6 +382,10 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         return null;
     }
 
+    public void updateMeasureType(MeasureType measureType) {
+        this.measureType = measureType;
+    }
+
 
     static class Pair {
         final String trajectoryID;

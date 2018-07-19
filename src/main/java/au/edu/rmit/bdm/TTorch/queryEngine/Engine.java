@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Engine class contains high level APIs to query on trajectory data-set
@@ -111,6 +112,22 @@ public class Engine {
 
         Query rangeQ = pool.get(Torch.QueryType.RangeQ);
         return rangeQ.execute(new SearchWindow(new Coordinate(lat, lng), squareRadius));
+    }
+
+    /**
+     * Update the indexes, similarity function used in query process<p>
+     *
+     * Examples:
+     * If you want to replace similarity function Torch.Algorithms.DTW to Torch.Algorithms.Hausdorff
+     * put ("simFunc", {@code Torch.Algorithms.Hausdorff}) in.<p>
+     * If you want to replace index from LEVI to EdgeInvertedIndex,
+     * put ("index", {@code Torch.Index.EDGE_INVERTED_INDEX}) in.
+     *
+     *
+     * @param props Key-value pairs indicate stuff to update
+     */
+    public void update(String queryType, Map<String, String> props){
+        pool.update(queryType, props);
     }
 
     public static class Builder{

@@ -12,20 +12,29 @@ import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Test {
     public static void main(String[] args)throws IOException{
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
-//        List<List<TrajEntry>> queries = read();
-//        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
-//        QueryResult ret = engine.findTopK(queries.get(1), 3);
-//        //System.out.println(ret.getRetTrajMapVFormat());
-//        System.out.println(ret.getMappedQueryMapVformat());
-//        System.out.println(ret.getRetMapVformat());
-//        System.out.println(ret.toJSON());
+        List<List<TrajEntry>> queries = read();
+        Engine engine = Engine.getBuilder().baseURI(Test.class.getResource("/").getPath()).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
+        QueryResult ret = engine.findTopK(queries.get(1), 3);
+        //System.out.println(ret.getRetTrajMapVFormat());
+        System.out.println(ret.getMappedQueryMapVformat());
+        System.out.println(ret.getRetMapVformat());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("index", Torch.Index.EDGE_INVERTED_INDEX);
+        engine.update(Torch.QueryType.TopK, map);
+        ret = engine.findTopK(queries.get(1), 3);
+        System.out.println(ret.getMappedQueryMapVformat());
+        System.out.println(ret.getRetMapVformat());
+
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
@@ -33,7 +42,7 @@ public class Test {
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("T-Torch/query.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(Test.class.getResource("/").getPath()+"T-Torch/query.txt"));
         List<List<TrajEntry>> list = new ArrayList<>(3);
 
         String line;
