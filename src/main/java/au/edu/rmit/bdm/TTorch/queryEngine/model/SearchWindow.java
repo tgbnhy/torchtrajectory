@@ -2,6 +2,7 @@ package au.edu.rmit.bdm.TTorch.queryEngine.model;
 
 import au.edu.rmit.bdm.TTorch.base.helper.GeoUtil;
 import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
+import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 
 /**
  * SearchWindow class models a window used for window query
@@ -9,7 +10,6 @@ import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 public class SearchWindow {
 
     public final Coordinate middle;
-    public final double squareRadius;
     public final double lowerLat;
     public final double upperLat;
     public final double leftLng;
@@ -18,11 +18,20 @@ public class SearchWindow {
     public SearchWindow(Coordinate middle, double squareRadius ){
 
         this.middle = middle;
-        this.squareRadius = squareRadius;
 
         upperLat =GeoUtil.increaseLat(middle.getLat(), squareRadius);
         lowerLat = GeoUtil.increaseLat(middle.getLat(), -squareRadius);
         leftLng = GeoUtil.increaseLng(middle.getLat(),middle.getLng(), -squareRadius);
         rightLng = GeoUtil.increaseLng(middle.getLat(), middle.getLng(), squareRadius);
+    }
+
+    public SearchWindow(TrajEntry upperLeft, TrajEntry lowerRight) {
+
+        upperLat = upperLeft.getLat();
+        lowerLat = lowerRight.getLat();
+        leftLng = upperLeft.getLng();
+        rightLng = lowerRight.getLng();
+
+        this.middle = new Coordinate((upperLat + lowerLat) / 2., (leftLng + rightLng) / 2.);
     }
 }
