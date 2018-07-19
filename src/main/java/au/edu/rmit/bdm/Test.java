@@ -8,6 +8,7 @@ import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.model.*;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.TTorch.queryEngine.Engine;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.osm.GraphHopperOSM;
@@ -28,17 +29,11 @@ public class Test {
 //        mm.start();
 
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.DTW).build();
-        QueryResult ret = engine.findOnPath(queries.get(1));
+        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).build();
+        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.172717,-8.681304), new Coordinate(41.171306,-8.679867)));
         //System.out.println(ret.getRetTrajMapVFormat());
-        System.out.println(ret.retSize);
+        System.out.println(ret.toJSON(1));
 
-        Map<String, String> map = new HashMap<>();
-        map.put("index", Torch.Index.EDGE_INVERTED_INDEX);
-        engine.update(Torch.QueryType.TopK, map);
-        ret = engine.findTopK(queries.get(1), 3);
-        System.out.println(ret.getMappedQueryMapVformat());
-        System.out.println(ret.getRetMapVformat());
 
 //        getAfew();
 //        genEdgeInvertedIndex();
