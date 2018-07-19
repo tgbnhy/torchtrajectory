@@ -23,7 +23,17 @@ class QueryRetJsonModel {
         this.retSize = queryResult.ret.size();
         this.ret = new ArrayList<>(queryResult.ret.size());
         ret.addAll(Formater.model(queryResult.ret));
+    }
 
+    QueryRetJsonModel(QueryResult queryResult,int maximum){
+
+        this.queryType = queryResult.queryType;
+        this.mappingSucceed = queryResult.mappingSucceed;
+        this.raw = queryResult.rawQuery == null ? null : new TrajJsonModel(queryResult.rawQuery);
+        this.mapped = queryResult.mappedQuery == null ? null : new TrajJsonModel(queryResult.mappedQuery);
+        this.retSize = queryResult.ret.size();
+        this.ret = new ArrayList<>(queryResult.ret.size());
+        ret.addAll(Formater.model(queryResult.ret.subList(0,maximum)));
     }
 
 }

@@ -16,6 +16,12 @@ public abstract class Formater {
     private static final Logger logger = LoggerFactory.getLogger(Formater.class);
     final static Gson gson = new Gson();
 
+    public static String toMapVJSON(QueryResult queryResult, int maximum){
+
+        QueryRetJsonModel queryRetJsonModel = new QueryRetJsonModel(queryResult, maximum);
+        return gson.toJson(queryRetJsonModel);
+    }
+
     public static String toMapVJSON(QueryResult queryResult){
 
         QueryRetJsonModel queryRetJsonModel = new QueryRetJsonModel(queryResult);

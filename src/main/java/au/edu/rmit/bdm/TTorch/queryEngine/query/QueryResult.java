@@ -101,8 +101,12 @@ public class QueryResult {
      *
      * @return A string of JSON format
      */
-    public String toJSON(){
+    public String toJSON(int maximum){
 
+        return Formater.toMapVJSON(this, maximum);
+    }
+
+    public String toJSON(){
         return Formater.toMapVJSON(this);
     }
 
