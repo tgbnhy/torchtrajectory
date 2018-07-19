@@ -31,7 +31,8 @@ class PathQuery extends QueryImpl {
 
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-        return resolver.resolve(Torch.QueryType.PathQ, trajIds, raw, mapped);
+
+        return resolver.resolve(isStrictPath ? "SPQ" : Torch.QueryType.PathQ, trajIds, raw, mapped);
     }
 
     @Override
