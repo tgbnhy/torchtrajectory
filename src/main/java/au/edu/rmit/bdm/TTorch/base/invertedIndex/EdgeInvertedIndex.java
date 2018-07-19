@@ -76,7 +76,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         List<String> ret = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue() == edges.size()) {
+            if (entry.getValue() > edges.size()) {
                 ret.add(entry.getKey());
             }
         }
