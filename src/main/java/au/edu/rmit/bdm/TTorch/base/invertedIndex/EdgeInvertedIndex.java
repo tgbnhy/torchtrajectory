@@ -62,7 +62,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         logger.info("start find trajectories on the strict path");
 
-        //key is trajectory id, value is number of different query edges
+        //key is trajectory id, value is number of different query.txt edges
         Map<String, Integer> map = new HashMap<>();
 
         for (LightEdge edge : edges) {
@@ -86,10 +86,10 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
     /**
      * LEVI( Longest Overlapping Road Segments) algorithm.
-     * Find top K trajectories that has the max score( similarity) against query trajectory( represented by a list of edges).
+     * Find top K trajectories that has the max score( similarity) against query.txt trajectory( represented by a list of edges).
      * Used in efficiency test.
      *
-     * @param edgeQuery a list of edges representing a query
+     * @param edgeQuery a list of edges representing a query.txt
      * @param k number of results returned
      *
      * @return A list of results of type Integer meaning ids of trajectory.
@@ -101,7 +101,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         // key for trajectory id, value for its upper bound
         Map<String, Double> candidateUpperBound = new HashMap<>();
-        // key for trajectory id, value for the list of edges overlapped with the query edge.
+        // key for trajectory id, value for the list of edges overlapped with the query.txt edge.
         Map<String, List<LightEdge>> candidates = new HashMap<>();
 
         for (LightEdge queryEdge : edgeQuery) {
@@ -138,7 +138,7 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
         /* an early termination heuristics for LCSS.
            a list containing the sum of rest edges length in total
-           example: if the query contains 3 edges, which are 3 meters, 1 meters and 2 meters respectively in length.
+           example: if the query.txt contains 3 edges, which are 3 meters, 1 meters and 2 meters respectively in length.
            Then the restDistance contains [3, 2, 0], which means that if it getList to dataStructure 0, then the rest is 3.
            If it getList to dataStructure 1, then the rest is 2. And if it getList to dataStructure 3, then the rest is 0. */
         double[] restDistance = new double[edgeQuery.size()];
@@ -175,13 +175,13 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
      * LEVI stands for longest overlapped road segments.<p>
      * It is LCSS algorithm twitched for computing similarity between two sequences over edges.
      *
-     * @param qEdges          edges representing query trajectory
+     * @param qEdges          edges representing query.txt trajectory
      * @param cEdges          edges representing sub candidate trajectory
-     * @param theta           For instance, theta is 5. If the 3rd edge in query trajectory matches the 11th edge in candidate trajectory,
+     * @param theta           For instance, theta is 5. If the 3rd edge in query.txt trajectory matches the 11th edge in candidate trajectory,
      *                        it won't count because the position between than is larger than theta.
      * @param restDistance     a list containing the sum of rest edges length in total
      *                         example:
-     *                         if the query contains 3 edges, which are 3 meters, 1 meters and 2 meters respectively in length.
+     *                         if the query.txt contains 3 edges, which are 3 meters, 1 meters and 2 meters respectively in length.
      *                         Then the restDistance contains [3, 2, 0], which means that if it getList to the first one, then the rest is 3( 2 + 1).
      *                         If it getList to the second, then the rest is 2. And if it getList to dataStructure 3, then the rest is 0.
      * @param bestKthSofar     score for the min score element in the heap.

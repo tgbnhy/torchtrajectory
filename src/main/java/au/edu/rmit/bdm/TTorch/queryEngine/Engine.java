@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Engine class contains high level APIs to query on trajectory data-set
+ * Engine class contains high level APIs to query.txt on trajectory data-set
  */
 public class Engine {
     private QueryPool pool;
@@ -27,14 +27,14 @@ public class Engine {
     }
 
     /**
-     * API for finding top-k most similar trajectories with the given query.<p>
+     * API for finding top-k most similar trajectories with the given query.txt.<p>
      *
      * The subroutine will first map convert trajectory to map-matched trajectory,
      * which the similarity search algorithm performed on. If it can not be converted,
      * {@code QueryResult} indicates error with be returned.
      * @see QueryResult#mappingSucceed
      *
-     * @param raw A list of points representing the query.
+     * @param raw A list of points representing the query.txt.
      *            T-Torch provides your simple class {@code Coordinate}
      *            But you can use any class type which implements TrajEntry interface.
      *            only longitude and latitude is required.
@@ -51,13 +51,13 @@ public class Engine {
     }
 
     /**
-     *  API for loosen path query.<p>
+     *  API for loosen path query.txt.<p>
      *
-     *  Given a raw trajectory as query, the subroutine will first map convert trajectory to map-matched trajectory,
-     *  and then find all the trajectories in data-set that at least has a same edge( road segment) with the query trajectory.
-     *  Same as previous, If the raw query can not be map-matched, {@code QueryResult} will indicates error with be returned.
+     *  Given a raw trajectory as query.txt, the subroutine will first map convert trajectory to map-matched trajectory,
+     *  and then find all the trajectories in data-set that at least has a same edge( road segment) with the query.txt trajectory.
+     *  Same as previous, If the raw query.txt can not be map-matched, {@code QueryResult} will indicates error with be returned.
      *
-     * @param raw A list of points representing the query.
+     * @param raw A list of points representing the query.txt.
      *            T-Torch provides your simple class {@code Coordinate}
      *            But you can use any class type which implements TrajEntry interface.
      *            only longitude and latitude is required.
@@ -71,13 +71,13 @@ public class Engine {
     }
 
     /**
-     *  API for strict path query.<p>
+     *  API for strict path query.txt.<p>
      *
-     *  Given a raw trajectory as query, the subroutine will first map convert trajectory to map-matched trajectory,
-     *  and then find all the trajectories in data-set that contain all same edges( road segment) with the query trajectory.
-     *  Same as previous, If the raw query can not be map-matched, {@code QueryResult} will indicates error with be returned.
+     *  Given a raw trajectory as query.txt, the subroutine will first map convert trajectory to map-matched trajectory,
+     *  and then find all the trajectories in data-set that contain all same edges( road segment) with the query.txt trajectory.
+     *  Same as previous, If the raw query.txt can not be map-matched, {@code QueryResult} will indicates error with be returned.
      *
-     * @param raw A list of points representing the query.
+     * @param raw A list of points representing the query.txt.
      *            T-Torch provides your simple class {@code Coordinate}
      *            But you can use any class type which implements TrajEntry interface.
      *            only longitude and latitude is required.
@@ -115,7 +115,7 @@ public class Engine {
     }
 
     /**
-     * Update the indexes, similarity function used in query process<p>
+     * Update the indexes, similarity function used in query.txt process<p>
      *
      * Examples:
      * If you want to replace similarity function Torch.Algorithms.DTW to Torch.Algorithms.Hausdorff
@@ -138,7 +138,7 @@ public class Engine {
         private Builder(){}
 
         /**
-         * For top K query, call the API to specify what similarity function to use.
+         * For top K query.txt, call the API to specify what similarity function to use.
          * The default similarity measure is Dynamic Time Wrapping.
          *
          * @param similarityMeasure similarityMeasure to use for Top K retrieval
@@ -172,19 +172,19 @@ public class Engine {
         }
 
         /**
-         * Inform search engine the specific query used.<p>
+         * Inform search engine the specific query.txt used.<p>
          *
          * If no specified queries is found. The engine will load all of the data and indexes to support all kinds of queries,
          * which is more expensive than build certain data to support the specified queries.
          *
-         * @param queryType The query to be prepared.
+         * @param queryType The query.txt to be prepared.
          * @see Torch.QueryType for valid options.
          */
         public Builder addQuery(String queryType){
             if (!queryType.equals(Torch.QueryType.PathQ) &&
                     !queryType.equals(Torch.QueryType.RangeQ) &&
                     !queryType.equals(Torch.QueryType.TopK))
-                throw new IllegalStateException("checkout supported query type options at Torch.QueryType");
+                throw new IllegalStateException("checkout supported query.txt type options at Torch.QueryType");
             properties.queryUsed.add(queryType);
             return this;
         }

@@ -1,5 +1,7 @@
 package au.edu.rmit.bdm.TTorch.base;
 
+import au.edu.rmit.bdm.TTorch.base.db.DBManager;
+
 /**
  * Internal use for File fileSetting.
  */
@@ -23,6 +25,11 @@ public enum Instance {
     public String TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000 = TorchPrefixURI + "/trajectory_vertex_200000.txt";
     public String TRAJECTORY_EDGE_REPRESENTATION_PATH_200000 = TorchPrefixURI + "/trajectory_edge_200000.txt";
 
+    //for db
+    public String DB_URL = "jdbc:sqlite:"+TorchPrefixURI+"/db/db";
+    public String TRAJECTORY_VERTEX_TABLE = "vertex";
+    public String TRAJECTORY_EDGE_TABLE = "edge";
+
     public String RAW_TRAJECTORY_INDEX = TorchPrefixURI + "/raw_trajectories";
 
     public String GRID_INDEX = TorchPrefixURI + "/grid_vertex.idx";
@@ -43,6 +50,8 @@ public enum Instance {
         TRAJECTORY_EDGE_REPRESENTATION_PATH_200000 = baseURI + TRAJECTORY_EDGE_REPRESENTATION_PATH_200000;
         GRID_INDEX = baseURI + GRID_INDEX;
         RTREE_INDEX = baseURI + RTREE_INDEX;
+
+        DB_URL = baseURI + DB_URL;
 
         RAW_TRAJECTORY_INDEX = baseURI + "/raw_trajectories";
     }

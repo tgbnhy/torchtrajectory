@@ -2,6 +2,7 @@ package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
 import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
+import au.edu.rmit.bdm.TTorch.base.db.TrajEdgeRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
@@ -16,20 +17,19 @@ import java.util.*;
 class TrajectoryResolver {
 
     private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
-    private Map<String, String[]> trajectoryPool;
+    private TrajEdgeRepresentationPool trajectoryPool;
     private Map<Integer, String[]> rawEdgeLookup;
 
-    public TrajectoryResolver(Map<String, String[]> trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
+    public TrajectoryResolver( TrajEdgeRepresentationPool trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
         this.trajectoryPool = trajectoryPool;
         this.rawEdgeLookup = rawEdgeLookup;
     }
 
     TrajectoryResolver(){
-        trajectoryPool = new HashMap<>();
+        trajectoryPool = new TrajEdgeRepresentationPool(false);
         rawEdgeLookup = new HashMap<>();
-        loadEdgeRepresentedTrajectories();
         loadRawEdgeLookupTable();
-        }
+    }
 
     QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
 
@@ -64,9 +64,9 @@ class TrajectoryResolver {
         List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
         for (String trajId : trajIds){
 
-            String[] edges = trajectoryPool.get(trajId);
+            int[] edges = trajectoryPool.get(trajId);
             if (edges == null) {
-                logger.debug("cannot find edge id {}, this should not be happened");
+                logger.debug("cannot find trajectory id {}, this should not be happened", trajId);
                 continue;
             }
 
@@ -86,29 +86,6 @@ class TrajectoryResolver {
             ret.add(t);
         }
         return ret;
-    }
-
-    private void loadEdgeRepresentedTrajectories() {
-
-        logger.info("load edge represented trajectories");
-        //read meta properties
-        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
-            BufferedReader reader = new BufferedReader(fr)){
-
-            String line;
-            String[] tokens;
-            String trajId;
-
-            while((line = reader.readLine()) != null){
-                tokens = line.split("\t");
-                trajId = tokens[0];
-                trajectoryPool.put(trajId, tokens[1].split(","));
-            }
-
-        }catch (IOException e){
-            logger.error("some critical data is missing, system on exit...");
-            System.exit(-1);
-        }
     }
 
     private void loadRawEdgeLookupTable() {

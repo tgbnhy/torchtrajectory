@@ -41,8 +41,4 @@ public abstract class TorVertex extends Coordinate {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "{" + lat + ", " + lng + '}';
-    }
 }

@@ -3,6 +3,7 @@ package au.edu.rmit.bdm.TTorch.base.spatialIndex;
 import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.WindowQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.TopKQueryIndex;
+import au.edu.rmit.bdm.TTorch.base.db.TrajVertexRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.helper.GeoUtil;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
@@ -21,7 +22,7 @@ import static au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction.*
 /**
  * ﻿LEVI stands for Lightweight edge & vertex vertexInvertedIndex.<p>
  * LEVI basically has two parts: grid vertexInvertedIndex and inverted vertexInvertedIndex on vertex.
- * This two level indexes structure supports range query as well as top k query over vertices.
+ * This two level indexes structure supports range query.txt as well as top k query.txt over vertices.
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
@@ -34,16 +35,16 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
     private MeasureType measureType;
     private SimilarityFunction<TrajEntry> similarityFunction = SimilarityFunction.DEFAULT;
-    private Map<String, String[]> trajectoryPool;
+    private TrajVertexRepresentationPool pool;
     private Map<Integer, TowerVertex> idVertexLookup;
     
     public LEVI(VertexInvertedIndex vertexInvertedIndex, VertexGridIndex gridIndex,
-                MeasureType measureType, Map<String, String[]> trajectoryPool, Map<Integer, TowerVertex> idVertexLookup){
+                MeasureType measureType, TrajVertexRepresentationPool pool, Map<Integer, TowerVertex> idVertexLookup){
 
         this.vertexInvertedIndex = vertexInvertedIndex;
         this.gridIndex = gridIndex;
         this.measureType = measureType;
-        this.trajectoryPool = trajectoryPool;
+        this.pool = pool;
         this.idVertexLookup = idVertexLookup;
     }
 
@@ -103,8 +104,8 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
             overallUnseenUpperBound = 0;
 
-            //each query point match with the nearest point of a trajectory,
-            // and the lower bound is the maximum distance between a query and existing points of a trajectory
+            //each query.txt point match with the nearest point of a trajectory,
+            // and the lower bound is the maximum distance between a query.txt and existing points of a trajectory
             Map<String, Double> trajUpperBound = new HashMap<>();
             Map<String, Map<TrajEntry, Double>> trajUpperBoundForDTW = new HashMap<>();
 
@@ -119,7 +120,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 unseenUpperBounds[i] = upperBound;
                 overallUnseenUpperBound += upperBound;
 
-                //findMoreVertices the nearest pair between a trajectory and query queryVertex
+                //findMoreVertices the nearest pair between a trajectory and query.txt queryVertex
                 //trajectory hash, queryVertex hash vertices
                 Set<Integer> vertices = new HashSet<>();
                 if (round == INITIAL_ROUND_FOR_DTW) {
@@ -176,14 +177,18 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 String curTrajId = entry1.getKey();
                 double curUpperBound = entry1.getValue();
 
-                String[] trajectory = trajectoryPool.get(curTrajId);
+                int[] trajectory = pool.get(curTrajId);
+                if (trajectory == null)
+                    continue;
+
                 Trajectory<TrajEntry> t = new Trajectory<>();
-                for (int i = 1; i < trajectory.length; i++) {
-                    t.add(idVertexLookup.get(Integer.valueOf(trajectory[i])));
+                for (int entry : trajectory) {
+                    t.add(idVertexLookup.get(entry));
                 }
 
                 double realDist = 0;
-                realDist = similarityFunction.DynamicTimeWarping(t, (List<TrajEntry>)pointQuery);
+
+                realDist = similarityFunction.DynamicTimeWarping(t, (List<TrajEntry>) pointQuery);
 
                 double score = -realDist;
 
@@ -244,8 +249,8 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
             overallUnseenUpperBound = Double.MAX_VALUE;
 
-            //each query point match with the nearest point of a trajectory,
-            // and the lower bound is the maximum distance between a query and existing points of a trajectory
+            //each query.txt point match with the nearest point of a trajectory,
+            // and the lower bound is the maximum distance between a query.txt and existing points of a trajectory
             Map<String, Double> trajUpperBound = new HashMap<>();
             Map<String, Map<TrajEntry, Double>> trajUpperBoundDetailed = new HashMap<>();
 
@@ -260,7 +265,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 unseenUpperBounds[i] = upperBound;
                 overallUnseenUpperBound = Math.min(upperBound, overallUnseenUpperBound);
 
-                //findMoreVertices the nearest pair between a trajectory and query queryVertex
+                //findMoreVertices the nearest pair between a trajectory and query.txt queryVertex
                 //trajectory hash, queryVertex hash vertices
                 Set<Integer> vertices = new HashSet<>();
 
@@ -317,10 +322,12 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 String curTrajId = entry1.getKey();
                 double curUpperBound = entry1.getValue();
 
-                String[] trajectory = trajectoryPool.get(curTrajId);
+                int[] trajectory = pool.get(curTrajId);
+                if (trajectory == null)
+                    continue;
                 Trajectory<TrajEntry> t = new Trajectory<>();
-                for (int i = 1; i < trajectory.length; i++) {
-                    t.add(idVertexLookup.get(Integer.valueOf(trajectory[i])));
+                for (int entry : trajectory) {
+                    t.add(idVertexLookup.get(entry));
                 }
 
                 double realDist = 0;

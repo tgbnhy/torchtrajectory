@@ -24,7 +24,7 @@ public class QueryProperties {
         this.similarityMeasure = properties.similarityMeasure;
         this.preferedIndex = properties.preferedIndex;
 
-        // if user does not specify what kind of query will be used,
+        // if user does not specify what kind of query.txt will be used,
         // we initialize all supported queries.
         this.queryUsed.addAll(properties.queryUsed);
         if (this.queryUsed.size() == 0){

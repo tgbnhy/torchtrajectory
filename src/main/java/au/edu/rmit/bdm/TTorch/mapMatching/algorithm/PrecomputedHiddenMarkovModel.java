@@ -394,26 +394,26 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
         final double SIGMA = 50;
 
         /**
-         * query entry: the entry in a query
+         * query.txt entry: the entry in a query.txt
          */
         TrajEntry entry;
 
         /**
-         * candidate entry of the query entry
+         * candidate entry of the query.txt entry
          */
         TorVertex candidateVertex;
 
         double probability;
 
         /**
-         * measurement probability, in this case, it indicates how close between query points and map-matched entry.
+         * measurement probability, in this case, it indicates how close between query.txt points and map-matched entry.
          */
         double emissionProbability;
 
         Candidate preCandidate;
 
         /**
-         * vertex is the query entry, nearestVertex is the candidate vertex of the query vertex
+         * vertex is the query.txt entry, nearestVertex is the candidate vertex of the query.txt vertex
          * Assuming that GPS errors are Gaussian distribution
          *
          * @param entry         one node of the rawTrajectory

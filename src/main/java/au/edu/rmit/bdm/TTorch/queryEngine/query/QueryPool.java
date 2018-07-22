@@ -3,6 +3,7 @@ package au.edu.rmit.bdm.TTorch.queryEngine.query;
 import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
+import au.edu.rmit.bdm.TTorch.base.db.TrajVertexRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.spatialIndex.LEVI;
@@ -133,7 +134,7 @@ public class QueryPool extends HashMap<String, Query> {
 
         VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex();
         VertexGridIndex vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
-        Map<String, String[]> trajectoryPool = loadVertexRepresentedTrajectories();
+        TrajVertexRepresentationPool trajVertexRepresentationPool = new TrajVertexRepresentationPool(false);
 
         if (!vertexInvertedIndex.build(Instance.fileSetting.VERTEX_INVERTED_INDEX))
             throw new RuntimeException("some critical data is missing, system on exit...");
@@ -147,38 +148,13 @@ public class QueryPool extends HashMap<String, Query> {
         }
 
         SimilarityFunction.MeasureType measureType = convertMeasureType(preferedDistFunc);
-        this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajectoryPool, idVertexLookup);
-    }
-
-    private Map<String, String[]> loadVertexRepresentedTrajectories() {
-
-        Map<String, String[]> trajectoryPool = new HashMap<>();
-
-        //read meta properties
-        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000);
-            BufferedReader reader = new BufferedReader(fr)){
-
-            String line;
-            String[] tokens;
-            String trajId;
-
-            while((line = reader.readLine()) != null){
-                tokens = line.split("\t");
-                trajId = tokens[0];
-                trajectoryPool.put(trajId, tokens[1].split(","));
-            }
-
-        }catch (IOException e){
-            logger.error("some critical data is missing, system on exit...");
-            System.exit(-1);
-        }
-        return trajectoryPool;
+        this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajVertexRepresentationPool, idVertexLookup);
     }
 
     public void update(String queryType, Map<String,String> props) {
         Query q = get(queryType);
 
-        if (props.containsKey("simFunc"))
+        if (props.containsKey("simFunc") && LEVI != null)
             LEVI.updateMeasureType(convertMeasureType(props.get("simFunc")));
         if (props.containsKey("index")){
             q.updateIdx(convertIndex(props.get("index")));
@@ -189,9 +165,13 @@ public class QueryPool extends HashMap<String, Query> {
         Index index;
         switch (indexType){
             case Torch.Index.EDGE_INVERTED_INDEX:
+                if (!edgeInvertedIndex.loaded)
+                    initEdgeInvertedIndex();
                 index = edgeInvertedIndex;
                 break;
             case Torch.Index.LEVI:
+                if (LEVI == null)
+                    initLEVI();
                 index = LEVI;
                 break;
             default:

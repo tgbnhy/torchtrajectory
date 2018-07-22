@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * The class bundles information you may be interested in together.
- * The QueryResult will be returned uniformly after the particular query has been processed.
+ * The QueryResult will be returned uniformly after the particular query.txt has been processed.
  */
 public class QueryResult {
     private static final Logger logger = LoggerFactory.getLogger(QueryResult.class);
@@ -47,9 +47,9 @@ public class QueryResult {
     }
 
     /**
-     * Get raw query.
+     * Get raw query.txt.
      *
-     * @return raw query
+     * @return raw query.txt
      *         or null if the queryType is RangeQuery
      */
     public List<TrajEntry> getRawQuery(){
@@ -57,10 +57,10 @@ public class QueryResult {
     }
 
     /**
-     * Get mapped query.
+     * Get mapped query.txt.
      *
-     * @return mapped query.
-     *         or null if the query is of type RangeQuery.
+     * @return mapped query.txt.
+     *         or null if the query.txt is of type RangeQuery.
      *         or null if the mapping process fails.
      */
     public List<TrajEntry> getMappedQuery() {
@@ -68,7 +68,7 @@ public class QueryResult {
     }
 
     /**
-     * Get trajectories meeting the query constraints.
+     * Get trajectories meeting the query.txt constraints.
      * The returned list would be empty if there is no qualified trajectory found.
      *
      * @return qualified trajectories.
@@ -83,18 +83,18 @@ public class QueryResult {
      * key-value map:
      *
      * - key: queryType
-     * @see Torch.QueryType for possible query types as value
+     * @see Torch.QueryType for possible query.txt types as value
      *
      * - key: mappingSucceed:
      * value: Boolean value indicates if the process of converting raw trajectory to map-matched trajectory succeeds.
      *
      * - key: raw
      * Query in mapV format.
-     * Or null if the query is of type rangeQuery
+     * Or null if the query.txt is of type rangeQuery
      *
      * - key: mapped
-     * mapmatched query in mapV format.
-     * Or null if the query is of type rangeQuery
+     * mapmatched query.txt in mapV format.
+     * Or null if the query.txt is of type rangeQuery
      *
      * - key: retSize
      * value: integer indicates number of qualified trajectories found
@@ -114,10 +114,10 @@ public class QueryResult {
     }
 
     /**
-     * Get raw query in mapV format
+     * Get raw query.txt in mapV format
      *
-     * @return raw query in mapV format
-     *         or null if the query type is RangeQuery
+     * @return raw query.txt in mapV format
+     *         or null if the query.txt type is RangeQuery
      */
     public String getRawQueryjMapVformat(){
         if (rawQuery == null) return null;
@@ -125,11 +125,11 @@ public class QueryResult {
     }
 
     /**
-     * Get mapped query in mapV format
+     * Get mapped query.txt in mapV format
      *
-     * @return mapped query in mapV format
-     *         or null if the query type is RangeQuery
-     *         or null if the raw query is not properly projected.
+     * @return mapped query.txt in mapV format
+     *         or null if the query.txt type is RangeQuery
+     *         or null if the raw query.txt is not properly projected.
      */
     public String getMappedQueryMapVformat(){
         if (queryType.equals(Torch.QueryType.RangeQ)) return null;

@@ -5,7 +5,7 @@ import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 
 /**
- * SearchWindow class models a window used for window query
+ * SearchWindow class models a window used for window query.txt
  */
 public class SearchWindow {
 

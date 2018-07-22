@@ -37,7 +37,7 @@ public class TowerVertex extends TorVertex {
 
     @Override
     public String toString(){
-        return String.valueOf(id);
+        return "{ "+ String.valueOf(id)+": " + lat + ", " + lng + '}';
     }
 
     @Override

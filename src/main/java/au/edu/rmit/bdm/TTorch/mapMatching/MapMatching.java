@@ -121,7 +121,7 @@ public class MapMatching {
 //     * todo
 //     *
 //     * In addition to required files, you can pass your timestamp file along to mm.
-//     * Time stamp provides information that would help in the query.
+//     * Time stamp provides information that would help in the query.txt.
 //     * It won't make difference in trajectory map-matching.
 //     *
 //     */

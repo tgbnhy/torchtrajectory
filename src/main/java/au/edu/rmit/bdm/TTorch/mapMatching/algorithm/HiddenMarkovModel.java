@@ -40,6 +40,7 @@ public class HiddenMarkovModel implements Mapper {
     @Override
     public Trajectory<TowerVertex> match(Trajectory<? extends TrajEntry> in) {
         logger.info("begin projecting query points onto graph");
+        logger.info("origin trajectory: {}", in);
 
         Trajectory<TowerVertex> mappedTrajectory = new Trajectory<>();
         Graph hopperGraph = torGraph.getGH().getGraphHopperStorage();
@@ -89,9 +90,9 @@ public class HiddenMarkovModel implements Mapper {
             mappedTrajectory.edges.add(edge);
         }
 
-        logger.info("have done map-matching for query points");
+        logger.info("have done map-matching for query.txt points");
         logger.info("map-matched query vertices representation: {}", mappedTrajectory);
-        logger.info("map-matched query edges representation: {}", mappedTrajectory.edges);
+        logger.info("map-matched edge edges representation: {}", mappedTrajectory.edges);
         return mappedTrajectory;
     }
 

@@ -2,6 +2,7 @@ package au.edu.rmit.bdm;
 
 import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
+import au.edu.rmit.bdm.TTorch.base.db.DBManager;
 import au.edu.rmit.bdm.TTorch.base.helper.MemoryUsage;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
@@ -30,13 +31,24 @@ public class Test {
 
         List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).build();
-        QueryResult ret = engine.findOnStrictPath(queries.get(0));
-
+        QueryResult ret = engine.findOnPath(queries.get(1));
+        System.out.println(ret.mappingSucceed);
+        System.out.println(ret.retSize);
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
 //        addLenToEdgeLookuptable();
 //        initGH();
+    }
+
+    private static void toDB(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("cannot load mysql driver");
+            System.exit(1);
+        }
+
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
@@ -61,8 +73,8 @@ public class Test {
                 double lon = 0.;
 
                     latLng = trajTuples[i].split(",");
-                    lat = Double.parseDouble(latLng[0]);
-                    lon = Double.parseDouble(latLng[1]);
+                    lat = Double.parseDouble(latLng[1]);
+                    lon = Double.parseDouble(latLng[0]);
 
                 Coordinate node = new Coordinate(lat, lon);
 
