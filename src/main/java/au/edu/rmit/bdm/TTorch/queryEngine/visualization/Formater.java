@@ -28,12 +28,12 @@ public abstract class Formater {
         return gson.toJson(queryRetJsonModel);
     }
 
-    public static String toJSON(Collection<Trajectory<TrajEntry>> trajs){
+    public static String toMapVJSON(Collection<Trajectory<TrajEntry>> trajs){
 
         return gson.toJson(model(trajs));
     }
 
-    public static String toJSON(List<TrajEntry> traj){
+    public static String toMapVJSON(List<TrajEntry> traj){
         return gson.toJson(new TrajJsonModel(traj));
     }
 

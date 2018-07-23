@@ -14,7 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-class TrajectoryResolver {
+public class TrajectoryResolver {
 
     private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
     private TrajEdgeRepresentationPool trajectoryPool;
@@ -67,6 +67,14 @@ class TrajectoryResolver {
         }
         return l;
     }
+
+    public List<Trajectory<TrajEntry>> resolveResult(int[] ids) {
+        List<String> trajIds = new ArrayList<>(ids.length);
+        for (int i : ids) trajIds.add(String.valueOf(i));
+        return resolveRet(trajIds);
+    }
+
+
 
     private List<Trajectory<TrajEntry>> resolveRet(Collection<String> trajIds) {
         List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());

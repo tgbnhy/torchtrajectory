@@ -4,11 +4,8 @@ import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
-import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
+import au.edu.rmit.bdm.TTorch.queryEngine.query.*;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
-import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryProperties;
-import au.edu.rmit.bdm.TTorch.queryEngine.query.Query;
-import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,6 +125,10 @@ public class Engine {
      */
     public void update(String queryType, Map<String, String> props){
         pool.update(queryType, props);
+    }
+
+    public QueryResult resolve(int[] idArr){
+        return pool.resolve(idArr);
     }
 
     public static class Builder{

@@ -6,6 +6,8 @@ import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.db.TrajVertexRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
+import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
+import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
 import au.edu.rmit.bdm.TTorch.base.spatialIndex.LEVI;
 import au.edu.rmit.bdm.TTorch.base.spatialIndex.VertexGridIndex;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mapper;
@@ -20,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class QueryPool extends HashMap<String, Query> {
@@ -32,6 +35,7 @@ public class QueryPool extends HashMap<String, Query> {
 
 
     private Map<Integer, TowerVertex> idVertexLookup;
+
     private TrajectoryResolver resolver;
 
     /**
@@ -190,5 +194,10 @@ public class QueryPool extends HashMap<String, Query> {
                 throw new IllegalStateException("please lookup Torch.Algorithms for currently supported measure type");
         }
         return measureType;
+    }
+
+    public QueryResult resolve(int[] idArr) {
+        List<Trajectory<TrajEntry>> resolved = resolver.resolveResult(idArr);
+        return new QueryResult(resolved);
     }
 }

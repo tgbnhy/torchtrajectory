@@ -62,6 +62,17 @@ public class QueryResult {
         isResolved = false;
     }
 
+    QueryResult(List<Trajectory<TrajEntry>> ret){
+        isResolved = true;
+        this.mappingSucceed = false;
+        this.queryType = null;
+        this.idArray = null;
+        this.rawQuery = null;
+        this.mappedQuery = null;
+        resolvedRet = ret;
+        retSize = ret.size();
+    }
+
     public static QueryResult genResolvedRet(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
         return new QueryResult(queryType, ret, rawQuery, mappedQuery);
     }
@@ -149,7 +160,7 @@ public class QueryResult {
      */
     public String getRawQueryjMapVformat(){
         if (rawQuery == null) return null;
-        return Formater.toJSON(rawQuery);
+        return Formater.toMapVJSON(rawQuery);
     }
 
     /**
@@ -162,11 +173,11 @@ public class QueryResult {
     public String getMappedQueryMapVformat(){
         if (queryType.equals(Torch.QueryType.RangeQ)) return null;
         if (!mappingSucceed) return null;
-        return Formater.toJSON(mappedQuery);
+        return Formater.toMapVJSON(mappedQuery);
     }
 
     public String getRetMapVformat(){
         if (resolvedRet.isEmpty()) return "[]";
-        return Formater.toJSON(resolvedRet);
+        return Formater.toMapVJSON(resolvedRet);
     }
 }
