@@ -52,9 +52,9 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
             trajIDSet.add(entry.value());
         });
 
-//        List<Trajectory<Coordinate>> ret = new ArrayList<>();
+//        List<Trajectory<Coordinate>> resolvedRet = new ArrayList<>();
 //        trajIDSet.forEach(trajId -> {
-//            ret.add(trajectoryMap.getList(trajId));
+//            resolvedRet.add(trajectoryMap.getList(trajId));
 //        });
 
         return new ArrayList<>(trajIDSet);

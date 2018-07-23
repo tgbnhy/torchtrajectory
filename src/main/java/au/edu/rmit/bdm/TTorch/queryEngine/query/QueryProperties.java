@@ -18,11 +18,13 @@ public class QueryProperties {
     public String preferedIndex;
     public boolean useRaw;
     public Set<String> queryUsed;
+    public boolean resolveAll;
 
     public QueryProperties(QueryProperties properties) {
         init();
         this.similarityMeasure = properties.similarityMeasure;
         this.preferedIndex = properties.preferedIndex;
+        this.resolveAll = properties.resolveAll;
 
         // if user does not specify what kind of query.txt will be used,
         // we initialize all supported queries.
@@ -34,10 +36,12 @@ public class QueryProperties {
         }
     }
 
-    public void init() {
+    public QueryProperties init() {
         similarityMeasure = Torch.Algorithms.DTW;
         preferedIndex = Torch.Index.EDGE_INVERTED_INDEX;
         useRaw = false;
+        resolveAll = true;
         queryUsed = new HashSet<>();
+        return this;
     }
 }

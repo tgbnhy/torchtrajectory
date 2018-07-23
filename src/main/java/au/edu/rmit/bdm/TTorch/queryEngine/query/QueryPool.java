@@ -21,15 +21,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class QueryPool extends HashMap<String, Query> {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryPool.class);
-    private final boolean useRawDataSet;
-    private final Set<String> queryUsed;
-    private final String preferedDistFunc;
-    private final String preferedIndex;
+    private final QueryProperties props;
     private Mapper mapper;
     private EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
     private LEVI LEVI;
@@ -44,10 +40,7 @@ public class QueryPool extends HashMap<String, Query> {
      */
     public QueryPool(QueryProperties props) {
         //set client preference
-        useRawDataSet = props.useRaw;
-        queryUsed = props.queryUsed;
-        preferedDistFunc = props.similarityMeasure;
-        preferedIndex = props.preferedIndex;
+        this.props = props;
 
         //initialize queries and map-matching algorithm
         init();
@@ -57,15 +50,15 @@ public class QueryPool extends HashMap<String, Query> {
     private void init() {
 
         buildMapper();
-        resolver = new TrajectoryResolver();
+        resolver = new TrajectoryResolver(props.resolveAll);
 
-        if (queryUsed.contains(Torch.QueryType.PathQ))
+        if (props.queryUsed.contains(Torch.QueryType.PathQ))
             put(Torch.QueryType.PathQ, initPathQuery());
 
-        if (queryUsed.contains(Torch.QueryType.RangeQ))
+        if (props.queryUsed.contains(Torch.QueryType.RangeQ))
             put(Torch.QueryType.RangeQ, initRangeQuery());
 
-        if (queryUsed.contains(Torch.QueryType.TopK))
+        if (props.queryUsed.contains(Torch.QueryType.TopK))
             put(Torch.QueryType.TopK, initTopKQuery());
     }
 
@@ -103,9 +96,10 @@ public class QueryPool extends HashMap<String, Query> {
     private Query initTopKQuery() {
 
         // edge based top K
-        if (preferedIndex.equals(Torch.Index.EDGE_INVERTED_INDEX)) {
+        if (props.preferedIndex.equals(Torch.Index.EDGE_INVERTED_INDEX)) {
             initEdgeInvertedIndex();
-            return new TopKQuery(edgeInvertedIndex, mapper, resolver);
+            return props.resolveAll ? new TopKQuery(edgeInvertedIndex, mapper, resolver) :
+                    new TopKQuery(edgeInvertedIndex, mapper, resolver);
         }
 
         // point based topK with GVI
@@ -147,7 +141,7 @@ public class QueryPool extends HashMap<String, Query> {
             vertexGridIndex.loaded = true;
         }
 
-        SimilarityFunction.MeasureType measureType = convertMeasureType(preferedDistFunc);
+        SimilarityFunction.MeasureType measureType = convertMeasureType(props.similarityMeasure);
         this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajVertexRepresentationPool, idVertexLookup);
     }
 

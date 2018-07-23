@@ -1,6 +1,5 @@
 package au.edu.rmit.bdm.TTorch.queryEngine.visualization;
 
-import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
 
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ class QueryRetJsonModel {
         this.raw = queryResult.rawQuery == null ? null : new TrajJsonModel(queryResult.rawQuery);
         this.mapped = queryResult.mappedQuery == null ? null : new TrajJsonModel(queryResult.mappedQuery);
         this.retSize = queryResult.retSize;
-        this.ret = new ArrayList<>(queryResult.ret.size());
-        ret.addAll(Formater.model(queryResult.ret));
+        this.ret = new ArrayList<>(queryResult.resolvedRet.size());
+        ret.addAll(Formater.model(queryResult.resolvedRet));
     }
 
     QueryRetJsonModel(QueryResult queryResult,int maximum){
@@ -34,9 +33,9 @@ class QueryRetJsonModel {
         this.retSize = queryResult.retSize;
         this.ret = new ArrayList<>(retSize > maximum ? maximum : retSize);
         if (queryResult.retSize > maximum)
-            ret.addAll(Formater.model(queryResult.ret.subList(0,maximum)));
+            ret.addAll(Formater.model(queryResult.resolvedRet.subList(0,maximum)));
         else
-            ret.addAll(Formater.model(queryResult.ret));
+            ret.addAll(Formater.model(queryResult.resolvedRet));
     }
 
 }

@@ -22,7 +22,6 @@ class PathQuery extends QueryImpl {
 
     @Override
     public QueryResult execute(Object _isStrict) {
-
         if (mapped == null) throw new IllegalStateException("please invoke prepare(List<T> raw) first");
         if (!(_isStrict instanceof Boolean))
             throw new IllegalStateException("parameter passed to PathQuery should be of type SearchWindow, " +
@@ -31,7 +30,6 @@ class PathQuery extends QueryImpl {
 
         List<LightEdge> queryEdges = LightEdge.copy(mapped.edges);
         List<String> trajIds = isStrictPath ? index.findByStrictPath(queryEdges) : index.findByPath(queryEdges);
-
         return resolver.resolve(isStrictPath ? "SPQ" : Torch.QueryType.PathQ, trajIds, raw, mapped);
     }
 

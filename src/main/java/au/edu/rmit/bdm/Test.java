@@ -19,10 +19,7 @@ import com.graphhopper.routing.util.FlagEncoder;
 import com.graphhopper.storage.Graph;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Test {
     public static void main(String[] args)throws IOException{
@@ -30,10 +27,10 @@ public class Test {
 //        mm.start();
 
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().preferedIndex(Torch.Index.LEVI).build();
-        QueryResult ret = engine.findOnPath(queries.get(1));
-        System.out.println(ret.mappingSucceed);
-        System.out.println(ret.retSize);
+        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).build();
+        QueryResult ret = engine.findTopK(queries.get(1), 5);
+        System.out.println(ret.isResolved);
+        System.out.println(Arrays.toString(ret.idArray));
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();

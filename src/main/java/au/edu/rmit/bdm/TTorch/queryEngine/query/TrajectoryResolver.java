@@ -19,13 +19,16 @@ class TrajectoryResolver {
     private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
     private TrajEdgeRepresentationPool trajectoryPool;
     private Map<Integer, String[]> rawEdgeLookup;
+    private boolean resolveAll;
 
-    public TrajectoryResolver( TrajEdgeRepresentationPool trajectoryPool, Map<Integer, String[]> rawEdgeLookup){
+    public TrajectoryResolver( TrajEdgeRepresentationPool trajectoryPool, Map<Integer, String[]> rawEdgeLookup, boolean resolveAll){
         this.trajectoryPool = trajectoryPool;
         this.rawEdgeLookup = rawEdgeLookup;
+        this.resolveAll = resolveAll;
     }
 
-    TrajectoryResolver(){
+    TrajectoryResolver(boolean resolveAll){
+        this.resolveAll = resolveAll;
         trajectoryPool = new TrajEdgeRepresentationPool(false);
         rawEdgeLookup = new HashMap<>();
         loadRawEdgeLookupTable();
@@ -33,13 +36,18 @@ class TrajectoryResolver {
 
     QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
 
-        List<Trajectory<TrajEntry>> retSet = resolveRet(trajIds);
         List<TrajEntry> mappedQuery = _mappedQuery;
-
         if (!queryType.equals(Torch.QueryType.RangeQ))
             mappedQuery = resolveMappedQuery(_mappedQuery);
 
-        return new QueryResult(queryType, retSet, rawQuery, mappedQuery);
+        if (resolveAll)
+            return QueryResult.genResolvedRet(queryType, resolveRet(trajIds), rawQuery, mappedQuery);
+
+        int arr[] = new int[trajIds.size()];
+        for (int i = 0; i < trajIds.size(); i++)
+            arr[i] = Integer.parseInt(trajIds.get(i));
+
+        return QueryResult.genUnresolvedRet(queryType, arr,rawQuery, mappedQuery);
     }
 
     private List<TrajEntry> resolveMappedQuery(Trajectory<TrajEntry> mappedQuery) {
@@ -75,7 +83,7 @@ class TrajectoryResolver {
 
             for (int i = 1; i < edges.length; i++) {
 
-                String[] tokens = rawEdgeLookup.get(Integer.valueOf(edges[i]));
+                String[] tokens = rawEdgeLookup.get(edges[i]);
                 String[] lats = tokens[0].split(",");
                 String[] lngs = tokens[1].split(",");
 

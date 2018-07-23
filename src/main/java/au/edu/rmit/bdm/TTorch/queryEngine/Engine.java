@@ -133,7 +133,7 @@ public class Engine {
     public static class Builder{
 
         private static Builder builder = new Builder();
-        QueryProperties properties = new QueryProperties();
+        QueryProperties properties = new QueryProperties().init();
 
         private Builder(){}
 
@@ -209,6 +209,11 @@ public class Engine {
 
             Instance.fileSetting.update(baseURI);
 
+            return this;
+        }
+
+        public Builder resolveResult(boolean resolve){
+            properties.resolveAll = resolve;
             return this;
         }
 

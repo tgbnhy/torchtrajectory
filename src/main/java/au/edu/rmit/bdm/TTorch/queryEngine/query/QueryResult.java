@@ -17,33 +17,61 @@ import java.util.List;
 public class QueryResult {
     private static final Logger logger = LoggerFactory.getLogger(QueryResult.class);
 
+    public final boolean isResolved;
+    public final int[] idArray;
     public final boolean mappingSucceed;
     public final String queryType;
     public final List<TrajEntry> rawQuery;
     public final List<TrajEntry> mappedQuery;
-    public final List<Trajectory<TrajEntry>> ret;
+    public final List<Trajectory<TrajEntry>> resolvedRet;
     public final int retSize;
 
     private QueryResult(String queryType, List<? extends TrajEntry> raw){
         this.mappingSucceed = false;
         this.queryType = queryType;
-        this.ret = new ArrayList<>();
+        this.resolvedRet = new ArrayList<>();
         this.rawQuery = (List<TrajEntry>) raw;
         this.mappedQuery = null;
         retSize = 0;
+
+        isResolved = false;
+        idArray = new int[0];
+    }
+
+    private QueryResult(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        this.mappingSucceed = true;
+        this.queryType = queryType;
+        this.resolvedRet = ret;
+        this.rawQuery = rawQuery;
+        this.mappedQuery = mappedQuery;
+        retSize = ret.size();
+        idArray = new int[ret.size()];
+        for (int i = 0; i < ret.size(); i++)
+            idArray[i] = Integer.parseInt(ret.get(i).id);
+        isResolved = true;
+    }
+
+    private QueryResult(String queryType, int[] ids, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        this.mappingSucceed = true;
+        this.queryType = queryType;
+        this.idArray = ids;
+        this.rawQuery = rawQuery;
+        this.mappedQuery = mappedQuery;
+        resolvedRet = null;
+        retSize = idArray.length;
+        isResolved = false;
+    }
+
+    public static QueryResult genResolvedRet(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        return new QueryResult(queryType, ret, rawQuery, mappedQuery);
+    }
+
+    public static QueryResult genUnresolvedRet(String queryType, int[] ids, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        return new QueryResult(queryType, ids, rawQuery, mappedQuery);
     }
 
     public static QueryResult genFailedRet(String queryType, List<? extends TrajEntry> raw){
         return new QueryResult(queryType, raw);
-    }
-
-    QueryResult(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
-        this.mappingSucceed = true;
-        this.queryType = queryType;
-        this.ret = ret;
-        this.rawQuery = rawQuery;
-        this.mappedQuery = mappedQuery;
-        retSize = ret.size();
     }
 
     /**
@@ -74,7 +102,7 @@ public class QueryResult {
      * @return qualified trajectories.
      */
     public List<Trajectory<TrajEntry>> getResultTrajectory(){
-        return ret;
+        return resolvedRet;
     }
 
     /**
@@ -99,7 +127,7 @@ public class QueryResult {
      * - key: retSize
      * value: integer indicates number of qualified trajectories found
      *
-     * - key: ret
+     * - key: resolvedRet
      * value: array of qualified trajectories in mapV format
      *
      * @return A string of JSON format
@@ -138,7 +166,7 @@ public class QueryResult {
     }
 
     public String getRetMapVformat(){
-        if (ret.isEmpty()) return "[]";
-        return Formater.toJSON(ret);
+        if (resolvedRet.isEmpty()) return "[]";
+        return Formater.toJSON(resolvedRet);
     }
 }

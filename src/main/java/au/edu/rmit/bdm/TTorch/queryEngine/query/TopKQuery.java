@@ -49,6 +49,7 @@ class TopKQuery extends QueryImpl{
 
         logger.info("total qualified trajectories: {}", trajIds.size());
         logger.info("top {} trajectory id set: {}",trajIds.size(),trajIds);
+
         return resolver.resolve(Torch.QueryType.TopK, trajIds, raw, mapped);
     }
 
