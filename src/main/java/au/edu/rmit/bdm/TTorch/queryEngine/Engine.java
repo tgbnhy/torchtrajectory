@@ -183,7 +183,10 @@ public class Engine {
 
             if (!similarityMeasure.equals(Torch.Algorithms.DTW) &&
                     !similarityMeasure.equals(Torch.Algorithms.Hausdorff) &&
-                    !similarityMeasure.equals(Torch.Algorithms.Frechet))
+                    !similarityMeasure.equals(Torch.Algorithms.Frechet) &&
+                    !similarityMeasure.equals(Torch.Algorithms.LCSS) &&
+                    !similarityMeasure.equals(Torch.Algorithms.EDR))
+
                 throw new IllegalStateException("checkout supported index type options at Torch.Algorithms");
 
             properties.similarityMeasure = similarityMeasure;

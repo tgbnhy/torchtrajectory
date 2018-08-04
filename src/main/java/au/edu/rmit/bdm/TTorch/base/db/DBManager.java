@@ -174,7 +174,6 @@ public class DBManager {
             attr = "name";
         else
             attr = "id";
-        logger.debug("{}: {} - {}", table,attr, val);
 
         String sql = "SELECT content from " + table + " WHERE "+attr+ " = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

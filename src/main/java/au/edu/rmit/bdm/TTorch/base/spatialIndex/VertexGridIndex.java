@@ -305,11 +305,6 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         int rightUpperID = calculateTileID(window.upperLat, window.rightLng);
         int leftLowerID = calculateTileID(window.lowerLat, window.leftLng);
 
-        logger.debug("pos: {}", pos);
-        logger.debug("leftUpperID: {}", leftUpperID);
-        logger.debug("rightUpperID: {}", rightUpperID);
-        logger.debug("leftLowerID: {}", leftLowerID);
-
         //getList all the vertices in the range.
         Set<Integer> vertices = new HashSet<>();
 

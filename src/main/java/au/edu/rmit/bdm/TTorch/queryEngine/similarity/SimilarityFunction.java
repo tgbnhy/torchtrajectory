@@ -29,7 +29,7 @@ public class SimilarityFunction<T extends TrajEntry> {
         DistanceFunction<TrajEntry, TrajEntry> distFunc = GeoUtil::distance;
         Comparator<TrajEntry> comparator = (p1, p2) -> {
             double dist = GeoUtil.distance(p1, p2);
-            if (dist < 8) return 0;
+            if (dist <= 50) return 0;
             return 1;
         };
 
@@ -72,17 +72,11 @@ public class SimilarityFunction<T extends TrajEntry> {
                 dpInts[i][0] = 1;
             else dpInts[i][0] = dpInts[i - 1][0];
         }
-        int jj = 0;
-        try {
-            for (jj = 1; jj < T2.size(); ++jj) {
-                if (comparator.compare(T2.get(jj), T1.get(0)) == 0)
-                    dpInts[0][jj] = 1;
-                else dpInts[0][jj] = dpInts[0][jj - 1];
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("T1={], T2={}, dpInts={},{}", T1.size(), T2.size(), dpInts.length, dpInts[0].length);
-            System.out.print("");
+
+        for (int i = 1; i < T2.size(); ++i) {
+            if (comparator.compare(T2.get(i), T1.get(0)) == 0)
+                dpInts[0][i] = 1;
+            else dpInts[0][i] = dpInts[0][i - 1];
         }
 
         for (int i = 1; i < T1.size(); ++i) {
@@ -97,7 +91,7 @@ public class SimilarityFunction<T extends TrajEntry> {
             }
         }
 
-        return dpInts[T1.size() - 1][T2.size() - 1] * 1.0 / Math.max(T1.size(), T2.size());
+        return dpInts[T1.size() - 1][T2.size() - 1] * 1.0;
     }
 
     public double EditDistanceWithRealPenalty(List<T> T1, List<T> T2, T g) {
@@ -171,7 +165,7 @@ public class SimilarityFunction<T extends TrajEntry> {
             }
         }
 
-        return dpInts[T1.size()][T2.size()] * 1.0 / Math.max(T1.size(), T2.size());
+        return dpInts[T1.size()][T2.size()] * 1.0;
     }
 
     public double EditDistanceonRealSequence(List<T> T1, List<T> T2, double bestSoFar) {
@@ -204,7 +198,7 @@ public class SimilarityFunction<T extends TrajEntry> {
             }
         }
 
-        return dpInts[T1.size()][T2.size()] * 1.0 / Math.max(T1.size(), T2.size());
+        return dpInts[T1.size()][T2.size()] * 1.0;
     }
 
     public double DynamicTimeWarping(List<T> T1, List<T> T2) {

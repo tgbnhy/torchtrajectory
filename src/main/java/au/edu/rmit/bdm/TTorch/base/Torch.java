@@ -30,9 +30,8 @@ public interface Torch {
          * * * * * * * * * * * * */
 
 //        String EUCLIDEAN_DISTANCE = "ED";     // Euclidean Distance
-//        String LCSS = "LCSS";                 // Longest Common Sub-Sequence
-//        String ERP = "ERP";                   // Edit Distance With Real Penalty
-//        String EDR = "ERP";                   // Edit Distance On Real Sequence
+        String LCSS = "LCSS";                 // Longest Common Sub-Sequence
+        String EDR = "EDR";                   // Edit Distance On Real Sequence
         String DTW = "DTW";                   // Dynamic Time Warping
         String Hausdorff = "H";
         String Frechet = "F";

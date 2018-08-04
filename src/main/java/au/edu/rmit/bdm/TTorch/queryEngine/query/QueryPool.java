@@ -190,6 +190,12 @@ public class QueryPool extends HashMap<String, Query> {
             case Torch.Algorithms.Hausdorff:
                 measureType = SimilarityFunction.MeasureType.Hausdorff;
                 break;
+            case Torch.Algorithms.LCSS:
+                measureType = SimilarityFunction.MeasureType.LCSS;
+                break;
+            case Torch.Algorithms.EDR:
+                measureType = SimilarityFunction.MeasureType.EDR;
+                break;
             default:
                 throw new IllegalStateException("please lookup Torch.Algorithms for currently supported measure type");
         }

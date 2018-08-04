@@ -28,9 +28,9 @@ public class Test {
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
-        //List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).build();
-        QueryResult ret = engine.findOnPath("Avenida dos Sanatórios");
+        List<List<TrajEntry>> queries = read();
+        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.EDR).build();
+        QueryResult ret = engine.findTopK(queries.get(1), 5);
         System.out.println(ret.mappingSucceed);
         QueryResult r = engine.resolve(ret.idArray);
         System.out.println(r.retSize);

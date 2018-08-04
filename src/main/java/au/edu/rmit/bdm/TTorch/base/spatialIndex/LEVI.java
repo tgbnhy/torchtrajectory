@@ -29,7 +29,8 @@ import static au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction.*
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
-    private static final int EPSILON = 100; //meter
+    private static final int EPSILON = 50; // within which range the point are considered match in parameter based similarity function
+    private static final int THETA = 10; // within which span the point in one sequence are considered to match the point in the other sequence.
     private static final int INITIAL_ROUND_FOR_DTW = 4;
     private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
@@ -100,8 +101,85 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 measureType == MeasureType.Hausdorff)
             return topKwithFrechetOrHausdorff(k, pointQuery);
 
+        if (measureType == MeasureType.LCSS)
+            return topKwithLCSS(k, pointQuery);
 
-        return topKwithLCSSorEDRorERP(k, pointQuery);
+        if (measureType == MeasureType.EDR)
+            return topKwithEDR(k, pointQuery);
+
+        logger.error("unsupported similarity measure: {}", measureType.toString());
+        throw new IllegalStateException("unsupported similarity measure");
+    }
+
+    private <T extends TrajEntry> List<String> topKwithEDR(int k, List<T> pointQuery){
+        Map<String, Integer> trajUpperBound = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+        Map<String, int[]> cache = new HashMap<>();
+        int querySize = pointQuery.size();
+
+        for (int i = 0; i < pointQuery.size(); i++) {
+            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), EPSILON));
+            for (Integer vertexId : idSet) {
+                if (visited.contains(vertexId)) continue;
+                List<String> trajs = vertexInvertedIndex.getKeys(vertexId);
+                for (String trajId : trajs) {
+                    if (!cache.containsKey(trajId))
+                        cache.put(trajId, pool.get(trajId));
+                    trajUpperBound.merge(trajId, 1, (a, b) -> a + b);
+                }
+            }
+            visited.addAll(idSet);
+        }
+
+        // Pair.value contains the possible minimum number of edits.
+        PriorityQueue<Pair> candidateHeap = new PriorityQueue<>((p1, p2)->(Double.compare(p1.score,p2.score)));
+        // Pair.value contains actual number of edits
+        PriorityQueue<Pair> topKHeap = new PriorityQueue<>((p1, p2)->(Double.compare(p2.score, p1.score)));
+
+        for (Map.Entry<String, Integer> entry : trajUpperBound.entrySet())
+            candidateHeap.add(new Pair(entry.getKey(), Math.max(querySize, cache.get(entry.getKey()).length) - entry.getValue()));
+        logger.debug("number of candidates: {}", candidateHeap.size());
+
+        int counter = 0;
+        while(!candidateHeap.isEmpty()){
+
+            Pair pair = candidateHeap.poll();
+
+            String curTrajId = pair.trajectoryID;
+            double curUpperBound = pair.score;
+
+            int[] trajectory = cache.get(curTrajId);
+            if (trajectory == null)
+                continue;
+
+            Trajectory<TrajEntry> t = new Trajectory<>();
+            for (int entry : trajectory) {
+                t.add(idVertexLookup.get(entry));
+            }
+
+            double realMatch = similarityFunction.EditDistanceonRealSequence(t, (List<TrajEntry>) pointQuery);
+            pair = new Pair(curTrajId, realMatch);
+
+            if (topKHeap.size() < k) {
+                topKHeap.offer(pair);
+            }else{
+                if (topKHeap.peek().score <= curUpperBound) {
+                    logger.debug("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
+                    break;
+                }
+                if (topKHeap.peek().score > pair.score) {
+                    topKHeap.poll();
+                    topKHeap.offer(pair);
+                }
+            }
+        }
+
+        List<String> resIDList = new ArrayList<>();
+        while (!topKHeap.isEmpty()) {
+            resIDList.add(topKHeap.poll().trajectoryID);
+        }
+
+        return resIDList;
     }
 
     private <T extends TrajEntry> List<String> topKwithLCSS(int k, List<T> pointQuery) {
@@ -110,7 +188,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         Set<Integer> visited = new HashSet<>();
 
         for (int i = 0; i < pointQuery.size(); i++) {
-            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLat()), EPSILON));
+            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), EPSILON));
             for (Integer vertexId : idSet) {
                 if (visited.contains(vertexId)) continue;
                 List<String> trajs = vertexInvertedIndex.getKeys(vertexId);
@@ -121,12 +199,15 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         }
 
         PriorityQueue<Pair> candidateHeap = new PriorityQueue<>((p1, p2)->(Double.compare(p2.score, p1.score)));
-        PriorityQueue<Pair> topKHeap = new PriorityQueue<>();
+        PriorityQueue<Pair> topKHeap = new PriorityQueue<>((p1, p2)->(Double.compare(p1.score, p2.score)));
 
         for (Map.Entry<String, Integer> entry : trajUpperBound.entrySet())
             candidateHeap.add(new Pair(entry.getKey(), entry.getValue()));
+        logger.debug("number of candidates: {}", candidateHeap.size());
 
+        int counter = 0;
         while(!candidateHeap.isEmpty()){
+
             Pair pair = candidateHeap.poll();
 
             String curTrajId = pair.trajectoryID;
@@ -141,15 +222,18 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 t.add(idVertexLookup.get(entry));
             }
 
-            double realMatch = similarityFunction.LongestCommonSubsequence(t, (List<TrajEntry>) pointQuery, EPSILON);
+            double realMatch = similarityFunction.LongestCommonSubsequence(t, (List<TrajEntry>) pointQuery, THETA);
             pair = new Pair(curTrajId, realMatch);
-
+            if (++counter % 10 == 0){
+                logger.info("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
+            }
             if (topKHeap.size() < k) {
                 topKHeap.offer(pair);
             }else{
-                if (topKHeap.peek().score >= curUpperBound)
+                if (topKHeap.peek().score >= curUpperBound) {
+                    logger.info("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
                     break;
-
+                }
                 if (topKHeap.peek().score < pair.score) {
                     topKHeap.poll();
                     topKHeap.offer(pair);
@@ -458,10 +542,6 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         }
 
         return resIDList;
-    }
-
-    private <T extends TrajEntry> List<String> topKwithLCSSorEDRorERP(int k, List<T> pointQuery) {
-        return null;
     }
 
     public void updateMeasureType(MeasureType measureType) {
