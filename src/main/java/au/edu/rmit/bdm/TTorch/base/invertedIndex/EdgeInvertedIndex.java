@@ -49,7 +49,6 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
         Set<String> ret = new HashSet<>();
         for (LightEdge edge : path) {
             List<String> l = getKeys(edge.id);
-
             if (l != null) {
                 ret.addAll(l);
             }

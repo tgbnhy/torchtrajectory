@@ -9,33 +9,81 @@ import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.model.*;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.TTorch.queryEngine.Engine;
-import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.osm.GraphHopperOSM;
 import com.graphhopper.routing.util.CarFlagEncoder;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.routing.util.FlagEncoder;
-import com.graphhopper.storage.Graph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
 
 public class Test {
+
+    static Logger logger = LoggerFactory.getLogger(Test.class);
     public static void main(String[] args)throws IOException{
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
-        List<List<TrajEntry>> queries = read();
+        //List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).build();
-        QueryResult ret = engine.findTopK(queries.get(1), 5);
-        System.out.println(ret.isResolved);
-        System.out.println(Arrays.toString(ret.idArray));
+        QueryResult ret = engine.findOnPath("Avenida dos Sanatórios");
+        System.out.println(ret.mappingSucceed);
+        QueryResult r = engine.resolve(ret.idArray);
+        System.out.println(r.retSize);
+//
+//        streetNameLookup();
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
 //        addLenToEdgeLookuptable();
 //        initGH();
+    }
+
+    private static void buildStreetNameLookupDBfromFile() throws IOException {
+        Map<String, String> lookup = new HashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
+        String line;
+
+        while((line = reader.readLine())!=null){
+            String[] tokens = line.split(";", -1);
+            int lastIdx = tokens.length - 1;
+            String name = tokens[lastIdx];
+            String id = tokens[0];
+
+            if (name.length() == 0) continue;
+            lookup.merge(name, id, (a, b) -> a + "," + b);
+        }
+
+        DBManager db= DBManager.getDB();
+        db.buildTable(Instance.fileSetting.EDGENAME_ID_TABLE, true);
+        for (Map.Entry<String, String> entry: lookup.entrySet())
+            db.insert(Instance.fileSetting.EDGENAME_ID_TABLE, entry.getKey(), entry.getValue());
+
+        db.closeConn();
+    }
+
+    private static void streetNameLookup() throws IOException {
+        Map<String, String> nameIdLookup = new HashMap<>();
+
+        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
+        String line;
+        while((line = reader.readLine())!=null){
+            String[] tokens = line.split(";", -1);
+            String id = tokens[0];
+            String name = tokens[tokens.length - 1];
+            if (name.length()!=0)
+                nameIdLookup.put(name, id);
+            if (name.equals("Largo 5 de Outubro"))
+                System.out.println(id);
+        }
+
+
+        System.out.println(nameIdLookup.get("Largo 5 de Outubro"));
+
     }
 
     private static void toDB(){

@@ -69,6 +69,10 @@ public class TorEdge{
         id = idGenerator;
     }
 
+    public TorEdge(int id){
+        this.id = id;
+    }
+
     public TorEdge(int id, TowerVertex t1, TowerVertex t2, double len){
         this.id = id;
         baseVertex = t1;

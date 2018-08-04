@@ -13,7 +13,7 @@ T-Torch is able to efficiently answer two typical types of queries now:
 * Top-k similarity search, we support a list of similarity measures:
   * Dynamic time wrapping (DTW)
   * Longest common sub-sequence (LCSS)
-  * Edit distance with real penalty (EDR)
+  * Edit distance on real sequence (EDR)
   * Hausdorff distance
   * Discrete Fréchet Distance
   * Longest overlapped road segments (LORS)

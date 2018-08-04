@@ -1,6 +1,7 @@
 package au.edu.rmit.bdm.TTorch.base.db;
 
 import au.edu.rmit.bdm.TTorch.base.Instance;
+import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.helper.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,19 +11,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DBManager {
 
+    private static DBManager dbManager;
     private static Logger logger = LoggerFactory.getLogger(DBManager.class);
     private Connection conn;
 
-    public DBManager() {}
+    public static DBManager getDB(){
+        if (dbManager == null)
+            dbManager = new DBManager().connect();
+        return dbManager;
+    }
+    private DBManager() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            logger.error("cannot find jdbc-sqlite driver!");
+        }
+    }
 
     public static void main(String[] args){
-        DBManager db= new DBManager().connect();
-        System.out.println(Arrays.toString(db.get(Instance.fileSetting.TRAJECTORY_EDGE_TABLE, 55)));
-        db.closeConn();
 
     }
 
@@ -43,7 +54,7 @@ public class DBManager {
         }
 
         sql = "CREATE TABLE " + tableName + " (\n"
-                + "	id integer PRIMARY KEY,\n"
+                + "	name text PRIMARY KEY,\n"
                 + "	content text NOT NULL\n"
                 + ");";
 
@@ -58,47 +69,62 @@ public class DBManager {
         }
     }
 
-    public DBManager buildFromFile(String tableName, String path2file, boolean override) {
+//    public DBManager buildFromFile(String tableName, String path2file, boolean override) {
+//
+//        connect();
+//        buildTable(tableName, override);
+//
+//        //insert all records
+//        try(FileReader fr = new FileReader(path2file);
+//            BufferedReader reader = new BufferedReader(fr)){
+//
+//            String line;
+//            int counter = 0;
+//            while((line = reader.readLine())!=null) {
+//                if (counter++ %10000 == 0)
+//                    logger.info("has insert "+counter+" records into db");
+//                String[] tokens = line.split("\t");
+//                String id = tokens[0];
+//                String content = tokens[1];
+//
+//                insert(tableName, Integer.parseInt(id), content);
+//            }
+//
+//        }catch (IOException e){
+//            logger.error(e.getMessage());
+//            logger.error("cannot find "+path2file);
+//            System.exit(-1);
+//        }
+//
+//        return this;
+//    }
 
+//    public void insert(String tableName, Integer id, String content){
+//        connect();
+//
+//        String sql = "INSERT INTO " + tableName + "(id,content) VALUES("+id+",'"+content+"')";
+//        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//            pstmt.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            logger.error(e.getMessage());
+//            logger.error("cannot insert record: id={}, content:{}"+id, content);
+//            System.exit(-1);
+//        }
+//    }
+
+    public void insert(String tableName, String name, String content){
         connect();
-        buildTable(tableName, override);
 
-        //insert all records
-        try(FileReader fr = new FileReader(path2file);
-            BufferedReader reader = new BufferedReader(fr)){
-
-            String line;
-            int counter = 0;
-            while((line = reader.readLine())!=null) {
-                if (counter++ %10000 == 0)
-                    logger.info("has insert "+counter+" records into db");
-                String[] tokens = line.split("\t");
-                String id = tokens[0];
-                String content = tokens[1];
-
-                insert(tableName, Integer.parseInt(id), content);
-            }
-
-        }catch (IOException e){
-            logger.error(e.getMessage());
-            logger.error("cannot find "+path2file);
-            System.exit(-1);
-        }
-
-        return this;
-    }
-
-    public void insert(String tableName, Integer id, String content){
-        connect();
-
-        String sql = "INSERT INTO " + tableName + "(id,content) VALUES("+id+",'"+content+"')";
+        String sql = "INSERT INTO " + tableName + "(name,content) VALUES(?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.executeUpdate();
 
+            pstmt.setString(1, name);
+            pstmt.setString(2, content);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            logger.error("cannot insert record: id={}, content:{}"+id, content);
-            System.exit(-1);
+            logger.error("cannot insert record: id={}, content:{}"+name, content);
         }
     }
 
@@ -129,39 +155,41 @@ public class DBManager {
         }
     }
 
-    public int[] getEdgeRepresentation(String trajId){
-        return get(Instance.fileSetting.TRAJECTORY_EDGE_TABLE, trajId);
+//    public int[] getEdgeRepresentation(String trajId){
+//        return get(Instance.fileSetting.TRAJECTORY_EDGE_TABLE, trajId);
+//    }
+//
+//    public int[] getVertexRepresentation(String trajId){
+//        return get(Instance.fileSetting.TRAJECTORY_VERTEX_TABLE, trajId);
+//    }
+
+    public String get(String table, int key) {
+        return get(table,String.valueOf(key));
     }
 
-    public int[] getVertexRepresentation(String trajId){
-        return get(Instance.fileSetting.TRAJECTORY_VERTEX_TABLE, trajId);
-    }
-
-    public int[] get(String table, int trajId) {
-        return get(table,String.valueOf(trajId));
-    }
-
-    public int[] get(String table, String trajId) {
+    public String get(String table, String val) {
         if (conn == null) throw new IllegalStateException("do not have sqlite connection");
+        String attr;
+        if (table.equals(Instance.fileSetting.EDGENAME_ID_TABLE))
+            attr = "name";
+        else
+            attr = "id";
+        logger.debug("{}: {} - {}", table,attr, val);
 
-        String sql = "SELECT content from " + table + " WHERE id = " + trajId;
-        int[] ret;
-
-
-        try {
-            ResultSet rs = conn.createStatement().executeQuery(sql);
-//            rs.next();
+        String sql = "SELECT content from " + table + " WHERE "+attr+ " = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            //pstmt.setString(1, attr);
+            pstmt.setString(1, val);
+            ResultSet rs = pstmt.executeQuery();
             if (rs.isClosed())
                 return null;
-            String[] temp = rs.getString(1).split(",");
 
-            ret = new int[temp.length];
-            for (int i = 0; i < temp.length; i++)
-                ret[i] = Integer.valueOf(temp[i]);
+            String ret = rs.getString(1);
+            rs.close();
             return ret;
-
         } catch (SQLException e) {
             throw new IllegalStateException(e.getMessage());
+
         }
     }
 }

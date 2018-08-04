@@ -6,9 +6,12 @@ import au.edu.rmit.bdm.TTorch.base.TopKQueryIndex;
 import au.edu.rmit.bdm.TTorch.base.db.TrajVertexRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.helper.GeoUtil;
 import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
+import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.Circle;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.Geometry;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.LightEdge;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction;
@@ -26,6 +29,7 @@ import static au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction.*
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
+    private static final int EPSILON = 100; //meter
     private static final int INITIAL_ROUND_FOR_DTW = 4;
     private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
@@ -65,9 +69,18 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
     //todo
     @Override
-    public List<String> findInRange(SearchWindow window) {
+    public List<String> findInRange(Geometry geometry) {
 
-        Collection<Integer> points = gridIndex.pointsInWindow(window);
+        Collection<Integer> points;
+        if (geometry instanceof SearchWindow)
+            points = gridIndex.pointsInWindow((SearchWindow) geometry);
+        else if (geometry instanceof Circle)
+            points = gridIndex.pointsInRange((Circle) geometry);
+        else {
+            logger.error("no such geometry defined");
+            throw new IllegalStateException("no such geometry defined");
+        }
+
         Set<String> ret = new HashSet<>();
         logger.debug("number of points in window: {}", points.size());
 
@@ -87,7 +100,69 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
                 measureType == MeasureType.Hausdorff)
             return topKwithFrechetOrHausdorff(k, pointQuery);
 
+
         return topKwithLCSSorEDRorERP(k, pointQuery);
+    }
+
+    private <T extends TrajEntry> List<String> topKwithLCSS(int k, List<T> pointQuery) {
+
+        Map<String, Integer> trajUpperBound = new HashMap<>();
+        Set<Integer> visited = new HashSet<>();
+
+        for (int i = 0; i < pointQuery.size(); i++) {
+            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLat()), EPSILON));
+            for (Integer vertexId : idSet) {
+                if (visited.contains(vertexId)) continue;
+                List<String> trajs = vertexInvertedIndex.getKeys(vertexId);
+                for (String trajId : trajs)
+                    trajUpperBound.merge(trajId, 1, (a, b) -> a + b);
+            }
+            visited.addAll(idSet);
+        }
+
+        PriorityQueue<Pair> candidateHeap = new PriorityQueue<>((p1, p2)->(Double.compare(p2.score, p1.score)));
+        PriorityQueue<Pair> topKHeap = new PriorityQueue<>();
+
+        for (Map.Entry<String, Integer> entry : trajUpperBound.entrySet())
+            candidateHeap.add(new Pair(entry.getKey(), entry.getValue()));
+
+        while(!candidateHeap.isEmpty()){
+            Pair pair = candidateHeap.poll();
+
+            String curTrajId = pair.trajectoryID;
+            double curUpperBound = pair.score;
+
+            int[] trajectory = pool.get(curTrajId);
+            if (trajectory == null)
+                continue;
+
+            Trajectory<TrajEntry> t = new Trajectory<>();
+            for (int entry : trajectory) {
+                t.add(idVertexLookup.get(entry));
+            }
+
+            double realMatch = similarityFunction.LongestCommonSubsequence(t, (List<TrajEntry>) pointQuery, EPSILON);
+            pair = new Pair(curTrajId, realMatch);
+
+            if (topKHeap.size() < k) {
+                topKHeap.offer(pair);
+            }else{
+                if (topKHeap.peek().score >= curUpperBound)
+                    break;
+
+                if (topKHeap.peek().score < pair.score) {
+                    topKHeap.poll();
+                    topKHeap.offer(pair);
+                }
+            }
+        }
+
+        List<String> resIDList = new ArrayList<>();
+        while (!topKHeap.isEmpty()) {
+            resIDList.add(topKHeap.poll().trajectoryID);
+        }
+
+        return resIDList;
     }
 
     private <T extends TrajEntry> List<String> topKwithDTW(int k, List<T> pointQuery) {

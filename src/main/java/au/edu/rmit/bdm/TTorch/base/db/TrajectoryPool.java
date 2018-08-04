@@ -24,7 +24,7 @@ public abstract class TrajectoryPool {
         this.isMem = isMem;
         if (!isMem) {
             logger.info("init db version trajectory representation pool");
-            db = new DBManager().connect();
+            db = DBManager.getDB();
             return;
         }
 
@@ -67,7 +67,10 @@ public abstract class TrajectoryPool {
             for (int i = 0; i < ret.length; i++)
                 ret[i] = Integer.valueOf(trajectory[i]);
         }else{
-            ret = db.get(tableName, trajId);
+            String[] temp = db.get(tableName, trajId).split(",");
+            ret = new int[temp.length];
+            for (int i = 0; i < temp.length; i++)
+                ret[i] = Integer.valueOf(temp[i]);
         }
         return ret;
     }

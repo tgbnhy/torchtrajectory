@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="" />
+    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/NameEdgeIdLookup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Circle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Geometry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/WindowQueryIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/WindowQueryIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/GeoUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/GeoUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TorEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TorEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/LightEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/LightEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/SearchWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/SearchWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -12,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+            <state relative-caret-position="187">
+              <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -24,53 +48,35 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Engine.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java">
+      <file leaf-file-name="SimilarityFunction.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/similarity/SimilarityFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-413">
-              <caret line="135" column="59" selection-start-line="135" selection-start-column="59" selection-end-line="135" selection-end-column="59" />
+            <state relative-caret-position="-582">
+              <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LEVI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
               <folding>
-                <element signature="e#900#901#0" expanded="true" />
-                <element signature="e#943#944#0" expanded="true" />
-                <element signature="e#9208#9209#0" expanded="true" />
-                <element signature="e#9282#9283#0" expanded="true" />
+                <element signature="e#18193#18194#0" expanded="true" />
+                <element signature="e#18220#18221#0" expanded="true" />
+                <element signature="e#18282#18283#0" expanded="true" />
+                <element signature="e#18328#18329#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Query.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java">
+      <file leaf-file-name="VertexGridIndex.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PathQuery.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HiddenMarkovModel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/HiddenMarkovModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="994">
-              <caret line="94" selection-start-line="94" selection-end-line="94" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TrajectoryResolver.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
+            <state relative-caret-position="160">
+              <caret line="288" column="32" lean-forward="true" selection-start-line="288" selection-start-column="32" selection-end-line="288" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -78,38 +84,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QueryResult.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java">
+      <file leaf-file-name="SearchWindow.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/SearchWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-37">
-              <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+            <state relative-caret-position="330">
+              <caret line="24" column="87" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="24" selection-end-column="87" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QueryPool.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryPool.java">
+      <file leaf-file-name="WindowQueryIndex.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/WindowQueryIndex.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="52" column="52" selection-start-line="52" selection-start-column="52" selection-end-line="52" selection-end-column="52" />
+            <state relative-caret-position="105">
+              <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QueryProperties.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryProperties.java">
+      <file leaf-file-name="Geometry.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Geometry.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
+            <state relative-caret-position="30">
+              <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TrajectoryPool.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java">
+      <file leaf-file-name="Circle.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Circle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
+            <state relative-caret-position="75">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -122,26 +131,21 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="JUnit4 Test Class" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>VertexGridIndex.Pair</find>
-      <find>increaseLatitude(</find>
-      <find>Lon</find>
-      <find>.lng</find>
       <find>LightPoint</find>
       <find>TorPoint</find>
       <find>Integer</find>
       <find>System.err</find>
       <find>index</find>
       <find>Tor</find>
-      <find>findBy</find>
       <find>102898</find>
       <find>75463</find>
       <find>21996</find>
@@ -161,6 +165,11 @@
       <find>geometry</find>
       <find>throw</find>
       <find>findTop</find>
+      <find>findBy</find>
+      <find>query.txt</find>
+      <find>cannot map</find>
+      <find>cannot</find>
+      <find>LCSS</find>
     </findStrings>
     <replaceStrings>
       <replace>.hash</replace>
@@ -182,6 +191,8 @@
       <replace>baseURI</replace>
       <replace>Instance.</replace>
       <replace>Instance.fileSetting</replace>
+      <replace>query</replace>
+      <replace>Cannot</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -190,17 +201,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/visualization/QueryRetJsonModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/WindowQuery.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/query/QueryResult.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/Torch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/Instance.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/spatialIndex/RTreeWrapper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/spatialIndex/LEVI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/mapMatching/MapMatching.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/mapMatching/TorSaver.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/mapMatching/algorithm/TorGraph.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/mapMatching/model/PillarVertex.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/helper/MemoryUsage.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/base/invertedIndex/InvertedIndex.java" />
@@ -209,38 +209,49 @@
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/Geometry.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Torch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/WindowQuery.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/Formater.java" />
         <option value="$PROJECT_DIR$/src/main/resources/T-Torch/query.txt" />
         <option value="$PROJECT_DIR$/src/main/resources/T-Torch/meta" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/QueryRetJsonModel.java" />
         <option value="$PROJECT_DIR$/src/main/resources/a" />
         <option value="$PROJECT_DIR$/T-Torch/query.txt" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/db/DBManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajEdgeRepresentationPool.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java" />
         <option value="$PROJECT_DIR$/T-Torch/T-Torch/query.txt" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TrajNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/Coordinate.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/HiddenMarkovModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajVertexRepresentationPool.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/model/TorVertex.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/model/TowerVertex.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TopKQuery.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryPool.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryProperties.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/Formater.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/log4j.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/PathQueryIndex.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryPool.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TorEdge.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/LightEdge.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/NameEdgeIdLookup.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/Tile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/GeoUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/SearchWindow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/WindowQueryIndex.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Circle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java" />
       </list>
     </option>
   </component>
@@ -273,10 +284,10 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="37" />
-    <option name="y" value="35" />
-    <option name="width" value="1440" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-1650" />
+    <option name="y" value="43" />
+    <option name="width" value="1592" />
     <option name="height" value="805" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -288,19 +299,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
               <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
@@ -464,47 +470,6 @@
               <item name="rmit" type="462c0819:PsiDirectoryNode" />
               <item name="bdm" type="462c0819:PsiDirectoryNode" />
               <item name="TTorch" type="462c0819:PsiDirectoryNode" />
-              <item name="mapMatching" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="au" type="462c0819:PsiDirectoryNode" />
-              <item name="edu" type="462c0819:PsiDirectoryNode" />
-              <item name="rmit" type="462c0819:PsiDirectoryNode" />
-              <item name="bdm" type="462c0819:PsiDirectoryNode" />
-              <item name="TTorch" type="462c0819:PsiDirectoryNode" />
-              <item name="mapMatching" type="462c0819:PsiDirectoryNode" />
-              <item name="algorithm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="au" type="462c0819:PsiDirectoryNode" />
-              <item name="edu" type="462c0819:PsiDirectoryNode" />
-              <item name="rmit" type="462c0819:PsiDirectoryNode" />
-              <item name="bdm" type="462c0819:PsiDirectoryNode" />
-              <item name="TTorch" type="462c0819:PsiDirectoryNode" />
-              <item name="mapMatching" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="au" type="462c0819:PsiDirectoryNode" />
-              <item name="edu" type="462c0819:PsiDirectoryNode" />
-              <item name="rmit" type="462c0819:PsiDirectoryNode" />
-              <item name="bdm" type="462c0819:PsiDirectoryNode" />
-              <item name="TTorch" type="462c0819:PsiDirectoryNode" />
               <item name="queryEngine" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -552,20 +517,27 @@
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
               <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
               <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
               <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="T-Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="invertedIndex" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -612,8 +584,8 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/T-Torch/T-Torch" />
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/T-Torch/Torch" />
       <recent name="$PROJECT_DIR$/T-Torch/TorchMeta" />
       <recent name="$PROJECT_DIR$/src/main/java/au/edu/rmit/trajectory/torch/queryEngine/spatialIndex" />
@@ -929,6 +901,35 @@
       <workItem from="1532001908047" duration="818000" />
       <workItem from="1532148638060" duration="22824000" />
       <workItem from="1532347710522" duration="4704000" />
+      <workItem from="1532388797024" duration="1510000" />
+      <workItem from="1532393282236" duration="41000" />
+      <workItem from="1532393340061" duration="22000" />
+      <workItem from="1532393395072" duration="5000" />
+      <workItem from="1532393463417" duration="61000" />
+      <workItem from="1532394304763" duration="271000" />
+      <workItem from="1532394832468" duration="20000" />
+      <workItem from="1532394945112" duration="120000" />
+      <workItem from="1532395227971" duration="13000" />
+      <workItem from="1532395518136" duration="173000" />
+      <workItem from="1532404032721" duration="138000" />
+      <workItem from="1532404239846" duration="160000" />
+      <workItem from="1532404610689" duration="174000" />
+      <workItem from="1532406015272" duration="132000" />
+      <workItem from="1532429952101" duration="88000" />
+      <workItem from="1532512276257" duration="1142000" />
+      <workItem from="1532519639606" duration="90000" />
+      <workItem from="1532773595098" duration="13000" />
+      <workItem from="1532779927810" duration="501000" />
+      <workItem from="1532781506790" duration="835000" />
+      <workItem from="1533179852075" duration="4295000" />
+      <workItem from="1533192047406" duration="149000" />
+      <workItem from="1533200587498" duration="3498000" />
+      <workItem from="1533249225247" duration="5044000" />
+      <workItem from="1533260916036" duration="4826000" />
+      <workItem from="1533266550484" duration="10000" />
+      <workItem from="1533266961210" duration="2318000" />
+      <workItem from="1533277450309" duration="1597000" />
+      <workItem from="1533340240305" duration="11413000" />
     </task>
     <servers />
   </component>
@@ -965,7 +966,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="452808000" />
+    <option name="totallyTimeSpent" value="491467000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -977,37 +978,38 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="805" extended-state="6" />
+    <frame x="-1650" y="43" width="1592" height="805" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" x="30" y="319" width="1377" height="229" id="TODO" order="6" weight="0.32761088" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.21316166" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50143063" side_tool="true" weight="0.2074392" />
-      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.13161659" />
+      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.118709676" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4990476" weight="0.27737227" />
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32904148" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4990476" weight="0.27737227" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4985694" weight="0.31678832" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="6" visible="true" weight="0.29756796" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.3180645" />
       <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3270073" />
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Spring" order="11" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3270073" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.21313868" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1022,256 +1024,10 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Torch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="60" column="14" selection-start-line="60" selection-start-column="14" selection-end-line="60" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/T-Torch/meta" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/Formater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="39" column="31" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/TrajJsonModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/QueryRetJsonModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/PathQueryIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/a" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/Mappers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="10" column="22" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="91" selection-start-line="91" selection-end-line="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/trajectory_edge.txt">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state>
-          <caret column="43" selection-start-column="4" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/DatabaseMetaData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2041">
-          <caret line="986" column="51" lean-forward="true" selection-start-line="986" selection-start-column="51" selection-end-line="986" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/Statement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="353" column="12" selection-start-line="353" selection-start-column="12" selection-end-line="353" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/PreparedStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="478" column="12" selection-start-line="478" selection-start-column="12" selection-end-line="478" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/InvertedIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/FileUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TrajNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-17">
-          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/query.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="22" lean-forward="true" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Resources/porto_raw_trajectory.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-279">
-          <caret column="10" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/Mapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/T-Torch/query.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="2" lean-forward="true" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/TorGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="183" lean-forward="true" selection-start-line="183" selection-end-line="183" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/ResultSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9691">
-          <caret line="3041" column="61" lean-forward="true" selection-start-line="3041" selection-start-column="61" selection-end-line="3041" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/GeoUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajVertexRepresentationPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="64" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1965">
-          <caret line="143" column="17" selection-start-line="143" selection-start-column="17" selection-end-line="143" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajEdgeRepresentationPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/model/TowerVertex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="39" column="43" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="43" />
-          <folding>
-            <element signature="e#1112#1113#0" expanded="true" />
-            <element signature="e#1189#1190#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/model/TorVertex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/Coordinate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TrajEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2250">
-          <caret line="169" selection-start-line="169" selection-end-line="169" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/model/PillarVertex.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="845">
-          <caret line="170" column="20" selection-start-line="170" selection-start-column="20" selection-end-line="170" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1289,109 +1045,368 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TopKQuery.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryProperties.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-142">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="495">
+          <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/similarity/SimilarityFunction.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.5/gson-2.8.5-sources.jar!/com/google/gson/Gson.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="225" selection-start-line="225" selection-end-line="225" />
+        <state relative-caret-position="377">
+          <caret line="613" column="16" selection-start-line="613" selection-start-column="16" selection-end-line="613" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/HiddenMarkovModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1230">
+          <caret line="94" selection-start-line="94" selection-end-line="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/visualization/Formater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="30" column="32" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/displayOnRequest.txt" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/trajectory_edge.txt">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state>
+          <caret column="43" selection-start-column="4" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Resources/porto_raw_trajectory.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="10" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/query.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/T-Torch/query.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="850" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="894">
+          <caret line="2328" column="20" selection-start-line="2328" selection-start-column="20" selection-end-line="2328" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Torch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajVertexRepresentationPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/id_edge.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajEdgeRepresentationPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/util/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="211" column="6" selection-start-line="211" selection-start-column="6" selection-end-line="211" selection-end-column="6" />
+        <state relative-caret-position="1035">
+          <caret line="950" column="14" selection-start-line="950" selection-start-column="14" selection-end-line="950" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/Instance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/PreparedStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="76" column="14" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TopKQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/TrajectoryPool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="69" column="14" selection-start-line="69" selection-start-column="14" selection-end-line="69" selection-end-column="14" />
+        <state relative-caret-position="915">
+          <caret line="69" column="28" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="44" column="37" lean-forward="true" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="34" column="22" lean-forward="true" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/sql/ResultSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="184" column="24" lean-forward="true" selection-start-line="184" selection-start-column="24" selection-end-line="184" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/TorEdge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="147" column="18" selection-start-line="147" selection-start-column="18" selection-end-line="147" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/LightEdge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="31" column="33" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/PathQueryIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/invertedIndex/EdgeInvertedIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="50" column="46" selection-start-line="50" selection-start-column="46" selection-end-line="50" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="19" column="36" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="81" column="22" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#707#708#0" expanded="true" />
+            <element signature="e#750#751#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
+        <state relative-caret-position="510">
+          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/NameEdgeIdLookup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/T-Torch/T-Torch/id_edge_raw.txt">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="193">
+          <caret line="13" column="246" selection-start-line="13" selection-start-column="230" selection-end-line="13" selection-end-column="246" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/db/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="172" column="3" selection-start-line="172" selection-start-column="3" selection-end-line="172" selection-end-column="3" />
+          <folding>
+            <element signature="e#5186#5187#0" expanded="true" />
+            <element signature="e#5239#5240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/util/Comparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="108" column="17" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/model/Tile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/helper/GeoUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="925">
+          <caret line="97" column="46" selection-start-line="97" selection-start-column="46" selection-end-line="97" selection-end-column="46" />
+          <folding>
+            <element signature="e#2646#2647#0" expanded="true" />
+            <element signature="e#2681#2682#0" expanded="true" />
+            <element signature="e#3295#3296#0" expanded="true" />
+            <element signature="e#3330#3331#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryPool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="52" column="52" selection-start-line="52" selection-start-column="52" selection-end-line="52" selection-end-column="52" />
+        <state relative-caret-position="208">
+          <caret line="133" column="46" selection-start-line="133" selection-start-column="46" selection-end-line="133" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryProperties.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home/src.zip!/java/lang/Math.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="38" column="29" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/QueryResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-37">
-          <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/Engine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-413">
-          <caret line="135" column="59" selection-start-line="135" selection-start-column="59" selection-end-line="135" selection-end-column="59" />
-          <folding>
-            <element signature="e#900#901#0" expanded="true" />
-            <element signature="e#943#944#0" expanded="true" />
-            <element signature="e#9208#9209#0" expanded="true" />
-            <element signature="e#9282#9283#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/PathQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/mapMatching/algorithm/HiddenMarkovModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="994">
-          <caret line="94" selection-start-line="94" selection-end-line="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/query/TrajectoryResolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="70" column="40" selection-start-line="70" selection-start-column="40" selection-end-line="70" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="215">
+          <caret line="642" column="25" selection-start-line="642" selection-start-column="25" selection-end-line="642" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
+        <state relative-caret-position="187">
+          <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Geometry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/WindowQueryIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/SearchWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="24" column="87" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="24" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/VertexGridIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="288" column="32" lean-forward="true" selection-start-line="288" selection-start-column="32" selection-end-line="288" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/model/Circle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/base/spatialIndex/LEVI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
+          <folding>
+            <element signature="e#18193#18194#0" expanded="true" />
+            <element signature="e#18220#18221#0" expanded="true" />
+            <element signature="e#18282#18283#0" expanded="true" />
+            <element signature="e#18328#18329#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/TTorch/queryEngine/similarity/SimilarityFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-582">
+          <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
         </state>
       </provider>
     </entry>

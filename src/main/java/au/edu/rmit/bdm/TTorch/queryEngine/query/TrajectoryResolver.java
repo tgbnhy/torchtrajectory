@@ -40,14 +40,17 @@ public class TrajectoryResolver {
         if (!queryType.equals(Torch.QueryType.RangeQ))
             mappedQuery = resolveMappedQuery(_mappedQuery);
 
+        QueryResult ret;
         if (resolveAll)
-            return QueryResult.genResolvedRet(queryType, resolveRet(trajIds), rawQuery, mappedQuery);
+            ret = QueryResult.genResolvedRet(queryType, resolveRet(trajIds), rawQuery, mappedQuery);
+        else {
+            int arr[] = new int[trajIds.size()];
+            for (int i = 0; i < trajIds.size(); i++)
+                arr[i] = Integer.parseInt(trajIds.get(i));
+            ret = QueryResult.genUnresolvedRet(queryType, arr,rawQuery, mappedQuery);
+        }
 
-        int arr[] = new int[trajIds.size()];
-        for (int i = 0; i < trajIds.size(); i++)
-            arr[i] = Integer.parseInt(trajIds.get(i));
-
-        return QueryResult.genUnresolvedRet(queryType, arr,rawQuery, mappedQuery);
+        return ret;
     }
 
     private List<TrajEntry> resolveMappedQuery(Trajectory<TrajEntry> mappedQuery) {

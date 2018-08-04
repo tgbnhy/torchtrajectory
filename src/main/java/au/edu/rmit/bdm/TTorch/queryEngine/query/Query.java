@@ -19,7 +19,7 @@ public interface Query {
     QueryResult execute(Object param);
 
     /**
-     * If search on the map-matched trajectory set, the query.txt trajectory will also be converted to map-matched trajectory.<p>
+     * If search on the map-matched trajectory set, the query trajectory will also be converted to map-matched trajectory.<p>
      * If search on the raw trajectory set, the query.txt trajectory will be unchanged.
      *
      * @param raw the query.txt trajectory
@@ -27,6 +27,15 @@ public interface Query {
      *         false if the query.txt trajectory cannot be mapped properly.
      */
      boolean prepare(List<? extends TrajEntry> raw);
+
+    /**
+     * The API is for path query only.
+     *
+     * @param streetName The name of the street
+     * @return True if at least one edge is found for the street.
+     *         False if no edge is found for the street
+     */
+     boolean prepare(String streetName);
 
     /**
      *

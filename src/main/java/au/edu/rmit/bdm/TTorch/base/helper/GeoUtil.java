@@ -73,6 +73,10 @@ public class GeoUtil {
         return ret;
     }
 
+    public static double decreaseLat(double lat, double meters){
+        return increaseLat(lat, -meters);
+    }
+
     /**
      * increase the value of the current longitude.
      *
@@ -88,5 +92,9 @@ public class GeoUtil {
         if (ret < -180) ret += 360;
 
         return ret;
+    }
+
+    public static double decreaseLng(double lat, double lng, double meters){
+        return increaseLng(lat, lng, -meters);
     }
 }

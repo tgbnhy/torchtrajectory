@@ -26,9 +26,11 @@ public enum Instance {
     public String TRAJECTORY_EDGE_REPRESENTATION_PATH_200000 = TorchPrefixURI + "/trajectory_edge_200000.txt";
 
     //for db
-    public String DB_URL = "jdbc:sqlite:"+TorchPrefixURI+"/db/db";
+    public String DB_PREFIX = "jdbc:sqlite:";
+    public String DB_URL = DB_PREFIX+TorchPrefixURI+"/db/db";
     public String TRAJECTORY_VERTEX_TABLE = "vertex";
     public String TRAJECTORY_EDGE_TABLE = "edge";
+    public String EDGENAME_ID_TABLE= "edgename";
 
     public String RAW_TRAJECTORY_INDEX = TorchPrefixURI + "/raw_trajectories";
 
@@ -51,7 +53,7 @@ public enum Instance {
         GRID_INDEX = baseURI + GRID_INDEX;
         RTREE_INDEX = baseURI + RTREE_INDEX;
 
-        DB_URL = baseURI + DB_URL;
+        DB_URL = DB_PREFIX + baseURI + DB_URL.split(":")[2];
 
         RAW_TRAJECTORY_INDEX = baseURI + "/raw_trajectories";
     }

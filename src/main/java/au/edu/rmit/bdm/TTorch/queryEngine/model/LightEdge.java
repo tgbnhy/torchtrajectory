@@ -27,4 +27,9 @@ public class LightEdge {
         return new LightEdge(edge.id, edge.getLength(), edge.getPosition());
     }
 
+    @Override
+    public String toString(){
+        return String.valueOf(id);
+    }
+
 }

@@ -4,8 +4,11 @@ package au.edu.rmit.bdm.TTorch.base.spatialIndex;
 import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.helper.GeoUtil;
+import au.edu.rmit.bdm.TTorch.base.model.Tile;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.Circle;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.Geometry;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -266,6 +269,37 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
 
     Collection<Integer> pointsInWindow(SearchWindow window) {
 
+        Collection<Integer> vertices = _pointsInWindow(window);
+
+        //refine
+        Iterator<Integer> iter = vertices.iterator();
+        while (iter.hasNext()){
+            Integer vertexId = iter.next();
+            TowerVertex point = allPointMap.get(vertexId);
+            if (point.lng > window.rightLng ||
+                    point.lng < window.leftLng||
+                    point.lat > window.upperLat ||
+                    point.lat < window.lowerLat)
+                iter.remove();
+        }
+
+        return vertices;
+    }
+
+    Collection<Integer> pointsInRange(Circle circle){
+        Collection<Integer> vertices = _pointsInWindow(new SearchWindow(circle.center, circle.radius));
+        //refine
+        Iterator<Integer> iter = vertices.iterator();
+        while (iter.hasNext()){
+            Integer vertexId = iter.next();
+            TowerVertex point = allPointMap.get(vertexId);
+            if (GeoUtil.distance(point, circle.center) > circle.radius)
+                iter.remove();
+        }
+        return vertices;
+    }
+
+    private Collection<Integer> _pointsInWindow(SearchWindow window) {
         int pos = calculateTileID(window.middle);
         int leftUpperID = calculateTileID(window.upperLat, window.leftLng);
         int rightUpperID = calculateTileID(window.upperLat, window.rightLng);
@@ -294,21 +328,9 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
                 --numRows;
             }
         }
-
-        //refine
-        Iterator<Integer> iter = vertices.iterator();
-        while (iter.hasNext()){
-            Integer vertexId = iter.next();
-            TowerVertex point = allPointMap.get(vertexId);
-            if (point.lng > window.rightLng ||
-                    point.lng < window.leftLng||
-                    point.lat > window.upperLat ||
-                    point.lat < window.lowerLat)
-                iter.remove();
-        }
-
         return vertices;
     }
+
 
     public double findBound(TrajEntry queryPoint, int round) {
 
@@ -422,46 +444,5 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
             int ans = pos + this.horizontalTileNumber + 1;
             return ans;
         }
-    }
-
-    class Tile{
-        int id;
-        double upperLat;
-        double lowerLat;
-        double leftLng;
-        double rightLng;
-
-        Tile(int id , double upperLat, double lowerLat, double leftLng, double rightLng){
-            this.id = id;
-            this.upperLat = upperLat;
-            this.lowerLat = lowerLat;
-            this.leftLng = leftLng;
-            this.rightLng = rightLng;
-        }
-
-        double dist2nearestEdge(TrajEntry p){
-            double lat = p.getLat();
-            double lng = p.getLng();
-
-            double dist2left = GeoUtil.distance(0,0,lng, leftLng);
-            double dist2Right = GeoUtil.distance(0, 0,lng, rightLng);
-            double dist2Ceil = GeoUtil.distance(upperLat,lat, 0, 0);
-            double dist2floor = GeoUtil.distance(lat, lowerLat, 0,0);
-
-
-            return Math.min(Math.min(dist2Ceil, dist2floor), Math.min(dist2left, dist2Right));
-        }
-
-        @Override
-        public int hashCode(){
-            return id;
-        }
-
-        @Override
-        public boolean equals(Object o){
-            if (!(o instanceof Tile)) return false;
-            return o.hashCode() == this.hashCode();
-        }
-
     }
 }

@@ -7,7 +7,7 @@ import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 /**
  * SearchWindow class models a window used for window query.txt
  */
-public class SearchWindow {
+public class SearchWindow implements Geometry{
 
     public final Coordinate middle;
     public final double lowerLat;

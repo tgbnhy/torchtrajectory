@@ -30,4 +30,9 @@ abstract class QueryImpl implements Query{
         }
         return true;
     }
+
+    @Override
+    public boolean prepare(String streetName){
+        throw new RuntimeException("The method is not intended to be invoked by the query");
+    }
 }

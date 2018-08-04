@@ -25,12 +25,14 @@ public class QueryResult {
     public final List<TrajEntry> mappedQuery;
     public final List<Trajectory<TrajEntry>> resolvedRet;
     public final int retSize;
+    public final String failReason;
 
-    private QueryResult(String queryType, List<? extends TrajEntry> raw){
+    private QueryResult(String queryType, List<? extends TrajEntry> raw, String failReason){
         this.mappingSucceed = false;
+        this.failReason = failReason;
         this.queryType = queryType;
         this.resolvedRet = new ArrayList<>();
-        this.rawQuery = (List<TrajEntry>) raw;
+        this.rawQuery = raw == null ? null : (List<TrajEntry>) raw;
         this.mappedQuery = null;
         retSize = 0;
 
@@ -40,6 +42,7 @@ public class QueryResult {
 
     private QueryResult(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
         this.mappingSucceed = true;
+        failReason = null;
         this.queryType = queryType;
         this.resolvedRet = ret;
         this.rawQuery = rawQuery;
@@ -53,11 +56,12 @@ public class QueryResult {
 
     private QueryResult(String queryType, int[] ids, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
         this.mappingSucceed = true;
+        failReason = null;
         this.queryType = queryType;
         this.idArray = ids;
         this.rawQuery = rawQuery;
         this.mappedQuery = mappedQuery;
-        resolvedRet = null;
+        resolvedRet = new ArrayList<>();
         retSize = idArray.length;
         isResolved = false;
     }
@@ -65,6 +69,7 @@ public class QueryResult {
     QueryResult(List<Trajectory<TrajEntry>> ret){
         isResolved = true;
         this.mappingSucceed = false;
+        failReason = null;
         this.queryType = null;
         this.idArray = null;
         this.rawQuery = null;
@@ -81,8 +86,8 @@ public class QueryResult {
         return new QueryResult(queryType, ids, rawQuery, mappedQuery);
     }
 
-    public static QueryResult genFailedRet(String queryType, List<? extends TrajEntry> raw){
-        return new QueryResult(queryType, raw);
+    public static QueryResult genFailedRet(String queryType, List<? extends TrajEntry> raw, String reason){
+        return new QueryResult(queryType, raw, reason);
     }
 
     /**
