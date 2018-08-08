@@ -3,6 +3,7 @@ package au.edu.rmit.bdm.TTorch.queryEngine.query;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mapper;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
 
 import java.util.List;
 

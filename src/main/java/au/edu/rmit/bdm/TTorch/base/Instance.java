@@ -24,6 +24,7 @@ public enum Instance {
 
     public String TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000 = TorchPrefixURI + "/trajectory_vertex_200000.txt";
     public String TRAJECTORY_EDGE_REPRESENTATION_PATH_200000 = TorchPrefixURI + "/trajectory_edge_200000.txt";
+    public String TRAJECTORY_START_END_TIME_200000 = TorchPrefixURI + "/trajectory_time_200000.txt";
 
     //for db
     public String DB_PREFIX = "jdbc:sqlite:";

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.*;
 
-import static au.edu.rmit.bdm.TTorch.base.Torch.SEPARATOR;
+import static au.edu.rmit.bdm.TTorch.base.Torch.SEPARATOR_1;
 import static au.edu.rmit.bdm.TTorch.base.helper.FileUtil.*;
 
 public abstract class InvertedIndex implements Index {
@@ -67,9 +67,9 @@ public abstract class InvertedIndex implements Index {
 
                 for (Pair pair : l) {
                     //write trjectory id
-                    trajBufWriter.write(pair.trajid + SEPARATOR);
+                    trajBufWriter.write(pair.trajid + SEPARATOR_1);
                     //write position
-                    posBufWriter.write(pair.pos + SEPARATOR);
+                    posBufWriter.write(pair.pos + SEPARATOR_1);
                 }
                 trajBufWriter.newLine();
                 posBufWriter.newLine();
@@ -114,8 +114,8 @@ public abstract class InvertedIndex implements Index {
                 int[] compressedPos = unsortedIntCodec.compress(pos);
 
                 //write inverted list
-                for (int aCompressedTrajID : compressedTrajID) trajBufWriter.write(aCompressedTrajID + SEPARATOR);
-                for (int aCompressedPos : compressedPos) posBufWriter.write(aCompressedPos + SEPARATOR);
+                for (int aCompressedTrajID : compressedTrajID) trajBufWriter.write(aCompressedTrajID + SEPARATOR_1);
+                for (int aCompressedPos : compressedPos) posBufWriter.write(aCompressedPos + SEPARATOR_1);
 
                 idBufWriter.newLine();
                 trajBufWriter.newLine();
@@ -182,7 +182,7 @@ public abstract class InvertedIndex implements Index {
                 trajIdLine = trajBufReader.readLine();
                 posLine = posBufReader.readLine();
 
-                String[] trajArray = trajIdLine.split(SEPARATOR), posArray = posLine.split(SEPARATOR);
+                String[] trajArray = trajIdLine.split(SEPARATOR_1), posArray = posLine.split(SEPARATOR_1);
                 int[] trajIDs = new int[trajArray.length], posis = new int[posArray.length];
                 for (int i = 0; i < trajIDs.length; i++) trajIDs[i] = Integer.parseInt(trajArray[i]);
                 for (int i = 0; i < posArray.length; i++) posis[i] = Integer.parseInt(posArray[i]);

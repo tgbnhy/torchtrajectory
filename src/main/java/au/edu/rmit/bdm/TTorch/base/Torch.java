@@ -7,7 +7,9 @@ import au.edu.rmit.bdm.TTorch.mapMatching.MapMatching;
  */
 public interface Torch {
 
-    String SEPARATOR = ";";
+    String SEPARATOR_1 = ";";
+    String SEPARATOR_2 = "\t";
+    String TIME_SEP = " | ";
 
     /**
      * Map-matching algorithms currently supported by T-Torch

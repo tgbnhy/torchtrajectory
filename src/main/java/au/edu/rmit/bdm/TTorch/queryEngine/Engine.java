@@ -4,6 +4,7 @@ import au.edu.rmit.bdm.TTorch.base.Instance;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.*;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import org.slf4j.Logger;
@@ -161,6 +162,9 @@ public class Engine {
         pool.update(queryType, props);
     }
 
+    public void setTimeInterval(TimeInterval interval, boolean contains){
+        pool.setTimeInterval(interval, contains);
+    }
     public QueryResult resolve(int[] idArr){
         return pool.resolve(idArr);
     }

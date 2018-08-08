@@ -8,7 +8,6 @@ import au.edu.rmit.bdm.TTorch.base.model.Tile;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.Circle;
-import au.edu.rmit.bdm.TTorch.queryEngine.model.Geometry;
 import au.edu.rmit.bdm.TTorch.queryEngine.model.SearchWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +182,7 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
             try (BufferedReader idReader = new BufferedReader(new FileReader(INDEX_FILE_GRID_ID));
                  BufferedReader pointReader = new BufferedReader(new FileReader(INDEX_FILE_POINT))) {
                 line = idReader.readLine();
-                String[] trajLineArray = line.split(Torch.SEPARATOR);
+                String[] trajLineArray = line.split(Torch.SEPARATOR_1);
                 this.lowerLat = Float.parseFloat(trajLineArray[0]);
                 this.leftLng = Float.parseFloat(trajLineArray[1]);
                 this.upperLat = Float.parseFloat(trajLineArray[2]);
@@ -230,15 +229,15 @@ public class VertexGridIndex extends HashMap<Integer, Collection<Integer>> imple
         try (BufferedWriter idWriter = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(INDEX_FILE_GRID_ID, false), StandardCharsets.UTF_8)));
              BufferedWriter pointWriter = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(INDEX_FILE_POINT, false), StandardCharsets.UTF_8)))) {
             //first write some arguments
-            idWriter.write(this.lowerLat + Torch.SEPARATOR);
-            idWriter.write(this.leftLng + Torch.SEPARATOR);
-            idWriter.write(this.upperLat + Torch.SEPARATOR);
-            idWriter.write(this.rightLng + Torch.SEPARATOR);
-            idWriter.write(this.deltaLat + Torch.SEPARATOR);
-            idWriter.write(this.deltaLon + Torch.SEPARATOR);
-            idWriter.write(this.horizontalTileNumber + Torch.SEPARATOR);
-            idWriter.write(this.verticalTileNumber + Torch.SEPARATOR);
-            idWriter.write(this.tileLen + Torch.SEPARATOR);
+            idWriter.write(this.lowerLat + Torch.SEPARATOR_1);
+            idWriter.write(this.leftLng + Torch.SEPARATOR_1);
+            idWriter.write(this.upperLat + Torch.SEPARATOR_1);
+            idWriter.write(this.rightLng + Torch.SEPARATOR_1);
+            idWriter.write(this.deltaLat + Torch.SEPARATOR_1);
+            idWriter.write(this.deltaLon + Torch.SEPARATOR_1);
+            idWriter.write(this.horizontalTileNumber + Torch.SEPARATOR_1);
+            idWriter.write(this.verticalTileNumber + Torch.SEPARATOR_1);
+            idWriter.write(this.tileLen + Torch.SEPARATOR_1);
             idWriter.newLine();
 
             PriorityQueue<Integer> gridPriorityQueue = new PriorityQueue<>(Comparator.naturalOrder());

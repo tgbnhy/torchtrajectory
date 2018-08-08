@@ -9,7 +9,10 @@ import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.TTorch.base.model.*;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.TTorch.queryEngine.Engine;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TorchDate;
 import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
+import com.google.gson.Gson;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.osm.GraphHopperOSM;
 import com.graphhopper.routing.util.CarFlagEncoder;
@@ -19,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Test {
@@ -28,19 +32,80 @@ public class Test {
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
+        Gson gson = new Gson();
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.EDR).build();
+        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.LCSS).build();
         QueryResult ret = engine.findTopK(queries.get(1), 5);
-        System.out.println(ret.mappingSucceed);
-        QueryResult r = engine.resolve(ret.idArray);
-        System.out.println(r.retSize);
-//
+        System.out.println("no time constraint, idArray: "+Arrays.toString(ret.idArray));
+        System.out.println("no time constraint, interval: :" + (ret.intervals == null ? "null" : gson.toJson(ret.intervals)));
+        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-17 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
+        ret = engine.findTopK(queries.get(1), 5);
+        System.out.println("no time constraint, idArray: "+Arrays.toString(ret.idArray));
+        System.out.println("no time constraint, interval: :" + (ret.intervals == null ? "null" : gson.toJson(ret.intervals)));
+
 //        streetNameLookup();
 //        getAfew();
 //        genEdgeInvertedIndex();
 //        genVertexInvertedIndex();
 //        addLenToEdgeLookuptable();
 //        initGH();
+    }
+
+    private static void addTime() throws IOException {
+
+        // load trajectory edge representation
+        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_START_END_TIME_200000));
+        String line;
+        Map<String, Integer> map = new LinkedHashMap<>(); //trajectory id - number of edges
+        while((line = reader.readLine())!= null){
+            String[] tokens = line.split("\t");
+            map.put(tokens[0], tokens[1].split(",").length);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long cur = System.currentTimeMillis();
+        long begin = cur - 60 * 60 *  24 * 150 * 1000L; //150 days ago
+        long end = cur - 60 * 60 *  24 * 140 * 1000L; //140 days age
+        long max = end - begin;
+
+        System.out.println("begin date: "+sdf.format(begin));
+        System.out.println("end date: "+sdf.format(end));
+
+        List<String> l = new ArrayList<>(200000);
+        String separator = Torch.TIME_SEP;
+        Random initial_span = new Random(17);
+        Random span = new Random(21);
+
+        int counter = 0;
+        for (Map.Entry<String, Integer> entry : map.entrySet()){
+            if (++counter == 30){
+                initial_span.setSeed(counter);
+                span.setSeed(200000 - counter);
+            }
+
+            long individual_start;
+            long individual_end;
+
+            while(true) {
+                long temp = initial_span.nextLong();
+                if (temp <0L) continue;
+                individual_start = begin + temp % max;
+                individual_end = individual_start + entry.getValue() * (span.nextInt(60 * 1000) + 100000);
+                if (individual_end < end) break;
+            }
+
+            Date d1 = new Date(individual_start);
+            Date d2 = new Date(individual_end);
+
+            String ret = entry.getKey() + Torch.SEPARATOR_2 + sdf.format(d1)+separator+sdf.format(d2);
+            writer.write(ret);
+            writer.newLine();
+        }
+        writer.flush();
+        writer.close();
+
+        //range
     }
 
     private static void buildStreetNameLookupDBfromFile() throws IOException {

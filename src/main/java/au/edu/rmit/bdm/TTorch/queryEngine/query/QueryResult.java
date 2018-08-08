@@ -3,6 +3,7 @@ package au.edu.rmit.bdm.TTorch.queryEngine.query;
 import au.edu.rmit.bdm.TTorch.base.Torch;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
 import au.edu.rmit.bdm.TTorch.queryEngine.visualization.Formater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class QueryResult {
 
     public final boolean isResolved;
     public final int[] idArray;
+    public final TimeInterval[] intervals;
     public final boolean mappingSucceed;
     public final String queryType;
     public final List<TrajEntry> rawQuery;
@@ -38,6 +40,8 @@ public class QueryResult {
 
         isResolved = false;
         idArray = new int[0];
+        this.intervals = null;
+
     }
 
     private QueryResult(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
@@ -51,6 +55,7 @@ public class QueryResult {
         idArray = new int[ret.size()];
         for (int i = 0; i < ret.size(); i++)
             idArray[i] = Integer.parseInt(ret.get(i).id);
+        this.intervals = null;
         isResolved = true;
     }
 
@@ -59,6 +64,7 @@ public class QueryResult {
         failReason = null;
         this.queryType = queryType;
         this.idArray = ids;
+        this.intervals = null;
         this.rawQuery = rawQuery;
         this.mappedQuery = mappedQuery;
         resolvedRet = new ArrayList<>();
@@ -74,8 +80,22 @@ public class QueryResult {
         this.idArray = null;
         this.rawQuery = null;
         this.mappedQuery = null;
+        this.intervals = null;
         resolvedRet = ret;
         retSize = ret.size();
+    }
+
+    public QueryResult(String queryType, TimeInterval[] intervals, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery) {
+        this.mappingSucceed = true;
+        failReason = null;
+        this.queryType = queryType;
+        this.idArray = null;
+        this.intervals = intervals;
+        this.rawQuery = rawQuery;
+        this.mappedQuery = mappedQuery;
+        resolvedRet = new ArrayList<>();
+        retSize = intervals.length;
+        isResolved = false;
     }
 
     public static QueryResult genResolvedRet(String queryType, List<Trajectory<TrajEntry>> ret, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
@@ -84,6 +104,10 @@ public class QueryResult {
 
     public static QueryResult genUnresolvedRet(String queryType, int[] ids, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
         return new QueryResult(queryType, ids, rawQuery, mappedQuery);
+    }
+
+    public static QueryResult genUnresolvedRet(String queryType, TimeInterval[] intervals, List<TrajEntry> rawQuery, List<TrajEntry> mappedQuery){
+        return new QueryResult(queryType, intervals, rawQuery, mappedQuery);
     }
 
     public static QueryResult genFailedRet(String queryType, List<? extends TrajEntry> raw, String reason){

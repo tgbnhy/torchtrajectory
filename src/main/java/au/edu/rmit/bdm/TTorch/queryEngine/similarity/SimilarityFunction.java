@@ -38,7 +38,7 @@ public class SimilarityFunction<T extends TrajEntry> {
 
     private final DistanceFunction distFunc;
 
-    private final Comparator<T> comparator;
+    public Comparator<T> comparator;
     public String measure;
 
     public SimilarityFunction(DistanceFunction<T, T> distFunc, Comparator<T> comparator) {

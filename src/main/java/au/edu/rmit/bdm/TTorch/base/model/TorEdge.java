@@ -105,12 +105,12 @@ public class TorEdge{
         getLength();
 
         StringBuilder res = new StringBuilder();
-        return res.append(this.id).append(Torch.SEPARATOR)
-                .append(this.latitudes).append(Torch.SEPARATOR)
-                .append(this.longtitudes).append(Torch.SEPARATOR)
-                .append(this.length).append(Torch.SEPARATOR)
-                .append(this.isForward).append(Torch.SEPARATOR)
-                .append(this.isBackward).append(Torch.SEPARATOR).toString();
+        return res.append(this.id).append(Torch.SEPARATOR_1)
+                .append(this.latitudes).append(Torch.SEPARATOR_1)
+                .append(this.longtitudes).append(Torch.SEPARATOR_1)
+                .append(this.length).append(Torch.SEPARATOR_1)
+                .append(this.isForward).append(Torch.SEPARATOR_1)
+                .append(this.isBackward).append(Torch.SEPARATOR_1).toString();
     }
 
 //    /**

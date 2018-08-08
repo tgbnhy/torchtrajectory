@@ -14,6 +14,7 @@ import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.bdm.TTorch.mapMatching.algorithm.TorGraph;
 import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
 import au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,9 +155,15 @@ public class QueryPool extends HashMap<String, Query> {
 
         if (props.containsKey("simFunc") && LEVI != null)
             LEVI.updateMeasureType(convertMeasureType(props.get("simFunc")));
+        if (props.containsKey("epsilon"))
+            LEVI.updateEpsilon(Integer.valueOf(props.get("epsilon")));
         if (props.containsKey("index")){
             q.updateIdx(convertIndex(props.get("index")));
         }
+    }
+
+    public void setTimeInterval(TimeInterval span, boolean contain){
+        resolver.setTimeInterval(span, contain);
     }
 
     private Index convertIndex(String indexType){

@@ -2,14 +2,15 @@ package au.edu.rmit.bdm.TTorch.queryEngine.query;
 
 import au.edu.rmit.bdm.TTorch.base.Index;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
 
 import java.util.List;
 
 public interface Query {
 
     /**
-     * For query.txt of type windowQuery, param passed in should be an object of type SearchWindow as to specify the search range.<p>
-     * For query.txt of type TopKQuery, param passed in should be an object of type Integer as to specify the number of results retrieved.<p>
+     * For query of type windowQuery, param passed in should be an object of type SearchWindow as to specify the search range.<p>
+     * For query of type TopKQuery, param passed in should be an object of type Integer as to specify the number of results retrieved.<p>
      * For the rest query.txt types, null value is expected.
      *
      * @param param A SearchWindow object indicates the range to search on.

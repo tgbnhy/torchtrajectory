@@ -6,6 +6,8 @@ import au.edu.rmit.bdm.TTorch.base.db.TrajEdgeRepresentationPool;
 import au.edu.rmit.bdm.TTorch.base.model.Coordinate;
 import au.edu.rmit.bdm.TTorch.base.model.TrajEntry;
 import au.edu.rmit.bdm.TTorch.base.model.Trajectory;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
+import au.edu.rmit.bdm.TTorch.queryEngine.model.TorchDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,10 @@ public class TrajectoryResolver {
     private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
     private TrajEdgeRepresentationPool trajectoryPool;
     private Map<Integer, String[]> rawEdgeLookup;
+    private Map<String, TimeInterval> timeSpanLookup;
     private boolean resolveAll;
+    protected TimeInterval querySpan;
+    protected boolean contain;
 
     public TrajectoryResolver( TrajEdgeRepresentationPool trajectoryPool, Map<Integer, String[]> rawEdgeLookup, boolean resolveAll){
         this.trajectoryPool = trajectoryPool;
@@ -30,27 +35,62 @@ public class TrajectoryResolver {
     TrajectoryResolver(boolean resolveAll){
         this.resolveAll = resolveAll;
         trajectoryPool = new TrajEdgeRepresentationPool(false);
+
         rawEdgeLookup = new HashMap<>();
         loadRawEdgeLookupTable();
+
+        timeSpanLookup = new HashMap<>();
+        loadTimeSpanLookupTable();
+
     }
 
-    QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery){
+    QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery) {
 
         List<TrajEntry> mappedQuery = _mappedQuery;
         if (!queryType.equals(Torch.QueryType.RangeQ))
             mappedQuery = resolveMappedQuery(_mappedQuery);
 
+        if (querySpan != null) {
+            Iterator<String> iter = trajIds.iterator();
+            if (contain) {
+                while (iter.hasNext()) {
+                    String id = iter.next();
+                    TimeInterval candidate_time_span = timeSpanLookup.get(id);
+                    if (!querySpan.contains(candidate_time_span))
+                        iter.remove();
+                }
+            } else {  //join but not contain
+                while (iter.hasNext()) {
+                    String id = iter.next();
+                    TimeInterval candidate_time_span = timeSpanLookup.get(id);
+                    if (!querySpan.joins(candidate_time_span))
+                        iter.remove();
+                }
+            }
+
         QueryResult ret;
         if (resolveAll)
             ret = QueryResult.genResolvedRet(queryType, resolveRet(trajIds), rawQuery, mappedQuery);
         else {
-            int arr[] = new int[trajIds.size()];
+            TimeInterval arr[] = new TimeInterval[trajIds.size()];
             for (int i = 0; i < trajIds.size(); i++)
-                arr[i] = Integer.parseInt(trajIds.get(i));
-            ret = QueryResult.genUnresolvedRet(queryType, arr,rawQuery, mappedQuery);
+                arr[i] = timeSpanLookup.get(trajIds.get(i));
+            ret = QueryResult.genUnresolvedRet(queryType, arr, rawQuery, mappedQuery);
         }
+            return ret;
 
-        return ret;
+        }else{
+            QueryResult ret;
+            if (resolveAll)
+                ret = QueryResult.genResolvedRet(queryType, resolveRet(trajIds), rawQuery, mappedQuery);
+            else {
+                int[] ids = new int[trajIds.size()];
+                for (int i = 0; i < trajIds.size(); i++)
+                    ids[i] = Integer.valueOf(trajIds.get(i));
+                ret = QueryResult.genUnresolvedRet(queryType, ids, rawQuery, mappedQuery);
+            }
+            return ret;
+        }
     }
 
     private List<TrajEntry> resolveMappedQuery(Trajectory<TrajEntry> mappedQuery) {
@@ -132,4 +172,41 @@ public class TrajectoryResolver {
         }
     }
 
+    private void loadTimeSpanLookupTable() {
+        logger.info("load time querySpan lookup table");
+
+        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_START_END_TIME_200000);
+            BufferedReader reader = new BufferedReader(fr)){
+            String line;
+            String[] tokens;
+            String id;
+            String[] span;
+            String start;
+            String end;
+            while((line = reader.readLine())!=null){
+                tokens = line.split(Torch.SEPARATOR_2);
+                id= tokens[0];
+                span = tokens[1].split(" \\| ");
+                start = span[0];
+                end = span[1];
+
+                timeSpanLookup.put(id, buildInterval(id, start, end));
+            }
+
+        }catch (IOException e){
+            throw new RuntimeException("some critical data is missing, system on exit...");
+        }
+
+    }
+
+    private TimeInterval buildInterval(String id, String start, String end) {
+        TorchDate startDate = new TorchDate().setAll(start);
+        TorchDate endDate = new TorchDate().setAll(end);
+        return new TimeInterval(id, startDate, endDate);
+    }
+
+    public void setTimeInterval(TimeInterval span, boolean contain) {
+        this.querySpan = span;
+        this.contain = contain;
+    }
 }

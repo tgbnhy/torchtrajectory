@@ -29,8 +29,8 @@ import static au.edu.rmit.bdm.TTorch.queryEngine.similarity.SimilarityFunction.*
  */
 public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
-    private static final int EPSILON = 50; // within which range the point are considered match in parameter based similarity function
-    private static final int THETA = 10; // within which span the point in one sequence are considered to match the point in the other sequence.
+    public int epsilon = 50; // within which range the point are considered match in parameter based similarity function
+    private static final int THETA = 10; // within which querySpan the point in one sequence are considered to match the point in the other sequence.
     private static final int INITIAL_ROUND_FOR_DTW = 4;
     private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
@@ -118,7 +118,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         int querySize = pointQuery.size();
 
         for (int i = 0; i < pointQuery.size(); i++) {
-            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), EPSILON));
+            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), epsilon));
             for (Integer vertexId : idSet) {
                 if (visited.contains(vertexId)) continue;
                 List<String> trajs = vertexInvertedIndex.getKeys(vertexId);
@@ -188,7 +188,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
         Set<Integer> visited = new HashSet<>();
 
         for (int i = 0; i < pointQuery.size(); i++) {
-            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), EPSILON));
+            Collection<Integer> idSet = gridIndex.pointsInRange(new Circle(new Coordinate(pointQuery.get(i).getLat(), pointQuery.get(i).getLng()), epsilon));
             for (Integer vertexId : idSet) {
                 if (visited.contains(vertexId)) continue;
                 List<String> trajs = vertexInvertedIndex.getKeys(vertexId);
@@ -224,14 +224,12 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
             double realMatch = similarityFunction.LongestCommonSubsequence(t, (List<TrajEntry>) pointQuery, THETA);
             pair = new Pair(curTrajId, realMatch);
-            if (++counter % 10 == 0){
-                logger.info("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
-            }
+
             if (topKHeap.size() < k) {
                 topKHeap.offer(pair);
             }else{
                 if (topKHeap.peek().score >= curUpperBound) {
-                    logger.info("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
+                    logger.debug("current upper bound: {}, current real score: {}", curUpperBound, topKHeap.peek().score);
                     break;
                 }
                 if (topKHeap.peek().score < pair.score) {
@@ -546,6 +544,15 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
 
     public void updateMeasureType(MeasureType measureType) {
         this.measureType = measureType;
+    }
+
+    public void updateEpsilon(int epsilon) {
+        this.epsilon = epsilon;
+        similarityFunction.comparator = (p1, p2) -> {
+            double dist = GeoUtil.distance(p1, p2);
+            if (dist <= epsilon) return 0;
+            return 1;
+        };
     }
 
 

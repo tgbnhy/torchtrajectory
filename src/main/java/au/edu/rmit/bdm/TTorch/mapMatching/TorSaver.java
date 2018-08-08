@@ -163,9 +163,9 @@ public class TorSaver {
                 rawWriter.write(edge.convertToDatabaseForm());
                 rawWriter.newLine();
 
-                builder.append(edge.id).append(Torch.SEPARATOR)
-                       .append(graph.vertexIdLookup.get(edge.baseVertex.hash)).append(Torch.SEPARATOR)
-                       .append(graph.vertexIdLookup.get(edge.adjVertex.hash)).append(Torch.SEPARATOR)
+                builder.append(edge.id).append(Torch.SEPARATOR_1)
+                       .append(graph.vertexIdLookup.get(edge.baseVertex.hash)).append(Torch.SEPARATOR_1)
+                       .append(graph.vertexIdLookup.get(edge.adjVertex.hash)).append(Torch.SEPARATOR_1)
                        .append(edge.getLength());
 
                 writer.write(builder.toString());
