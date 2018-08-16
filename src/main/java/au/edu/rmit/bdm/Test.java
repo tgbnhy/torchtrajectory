@@ -1,17 +1,18 @@
 package au.edu.rmit.bdm;
 
-import au.edu.rmit.bdm.TTorch.base.Instance;
-import au.edu.rmit.bdm.TTorch.base.Torch;
-import au.edu.rmit.bdm.TTorch.base.db.DBManager;
-import au.edu.rmit.bdm.TTorch.base.helper.MemoryUsage;
-import au.edu.rmit.bdm.TTorch.base.invertedIndex.EdgeInvertedIndex;
-import au.edu.rmit.bdm.TTorch.base.invertedIndex.VertexInvertedIndex;
-import au.edu.rmit.bdm.TTorch.base.model.*;
-import au.edu.rmit.bdm.TTorch.mapMatching.model.TowerVertex;
-import au.edu.rmit.bdm.TTorch.queryEngine.Engine;
-import au.edu.rmit.bdm.TTorch.queryEngine.model.TimeInterval;
-import au.edu.rmit.bdm.TTorch.queryEngine.model.TorchDate;
-import au.edu.rmit.bdm.TTorch.queryEngine.query.QueryResult;
+import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.Torch;
+import au.edu.rmit.bdm.Torch.base.db.DBManager;
+import au.edu.rmit.bdm.Torch.base.helper.MemoryUsage;
+import au.edu.rmit.bdm.Torch.base.invertedIndex.EdgeInvertedIndex;
+import au.edu.rmit.bdm.Torch.base.invertedIndex.VertexInvertedIndex;
+import au.edu.rmit.bdm.Torch.base.model.*;
+import au.edu.rmit.bdm.Torch.mapMatching.model.TowerVertex;
+import au.edu.rmit.bdm.Torch.queryEngine.Engine;
+import au.edu.rmit.bdm.Torch.queryEngine.model.SearchWindow;
+import au.edu.rmit.bdm.Torch.queryEngine.model.TimeInterval;
+import au.edu.rmit.bdm.Torch.queryEngine.model.TorchDate;
+import au.edu.rmit.bdm.Torch.queryEngine.query.QueryResult;
 import com.google.gson.Gson;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.osm.GraphHopperOSM;
@@ -35,13 +36,11 @@ public class Test {
         Gson gson = new Gson();
         List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.LCSS).build();
-        QueryResult ret = engine.findTopK(queries.get(1), 5);
-        System.out.println("no time constraint, idArray: "+Arrays.toString(ret.idArray));
-        System.out.println("no time constraint, interval: :" + (ret.intervals == null ? "null" : gson.toJson(ret.intervals)));
-        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-17 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
-        ret = engine.findTopK(queries.get(1), 5);
-        System.out.println("no time constraint, idArray: "+Arrays.toString(ret.idArray));
-        System.out.println("no time constraint, interval: :" + (ret.intervals == null ? "null" : gson.toJson(ret.intervals)));
+        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-14 11:11:09"), new TorchDate().setAll("2018-03-15 11:11:09")), true);
+
+        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.157186,-8.561003), new Coordinate(41.150016,-8.544043)));
+        System.out.println("number of results:" +ret.retSize);
+        System.out.println(Arrays.toString(ret.idArray));
 
 //        streetNameLookup();
 //        getAfew();

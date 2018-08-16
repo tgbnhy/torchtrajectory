@@ -8,12 +8,9 @@
 		</layout>
 	</appender>
 
-	<logger name="au.edu.rmit.bdm.TTorch">
+	<logger name="au.edu.rmit.bdm.Torch">
 		<level value="DEBUG"></level>
 		<appender-ref ref="consoleAppender" />
 	</logger>
 
-	<root>
-		<level value="ERROR" />
-	</root>
 </log4j:configuration>
