@@ -1,8 +1,10 @@
 # T-Torch: searching trajectories in a fast way
-T-Torch is the world's first search engine for trajectory data, which is built over our research paper below:
+* T-Torch is the world's first search engine for trajectory data, which is built over our research paper below:
 ```
-Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for Trajectory Data. SIGIR 2018: 535-544
+Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for 
+Trajectory Data. SIGIR 2018: 535-544
 ```
+* We also have a traffic analytics system based on T-Torch: http://43.240.96.2/TTorchServer/.
 
 ## Supported queries 
 T-Torch is able to efficiently answer two typical types of queries now:
@@ -13,7 +15,7 @@ T-Torch is able to efficiently answer two typical types of queries now:
 * Top-k similarity search, we support a list of similarity measures:
   * Dynamic time wrapping (DTW)
   * Longest common sub-sequence (LCSS)
-  * Edit distance on real sequence (EDR)
+  * Edit distance with real penalty (EDR)
   * Hausdorff distance
   * Discrete Fréchet Distance
   * Longest overlapped road segments (LORS)
@@ -26,15 +28,15 @@ T-Torch is able to efficiently answer two typical types of queries now:
   * Compressiable index
   * Various similarity measures
 * Trajectory visualization on real road network
-  * Comming soon...
+  * http://43.240.96.2/TTorchServer/
 
 
 ## Getting started
 ### 1. Map matching
 
 ```
-MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
-mm.start();
+   MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
+   mm.start();
 ```
 
 Map matching is the technique for projecting raw trajectories onto real road network.The first argument is the URI of raw trajectory data-set, while the second argument **"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
@@ -42,7 +44,7 @@ After setup, call start() method to convert raw trajectories to mapped trajector
 
 #### Note:
 ```
-trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
+   trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
 ```
  1. The format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
  2. It is your part to take care of data cleansing, as low quality trajectories leads to low projection rate, and high length trajectories (over 200) could affect query time.
@@ -53,7 +55,7 @@ After map-matching, we could perform trajectory retrieval over mapped trajectori
 To get the engine ready( loading or building necessary indexes to support different types of query), 
 only a line of code is required: 
 ```
-Engine engine = Engine.getBuilder().build();
+   Engine engine = Engine.getBuilder().build();
 ``` 
 
 #### 1) Range query
@@ -88,10 +90,12 @@ and the second is number of top results to return.
 
 ### 3. QueryResult
 ```
-if (ret.mappingSucceed){
-List<Trajectory<TrajEntry>> l = ret.getResultTrajectory();
-String mapVformat = ret.getMapVFormat();
-}else{ //do something}
+   if (ret.mappingSucceed){
+      List<Trajectory<TrajEntry>> l = ret.getResultTrajectory();
+      String mapVformat = ret.getMapVFormat();
+   }else{
+       //do something
+   }
 ```
 
 After the query is processed, object of type QueryResult is returned uniformly. 
@@ -108,7 +112,8 @@ It contains the query trajectory in raw form, the map-matched query trajectory, 
 If you use this code for your scientific work, please cite it as:
 
 ```
-Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for Trajectory Data. SIGIR 2018: 535-544
+Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for 
+Trajectory Data. SIGIR 2018: 535-544
 ```
 
 ```
