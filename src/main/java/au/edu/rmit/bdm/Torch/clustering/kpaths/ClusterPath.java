@@ -54,6 +54,7 @@ public class ClusterPath {
 	public Set<Integer> creatCandidateList(Map<Integer, ArrayList<Integer>> edgeIndex, Map<Integer, int[]> datamap) {
 		if (centerChanged) {//create a new list if changed, otherwise return previous to avoid rebuild
 			int[] trajectory = datamap.get(idx);
+
 			candidateList = new HashSet<Integer>();
 			for (int edgeid : trajectory) {
 				ArrayList<Integer> traidlist = edgeIndex.get(edgeid);

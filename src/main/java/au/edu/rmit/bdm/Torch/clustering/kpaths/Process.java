@@ -5,21 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Collectors;
+
+import au.edu.rmit.bdm.Torch.base.Instance;
 import au.edu.rmit.bdm.Torch.clustering.TrajectoryMtree;
 
 /*
@@ -70,6 +61,9 @@ public class Process extends Thread {
 	protected static Map<Integer, Integer> edgeHistogram;// the index used for similarity search
 	protected static Map<Integer, String> edgeInfo;// the points information
 	static Map<Integer, Integer> edgeType;
+
+	static Map<Integer, Integer> Search2ClusterLookup;
+	static Map<Integer, Integer> Cluster2SearchLookup;
 	
 	//for graph
 	protected static HashMap<Integer, ArrayList<Integer>> forwardGraph = new HashMap<Integer, ArrayList<Integer>>();//the linked edge whose start is the end of start
@@ -98,18 +92,21 @@ public class Process extends Thread {
 		return true;
 	}
 
-	public static void loadData(String path, int number, String edgePath) throws IOException{
+	public static void loadData(String trajEdgeReprepFilePath, int number, String RawEdgePath) throws IOException{
 		int idx=0;
 		int gap = number/k;
 		Random rand = new Random();
 		int counter = 100;
-		readRoadNetwork(edgePath);
+		readRoadNetwork(RawEdgePath);
 		try {
-			Scanner in = new Scanner(new BufferedReader(new FileReader(path)));					
+			Scanner in = new Scanner(new BufferedReader(new FileReader(trajEdgeReprepFilePath)));
 			while (in.hasNextLine()) {// load the bdm dataset, and we can efficiently find the bdm by their id.
 				String str = in.nextLine();
 				String strr = str.trim();
 				String[] abc = strr.split("\t");
+				Integer id = Integer.parseInt(abc[0]);
+				Cluster2SearchLookup.put(idx, id);
+				Search2ClusterLookup.put(id, idx);
 				String[] vertexSeries = abc[1].split(",");
 				int[] vertexes = new int[vertexSeries.length];
 				for(int t=0; t < vertexSeries.length; t++) {
@@ -121,7 +118,7 @@ public class Process extends Thread {
 						edgeIndex.put(edgeID, lists);
 					}else {
 						ArrayList<Integer> lists = new ArrayList<Integer>();
-						lists.add(idx);	
+						lists.add(idx);
 						edgeIndex.put(edgeID, lists);
 					}
 					if(edgeHistogram.containsKey(edgeID)) {
@@ -158,19 +155,19 @@ public class Process extends Thread {
 	//	System.out.println("the M-tree is built");
 		System.out.println("the frequency histogram of edge is built");
 		System.out.println("the inverted index of edge is built");
-		
+
 		if(mtreebuild) {
 			mindex.buildHistogram();//build the histogram
 		}
-		
+
 	}
-	
-	static void readRoadNetwork(String edgePath) {
+
+	static void readRoadNetwork(String rawEdgePath) {
 		road_types = new HashMap<>();
 		edgeType = new HashMap<>();
 		int type=0;
 		try {
-			Scanner in = new Scanner(new BufferedReader(new FileReader(edgePath)));
+			Scanner in = new Scanner(new BufferedReader(new FileReader(rawEdgePath)));
 			while (in.hasNextLine()) {		// load the geo-information of all the edges in the graph
 				String str = in.nextLine();
 				String strr = str.trim();
@@ -487,12 +484,12 @@ public class Process extends Thread {
 	}
 	
 	public static void staticKpath() throws IOException {
-		CENTERS = new ArrayList<ClusterPath>();	
+		CENTERS = new ArrayList<ClusterPath>();
 		interMinimumCentoridDis = new double[k];
 		innerCentoridDis = new double[k][];
-		datamap = new HashMap<>();// a btree map for easy search is created or read		
+		datamap = new HashMap<>();// a btree map for easy search is created or read
 		traLength = new HashMap<>();
-		edgeInfo = new HashMap<>();	
+		edgeInfo = new HashMap<>();
 		edgeIndex = new HashMap<>();
 		edgeHistogram = new HashMap<>();
 		trajectoryHistogram = new HashMap<>();
@@ -517,7 +514,6 @@ public class Process extends Thread {
         	// kPath(k, folder); // start the kpath clustering
 
         	iterations = Yinyang.yinyangkPath(k, folder, datamap.keySet());// here you can change datamap.keySet() to the result set got from range query
-        	iterations = Yinyang.yinyangkPath(k, folder, datamap.keySet());
 
         //	concludeCenter();
         }
@@ -533,18 +529,52 @@ public class Process extends Thread {
         
 	}
 
-	public static void main(String[] args) throws IOException, SQLException, InterruptedException {
-		datafile = args[0];
-		k = Integer.valueOf(args[1]);
-		trajectoryNumber = Integer.valueOf(args[2]);
-		edgefile = args[3];
-		graphfile = args[4];
-	//	StreamKpath.convertToEdges("E:\\dataset\\nantong\\nantong_simple_date.csv", "E:\\dataset\\nantong\\new_nantong_simple_date.csv", "E:\\dataset\\nantong\\edge_mapping", "E:\\dataset\\nantong\\car_mapping");
-	//	long s = System.nanoTime();
-	//	StreamKpath.readDataFromFile("E:\\dataset\\nantong\\new_nantong_simple_date.csv");
-	//	DataReading.convertStandardFormat("E:\\dataset\\nantong\\nantong.csv", "E:\\dataset\\nantong\\nantong_traffic_record");		
-	//	System.out.println((System.nanoTime()-s)/1000000000.0);
-	//	testStreamkPath();
-		staticKpath();
+	public static int[] clustering(Set<Integer> trajIds) throws IOException {
+
+	    Set<Integer> transformed = new HashSet<>();
+	    for (Integer trans: trajIds)
+	        transformed.add(Search2ClusterLookup.get(trans));
+
+
+		initializeClustersRandom(k); 		// initialize the kmeans in the first iteration
+		int iterations = Yinyang.yinyangkPath(k, folder, transformed);// here you can change datamap.keySet() to the result set got from range query
+		runrecord.printLog();
+		System.out.println("\nThe final centroid bdm ids are:");
+		int[] results = printCluterTraID(k, iterations+1, folder);
+
+        for (int i = 0; i < results.length; i++){
+            results[i] = Cluster2SearchLookup.get(results[i]);
+        }
+
+        return results;
+	}
+
+	public static void init() throws IOException {
+		datafile = Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000;
+		k = 20;
+		trajectoryNumber = 200000;
+		edgefile = Instance.fileSetting.ID_EDGE_RAW;
+		graphfile = Instance.fileSetting.ID_EDGE_LOOKUP;
+
+		CENTERS = new ArrayList<ClusterPath>();
+		interMinimumCentoridDis = new double[k];
+		innerCentoridDis = new double[k][];
+		datamap = new HashMap<>();// a btree map for easy search is created or read
+		traLength = new HashMap<>();
+		edgeInfo = new HashMap<>();
+		edgeIndex = new HashMap<>();
+		edgeHistogram = new HashMap<>();
+		trajectoryHistogram = new HashMap<>();
+		Search2ClusterLookup = new HashMap<>();
+		Cluster2SearchLookup = new HashMap<>();
+		loadData(datafile, trajectoryNumber, edgefile);	// load the data and create index
+		createTrajectoryHistogram(datamap, trajectoryNumber);  // build inverted index if there is not index
+		mindex.buildGraph(graphfile, forwardGraph, backwardGraph);
+
+	}
+
+	public static void main(String[] args) throws IOException {
+		init();
+		clustering(datamap.keySet());
 	}
 }

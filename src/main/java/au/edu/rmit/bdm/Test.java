@@ -7,6 +7,7 @@ import au.edu.rmit.bdm.Torch.base.helper.MemoryUsage;
 import au.edu.rmit.bdm.Torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.bdm.Torch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.Torch.base.model.*;
+import au.edu.rmit.bdm.Torch.clustering.kpaths.Process;
 import au.edu.rmit.bdm.Torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.Torch.queryEngine.Engine;
 import au.edu.rmit.bdm.Torch.queryEngine.model.SearchWindow;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Test {
 
@@ -36,11 +38,14 @@ public class Test {
         Gson gson = new Gson();
         List<List<TrajEntry>> queries = read();
         Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.LCSS).build();
-        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-14 11:11:09"), new TorchDate().setAll("2018-03-15 11:11:09")), true);
+        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-11 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
 
-        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.157186,-8.561003), new Coordinate(41.150016,-8.544043)));
+        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.189186,-8.671003), new Coordinate(41.110016,-8.504043)));
         System.out.println("number of results:" +ret.retSize);
-        System.out.println(Arrays.toString(ret.idArray));
+//        System.out.println(Arrays.toString(ret.idArray));
+
+        Process.init();
+        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())));
 
 //        streetNameLookup();
 //        getAfew();
@@ -49,6 +54,8 @@ public class Test {
 //        addLenToEdgeLookuptable();
 //        initGH();
     }
+
+
 
     private static void addTime() throws IOException {
 
