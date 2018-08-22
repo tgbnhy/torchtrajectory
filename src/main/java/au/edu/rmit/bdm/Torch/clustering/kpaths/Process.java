@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import au.edu.rmit.bdm.Torch.base.Instance;
 import au.edu.rmit.bdm.Torch.clustering.TrajectoryMtree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * static kpath is used for clustering all the taxi trips, so we can find the k-paths for designing bus routes, this is not a real time problem, so we can 
@@ -20,7 +22,7 @@ public class Process extends Thread {
 	// stores the clusters
 	protected static ArrayList<ClusterPath> CENTERS ; // it stores the k clusters
 	static ArrayList<ClusterPath> PRE_CENS; // it stores the previous k clusters
-	
+	static Logger logger = LoggerFactory.getLogger(Process.class);
 	// the parameters
 	protected static int TRY_TIMES = Integer.valueOf(LoadProperties.load("try_times"));//iteration times
 	static String mapv_path = LoadProperties.load("vis_path");
@@ -94,8 +96,6 @@ public class Process extends Thread {
 
 	public static void loadData(String trajEdgeReprepFilePath, int number, String RawEdgePath) throws IOException{
 		int idx=0;
-		int gap = number/k;
-		Random rand = new Random();
 		int counter = 100;
 		readRoadNetwork(RawEdgePath);
 		try {
@@ -529,36 +529,44 @@ public class Process extends Thread {
         
 	}
 
-	public static int[] clustering(Set<Integer> trajIds) throws IOException {
+	public static int[] clustering(Set<Integer> trajIds, int k) throws IOException {
+		Process.k = k;
+		CENTERS = new ArrayList<ClusterPath>();
+		interMinimumCentoridDis = new double[k];
+		innerCentoridDis = new double[k][];
 
-	    Set<Integer> transformed = new HashSet<>();
-	    for (Integer trans: trajIds)
-	        transformed.add(Search2ClusterLookup.get(trans));
+		try {
+			Set<Integer> transformed = new HashSet<>();
+			for (Integer trans : trajIds)
+				transformed.add(Search2ClusterLookup.get(trans));
 
 
-		initializeClustersRandom(k); 		// initialize the kmeans in the first iteration
-		int iterations = Yinyang.yinyangkPath(k, folder, transformed);// here you can change datamap.keySet() to the result set got from range query
-		runrecord.printLog();
-		System.out.println("\nThe final centroid bdm ids are:");
-		int[] results = printCluterTraID(k, iterations+1, folder);
+			initializeClustersRandom(k);        // initialize the kmeans in the first iteration
+			int iterations = Yinyang.yinyangkPath(k, folder, transformed);// here you can change datamap.keySet() to the result set got from range query
+			runrecord.printLog();
+			System.out.println("\nThe final centroid bdm ids are:");
+			int[] results = printCluterTraID(k, iterations+1, folder);
 
-        for (int i = 0; i < results.length; i++){
-            results[i] = Cluster2SearchLookup.get(results[i]);
-        }
+			for (int i = 0; i < results.length; i++){
+				results[i] = Cluster2SearchLookup.get(results[i]);
+			}
 
-        return results;
+			return results;
+		}catch (Exception e){
+			logger.info("error when perform clustering: {}", e.getMessage());
+		}
+
+		return new int[0];
+
 	}
 
 	public static void init() throws IOException {
 		datafile = Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000;
-		k = 20;
 		trajectoryNumber = 200000;
+
 		edgefile = Instance.fileSetting.ID_EDGE_RAW;
 		graphfile = Instance.fileSetting.ID_EDGE_LOOKUP;
 
-		CENTERS = new ArrayList<ClusterPath>();
-		interMinimumCentoridDis = new double[k];
-		innerCentoridDis = new double[k][];
 		datamap = new HashMap<>();// a btree map for easy search is created or read
 		traLength = new HashMap<>();
 		edgeInfo = new HashMap<>();
@@ -575,6 +583,6 @@ public class Process extends Thread {
 
 	public static void main(String[] args) throws IOException {
 		init();
-		clustering(datamap.keySet());
+//		clustering(datamap.keySet());
 	}
 }

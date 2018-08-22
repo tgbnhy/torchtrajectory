@@ -25,12 +25,7 @@
         <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/ojdbc/ojdbc -->
-        <dependency>
-            <groupId>ojdbc</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>14</version>
-        </dependency>
-
+        <!-- https://mvnrepository.com/artifact/ojdbc/ojdbc -->
         <dependency>
             <groupId>me.lemire.integercompression</groupId>
             <artifactId>JavaFastPFOR</artifactId>
@@ -130,11 +125,11 @@
             <version>3.20.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>24.0-jre-SNAPSHOT</version>
-            <type>bundle</type>
+            <version>26.0-jre</version>
         </dependency>
 
         <dependency>

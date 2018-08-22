@@ -45,7 +45,7 @@ public class Test {
 //        System.out.println(Arrays.toString(ret.idArray));
 
         Process.init();
-        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())));
+        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())), 3);
 
 //        streetNameLookup();
 //        getAfew();
