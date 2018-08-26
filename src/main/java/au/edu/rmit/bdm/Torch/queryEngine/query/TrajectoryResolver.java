@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.queryEngine.query;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Torch;
 import au.edu.rmit.bdm.Torch.base.db.TrajEdgeRepresentationPool;
 import au.edu.rmit.bdm.Torch.base.model.Coordinate;
@@ -23,6 +23,7 @@ public class TrajectoryResolver {
     private Map<Integer, String[]> rawEdgeLookup;
     private Map<String, TimeInterval> timeSpanLookup;
     private boolean resolveAll;
+    public FileSetting setting;
     public TimeInterval querySpan;
     public boolean contain;
 
@@ -32,10 +33,10 @@ public class TrajectoryResolver {
         this.resolveAll = resolveAll;
     }
 
-    TrajectoryResolver(boolean resolveAll){
+    TrajectoryResolver(boolean resolveAll, FileSetting setting){
         this.resolveAll = resolveAll;
-        trajectoryPool = new TrajEdgeRepresentationPool(false);
-
+        trajectoryPool = new TrajEdgeRepresentationPool(false, setting);
+        this.setting = setting;
         rawEdgeLookup = new HashMap<>();
         loadRawEdgeLookupTable();
 
@@ -153,7 +154,7 @@ public class TrajectoryResolver {
 
         logger.info("load raw edge lookup table");
 
-        try(FileReader fr = new FileReader(Instance.fileSetting.ID_EDGE_RAW);
+        try(FileReader fr = new FileReader(setting.ID_EDGE_RAW);
             BufferedReader reader = new BufferedReader(fr)){
             String line;
             String[] tokens;
@@ -177,7 +178,7 @@ public class TrajectoryResolver {
     private void loadTimeSpanLookupTable() {
         logger.info("load time querySpan lookup table");
 
-        try(FileReader fr = new FileReader(Instance.fileSetting.TRAJECTORY_START_END_TIME_200000);
+        try(FileReader fr = new FileReader(setting.TRAJECTORY_START_END_TIME_PARTIAL);
             BufferedReader reader = new BufferedReader(fr)){
             String line;
             String[] tokens;

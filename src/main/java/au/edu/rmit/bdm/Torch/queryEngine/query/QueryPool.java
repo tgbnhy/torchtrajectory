@@ -1,7 +1,7 @@
 package au.edu.rmit.bdm.Torch.queryEngine.query;
 
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Index;
-import au.edu.rmit.bdm.Torch.base.Instance;
 import au.edu.rmit.bdm.Torch.base.Torch;
 import au.edu.rmit.bdm.Torch.base.db.TrajVertexRepresentationPool;
 import au.edu.rmit.bdm.Torch.base.invertedIndex.EdgeInvertedIndex;
@@ -22,21 +22,21 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QueryPool extends HashMap<String, Query> {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryPool.class);
     private final QueryProperties props;
     private Mapper mapper;
-    private EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
+    private EdgeInvertedIndex edgeInvertedIndex;
     private LEVI LEVI;
-
+    private static AtomicInteger gNameGen = new AtomicInteger();
+    private String graphId;
 
     private Map<Integer, TowerVertex> idVertexLookup;
-
+    private FileSetting setting;
     private TrajectoryResolver resolver;
 
     /**
@@ -46,7 +46,9 @@ public class QueryPool extends HashMap<String, Query> {
     public QueryPool(QueryProperties props) {
         //set client preference
         this.props = props;
-
+        setting = new FileSetting(props.baseDir);
+        setting.update(props.uriPrefix);
+        edgeInvertedIndex = new EdgeInvertedIndex(setting);
         //initialize queries and map-matching algorithm
         init();
 
@@ -55,7 +57,7 @@ public class QueryPool extends HashMap<String, Query> {
     private void init() {
 
         buildMapper();
-        resolver = new TrajectoryResolver(props.resolveAll);
+        resolver = new TrajectoryResolver(props.resolveAll, setting);
 
         if (props.queryUsed.contains(Torch.QueryType.PathQ))
             put(Torch.QueryType.PathQ, initPathQuery());
@@ -73,13 +75,15 @@ public class QueryPool extends HashMap<String, Query> {
             return;
 
         //read meta properties
-        try(FileReader fr = new FileReader(Instance.fileSetting.metaURI);
+        try(FileReader fr = new FileReader(setting.metaURI);
             BufferedReader reader = new BufferedReader(fr)){
             String vehicleType = reader.readLine();
             String osmPath = reader.readLine();
 
-            TorGraph graph = TorGraph.getInstance().
-                    initGH(Instance.fileSetting.hopperURI, osmPath, vehicleType).buildFromDiskData();
+            this.graphId = String.valueOf(gNameGen.intValue());
+            gNameGen.getAndIncrement();
+            TorGraph graph = TorGraph.newInstance(String.valueOf(graphId), setting).
+                    initGH(setting.hopperURI, osmPath, vehicleType).buildFromDiskData();
 
             idVertexLookup = graph.idVertexLookup;
             mapper = Mappers.getMapper(Torch.Algorithms.HMM, graph);
@@ -120,7 +124,7 @@ public class QueryPool extends HashMap<String, Query> {
 
     private void initEdgeInvertedIndex() {
         if (!edgeInvertedIndex.loaded) {
-            if (!edgeInvertedIndex.build(Instance.fileSetting.EDGE_INVERTED_INDEX))
+            if (!edgeInvertedIndex.build(setting.EDGE_INVERTED_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             edgeInvertedIndex.loaded = true;
         }
@@ -131,23 +135,23 @@ public class QueryPool extends HashMap<String, Query> {
 
         if (LEVI!=null) return;
 
-        VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex();
+        VertexInvertedIndex vertexInvertedIndex = new VertexInvertedIndex(setting);
         VertexGridIndex vertexGridIndex = new VertexGridIndex(idVertexLookup, 100);
-        TrajVertexRepresentationPool trajVertexRepresentationPool = new TrajVertexRepresentationPool(false);
+        TrajVertexRepresentationPool trajVertexRepresentationPool = new TrajVertexRepresentationPool(false, setting);
 
-        if (!vertexInvertedIndex.build(Instance.fileSetting.VERTEX_INVERTED_INDEX))
+        if (!vertexInvertedIndex.build(setting.VERTEX_INVERTED_INDEX))
             throw new RuntimeException("some critical data is missing, system on exit...");
         vertexInvertedIndex.loaded = true;
 
 
         if (!vertexGridIndex.loaded){
-            if (!vertexGridIndex.build(Instance.fileSetting.GRID_INDEX))
+            if (!vertexGridIndex.build(setting.GRID_INDEX))
                 throw new RuntimeException("some critical data is missing, system on exit...");
             vertexGridIndex.loaded = true;
         }
 
         SimilarityFunction.MeasureType measureType = convertMeasureType(props.similarityMeasure);
-        this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajVertexRepresentationPool, idVertexLookup);
+        this.LEVI = new LEVI(vertexInvertedIndex, vertexGridIndex, measureType, trajVertexRepresentationPool, idVertexLookup, setting);
     }
 
     public void update(String queryType, Map<String,String> props) {

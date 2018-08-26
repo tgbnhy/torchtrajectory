@@ -26,7 +26,7 @@ class PathQuery extends QueryImpl {
     PathQuery(PathQueryIndex index, Mapper mapper, TrajectoryResolver resolver){
         super(mapper, resolver);
         this.index = index;
-        lookup = new NameEdgeIdLookup();
+        lookup = new NameEdgeIdLookup(resolver.setting);
     }
 
     @Override

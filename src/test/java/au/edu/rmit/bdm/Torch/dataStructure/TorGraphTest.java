@@ -16,12 +16,5 @@ public class TorGraphTest {
     @Test
     public void test(){
 
-        MemoryUsage.start();
-        TorGraph graph = TorGraph.getInstance().initGH("Torch/HopperMeta_car", "map-data/Beijing.osm.pbf",Torch.vehicleType.CAR);
-        MemoryUsage.printCurrentMemUsage("after loading graph-hopper");
-
-//        graph.build();
-
-        MemoryUsage.printCurrentMemUsage("after building torGraph");
     }
 }

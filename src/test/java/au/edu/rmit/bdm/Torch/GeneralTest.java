@@ -31,40 +31,12 @@ public class GeneralTest {
     @Test
     public void test2() {
         GraphHopper hopper = new GraphHopperOSM();
-        hopper.setDataReaderFile("map-data/Beijing.osm.pbf");
-        hopper.setGraphHopperLocation("./target/beijingmapmatchingtest");
+        hopper.setDataReaderFile("Beijing.osm.pbf");
+        hopper.setGraphHopperLocation("./hopper");
         CarFlagEncoder encoder = new CarFlagEncoder();
         hopper.setEncodingManager(new EncodingManager(encoder));
         hopper.getCHFactoryDecorator().setEnabled(false);
         hopper.importOrLoad();
-
-        Graph g = hopper.getGraphHopperStorage();
-        NodeAccess accessor = g.getNodeAccess();
-        EdgeExplorer explorer = g.createEdgeExplorer();
-
-        boolean allRight = true;
-
-        for (int i = 1; i < g.getNodes();i+=300){
-            EdgeIterator iter= explorer.setBaseNode(i);
-            iter.next();
-            int base = iter.getBaseNode();
-            int adjacent = iter.getAdjNode();
-            double baseLat = accessor.getLatitude(base);
-            double baseLng = accessor.getLongitude(base);
-            double adjLat = accessor.getLatitude(adjacent);
-            double adjLng = accessor.getLongitude(adjacent);
-
-            PointList pl = iter.fetchWayGeometry(3);
-            System.out.println("size "+ pl.getSize());
-            if (pl.getLatitude(0) != baseLat ||
-                    pl.getLongitude(0) != baseLng ||
-                    pl.getLatitude(pl.getSize() - 1) != adjLat ||
-                    pl.getLongitude(pl.getSize() - 1) != adjLng) {
-                System.err.println("not equal");
-                allRight = false;
-            }
-        }
-        System.out.println("all right? "+allRight);
 
     }
 

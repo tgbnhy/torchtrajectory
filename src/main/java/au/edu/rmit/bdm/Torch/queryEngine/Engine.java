@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.queryEngine;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Torch;
 import au.edu.rmit.bdm.Torch.base.model.Coordinate;
 import au.edu.rmit.bdm.Torch.base.model.TrajEntry;
@@ -242,15 +242,19 @@ public class Engine {
          *       - T-Torch
          * Just pass "foo/bar" as the parameter.
          *
-         * @param baseURI
+         * @param uriPrefix
          * @return
          */
-        public Builder baseURI(String baseURI){
-            if (baseURI.charAt(baseURI.length() - 1) != '/')
-                baseURI += "/";
+        public Builder URIprefix(String uriPrefix){
+            if (uriPrefix.charAt(uriPrefix.length() - 1) != '/')
+                uriPrefix += "/";
+            properties.uriPrefix = uriPrefix;
 
-            Instance.fileSetting.update(baseURI);
+            return this;
+        }
 
+        public Builder baseDir(String baseDir){
+            properties.baseDir = baseDir;
             return this;
         }
 

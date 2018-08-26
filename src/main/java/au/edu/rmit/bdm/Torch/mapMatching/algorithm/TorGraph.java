@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.mapMatching.algorithm;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.helper.GeoUtil;
 import au.edu.rmit.bdm.Torch.base.helper.MemoryUsage;
 import au.edu.rmit.bdm.Torch.base.Torch;
@@ -37,7 +37,7 @@ import java.util.*;
 public class TorGraph {
 
 
-    private static TorGraph torGraph = new TorGraph();
+    private static Map<String, TorGraph> instances = new HashMap<>();
     private static final double SPARSE_THRESHOLD = 50;
 
     public String vehicleType;
@@ -45,10 +45,11 @@ public class TorGraph {
 
 
     private GraphHopper hopper;
-    private Logger logger = LoggerFactory.getLogger(TorGraph.class);
+    private static Logger logger = LoggerFactory.getLogger(TorGraph.class);
 
     public boolean isBuilt = false;
     public FlagEncoder vehicle;
+    private FileSetting setting;
 
     final Map<String, TorVertex> allPoints;
 
@@ -83,8 +84,25 @@ public class TorGraph {
         pool = new ShortestPathCache();
     }
 
-    public static TorGraph getInstance(){
-        return torGraph;
+    public static TorGraph newInstance(String instance_name, FileSetting setting){
+        if (instances.containsKey(instance_name)) {
+            logger.error("trying to create another graph instance that has the same name with existed one");
+            throw new RuntimeException("trying to create another graph instance that has the same name with existed one");
+        }
+
+        TorGraph graph = new TorGraph();
+        graph.setting = setting;
+        instances.put(instance_name, graph);
+        return graph;
+    }
+
+    public static TorGraph getInstance(String instance_name){
+        if (!instances.containsKey(instance_name)){
+            logger.error("trying to a graph instance that does not exists");
+            throw new RuntimeException("trying to a graph instance that does not exists");
+        }
+
+        return null;
     }
 
     /**
@@ -156,7 +174,7 @@ public class TorGraph {
         idVertexLookup = new HashMap<>();
 
         //read id vertex lookup table
-        try(FileReader fr = new FileReader(Instance.fileSetting.ID_VERTEX_LOOKUP);
+        try(FileReader fr = new FileReader(setting.ID_VERTEX_LOOKUP);
             BufferedReader reader = new BufferedReader(fr)) {
 
             String line;
@@ -180,7 +198,7 @@ public class TorGraph {
         }
 
         //read id edge lookup table
-        try(FileReader fr = new FileReader(Instance.fileSetting.ID_EDGE_LOOKUP);
+        try(FileReader fr = new FileReader(setting.ID_EDGE_LOOKUP);
             BufferedReader reader = new BufferedReader(fr)){
 
             String line;

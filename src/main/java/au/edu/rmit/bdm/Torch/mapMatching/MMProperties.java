@@ -10,6 +10,7 @@ public class MMProperties {
     public String osmPath;
     public int batchSize = 10000;
     public int preComputationRange = 1000;
+    public String baseDir = "Torch";
 
     public MMProperties(){}
 
@@ -20,13 +21,15 @@ public class MMProperties {
         osmPath = p.osmPath;
         batchSize = p.batchSize;
         preComputationRange = p.preComputationRange;
+        baseDir = p.baseDir;
     }
     public void reset() {
-        String vehicleType = Torch.vehicleType.CAR;
-        String mmAlg = Torch.Algorithms.HMM_PRECOMPUTED;
-        String trajSrcPath;
-        String osmPath;
-        int batchSize = 10000;
-        int preComputationRange = 1000;
+        vehicleType = Torch.vehicleType.CAR;
+        mmAlg = Torch.Algorithms.HMM_PRECOMPUTED;
+        trajSrcPath = null;
+        osmPath = null;
+        batchSize = 10000;
+        preComputationRange = 1000;
+        baseDir = "Torch";
     }
 }

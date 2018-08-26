@@ -1,7 +1,7 @@
 package au.edu.rmit.bdm.Torch.base.invertedIndex;
 
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Index;
-import au.edu.rmit.bdm.Torch.base.Instance;
 import au.edu.rmit.bdm.Torch.base.model.TrajEntry;
 import au.edu.rmit.bdm.Torch.base.model.Trajectory;
 import me.lemire.integercompression.IntCompressor;
@@ -17,15 +17,18 @@ import static au.edu.rmit.bdm.Torch.base.helper.FileUtil.*;
 
 public abstract class InvertedIndex implements Index {
     private static Logger logger = LoggerFactory.getLogger(InvertedIndex.class);
-
     public boolean loaded = false;
-
+    public FileSetting setting;
 
     HashMap<Integer, Map<String, Integer>> index = new HashMap<>();
 
     HashMap<Integer, CompressedPairs> compressedIndex = new HashMap<>();
     IntegratedIntCompressor sortedIntCodec = new IntegratedIntCompressor();
     IntCompressor unsortedIntCodec = new IntCompressor();
+
+    protected InvertedIndex(FileSetting setting){
+        this.setting = setting;
+    }
 
     /**
      * invertedIndex a list of trajectories, either by edges or vertices.
@@ -167,9 +170,9 @@ public abstract class InvertedIndex implements Index {
     public boolean build(String path) {
 
         logger.info("build up inverted index");
-        if (!path.equals(Instance.fileSetting.EDGE_INVERTED_INDEX) &&
-                !path.equals(Instance.fileSetting.VERTEX_INVERTED_INDEX))
-            throw new IllegalStateException("base path got to be "+Instance.fileSetting.EDGE_INVERTED_INDEX+" or "+Instance.fileSetting.VERTEX_INVERTED_INDEX);
+        if (!path.equals(setting.EDGE_INVERTED_INDEX) &&
+                !path.equals(setting.VERTEX_INVERTED_INDEX))
+            throw new IllegalStateException("base path got to be "+setting.EDGE_INVERTED_INDEX+" or "+setting.VERTEX_INVERTED_INDEX);
 
         try (BufferedReader idBufReader = new BufferedReader(new FileReader(path + "_id.compressed"));
              BufferedReader trajBufReader = new BufferedReader(new FileReader(path + "_trajId.compressed"));

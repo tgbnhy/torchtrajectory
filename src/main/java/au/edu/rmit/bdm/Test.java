@@ -1,18 +1,15 @@
 package au.edu.rmit.bdm;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Torch;
 import au.edu.rmit.bdm.Torch.base.db.DBManager;
 import au.edu.rmit.bdm.Torch.base.helper.MemoryUsage;
 import au.edu.rmit.bdm.Torch.base.invertedIndex.EdgeInvertedIndex;
 import au.edu.rmit.bdm.Torch.base.invertedIndex.VertexInvertedIndex;
 import au.edu.rmit.bdm.Torch.base.model.*;
-import au.edu.rmit.bdm.Torch.clustering.kpaths.Process;
 import au.edu.rmit.bdm.Torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.Torch.queryEngine.Engine;
 import au.edu.rmit.bdm.Torch.queryEngine.model.SearchWindow;
-import au.edu.rmit.bdm.Torch.queryEngine.model.TimeInterval;
-import au.edu.rmit.bdm.Torch.queryEngine.model.TorchDate;
 import au.edu.rmit.bdm.Torch.queryEngine.query.QueryResult;
 import com.google.gson.Gson;
 import com.graphhopper.GraphHopper;
@@ -26,33 +23,42 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Test {
 
     static Logger logger = LoggerFactory.getLogger(Test.class);
+    static FileSetting setting = new FileSetting("Torch_Beijing");
+    
     public static void main(String[] args)throws IOException{
 //        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
 //        mm.start();
 
         Gson gson = new Gson();
         List<List<TrajEntry>> queries = read();
-        Engine engine = Engine.getBuilder().resolveResult(false).preferedIndex(Torch.Index.LEVI).preferedSimilarityMeasure(Torch.Algorithms.LCSS).build();
-        engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-11 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
+        Engine engine1 = Engine.getBuilder().
+                resolveResult(true).
+                preferedIndex(Torch.Index.LEVI).
+                preferedSimilarityMeasure(Torch.Algorithms.LCSS).
+                baseDir("Torch_Porto").
+                build();
+        Engine engine2 = Engine.getBuilder().
+                resolveResult(true).
+                preferedIndex(Torch.Index.LEVI).
+                preferedSimilarityMeasure(Torch.Algorithms.LCSS).
+                baseDir("Torch_Beijing").
+                build();
+        //engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-11 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
 
-        QueryResult ret = engine.findInRange(new SearchWindow(new Coordinate(41.189186,-8.671003), new Coordinate(41.110016,-8.504043)));
+        QueryResult ret = engine1.findInRange(new SearchWindow(new Coordinate(41.189186,-8.671003), new Coordinate(41.160016,-8.664043)));
         System.out.println("number of results:" +ret.retSize);
+
+
 //        System.out.println(Arrays.toString(ret.idArray));
+//        Process.init();
+//        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())), 3);
 
-        Process.init();
-        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())), 3);
-
-//        streetNameLookup();
-//        getAfew();
-//        genEdgeInvertedIndex();
-//        genVertexInvertedIndex();
-//        addLenToEdgeLookuptable();
 //        initGH();
+
     }
 
 
@@ -60,8 +66,8 @@ public class Test {
     private static void addTime() throws IOException {
 
         // load trajectory edge representation
-        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_START_END_TIME_200000));
+        BufferedReader reader = new BufferedReader(new FileReader(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(setting.TRAJECTORY_START_END_TIME_PARTIAL));
         String line;
         Map<String, Integer> map = new LinkedHashMap<>(); //trajectory id - number of edges
         while((line = reader.readLine())!= null){
@@ -71,8 +77,8 @@ public class Test {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long cur = System.currentTimeMillis();
-        long begin = cur - 60 * 60 *  24 * 150 * 1000L; //150 days ago
-        long end = cur - 60 * 60 *  24 * 140 * 1000L; //140 days age
+        long begin = cur - 60 * 60 *  24 * 164 * 1000L; //150 days ago
+        long end = cur - 60 * 60 *  24 * 154 * 1000L; //140 days age
         long max = end - begin;
 
         System.out.println("begin date: "+sdf.format(begin));
@@ -87,7 +93,7 @@ public class Test {
         for (Map.Entry<String, Integer> entry : map.entrySet()){
             if (++counter == 30){
                 initial_span.setSeed(counter);
-                span.setSeed(200000 - counter);
+                span.setSeed(100000 - counter);
             }
 
             long individual_start;
@@ -116,7 +122,7 @@ public class Test {
 
     private static void buildStreetNameLookupDBfromFile() throws IOException {
         Map<String, String> lookup = new HashMap<>();
-        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
+        BufferedReader reader = new BufferedReader(new FileReader(setting.ID_EDGE_RAW));
         String line;
 
         while((line = reader.readLine())!=null){
@@ -129,10 +135,10 @@ public class Test {
             lookup.merge(name, id, (a, b) -> a + "," + b);
         }
 
-        DBManager db= DBManager.getDB();
-        db.buildTable(Instance.fileSetting.EDGENAME_ID_TABLE, true);
+        DBManager db= new DBManager(setting);
+        db.buildTable(setting.EDGENAME_ID_TABLE, true);
         for (Map.Entry<String, String> entry: lookup.entrySet())
-            db.insert(Instance.fileSetting.EDGENAME_ID_TABLE, entry.getKey(), entry.getValue());
+            db.insert(setting.EDGENAME_ID_TABLE, entry.getKey(), entry.getValue());
 
         db.closeConn();
     }
@@ -140,7 +146,7 @@ public class Test {
     private static void streetNameLookup() throws IOException {
         Map<String, String> nameIdLookup = new HashMap<>();
 
-        BufferedReader reader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
+        BufferedReader reader = new BufferedReader(new FileReader(setting.ID_EDGE_RAW));
         String line;
         while((line = reader.readLine())!=null){
             String[] tokens = line.split(";", -1);
@@ -168,7 +174,7 @@ public class Test {
     }
 
     private static List<List<TrajEntry>> read() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("T-Torch/query.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("Torch_Porto/query.txt"));
         List<List<TrajEntry>> list = new ArrayList<>(3);
 
         String line;
@@ -202,8 +208,8 @@ public class Test {
     }
 
     private static void addLenToEdgeLookuptable() throws IOException{
-        BufferedReader edgeReader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_LOOKUP));
-        BufferedReader rawReader = new BufferedReader(new FileReader(Instance.fileSetting.ID_EDGE_RAW));
+        BufferedReader edgeReader = new BufferedReader(new FileReader(setting.ID_EDGE_LOOKUP));
+        BufferedReader rawReader = new BufferedReader(new FileReader(setting.ID_EDGE_RAW));
 
         List<String> edges = new ArrayList<>(10000);
         String line;
@@ -218,7 +224,7 @@ public class Test {
         edgeReader.close();
         rawReader.close();
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.ID_EDGE_LOOKUP));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(setting.ID_EDGE_LOOKUP));
         for (String edge : edges){
 
             writer.write(edge);
@@ -231,8 +237,8 @@ public class Test {
 
     private static void getAfew() throws IOException {
 
-        BufferedReader edgeReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
-        BufferedReader vertexReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
+        BufferedReader edgeReader = new BufferedReader(new FileReader(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
+        BufferedReader vertexReader = new BufferedReader(new FileReader(setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
 
         List<String> edgeList = new ArrayList<>(200001);
         List<String> vertexList = new ArrayList<>(200001);
@@ -242,12 +248,12 @@ public class Test {
             edgeList.add(line1);
             line2 = vertexReader.readLine();
             vertexList.add(line2);
-            if (++i % 200000 == 0){
+            if (++i % 100000 == 0){
                 break;
             }
         }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+"_"+200000+".txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+"_partial.txt"));
         for (String line : vertexList){
             writer.write(line);
             writer.newLine();
@@ -255,7 +261,7 @@ public class Test {
         writer.flush();
         writer.close();
 
-        writer = new BufferedWriter(new FileWriter(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH+"_"+200000+".txt"));
+        writer = new BufferedWriter(new FileWriter(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH+"_partial.txt"));
         for (String line:edgeList){
             writer.write(line);
             writer.newLine();
@@ -266,8 +272,8 @@ public class Test {
 
     private static void genEdgeInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000));
-        EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
+        EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex(setting);
 
         String line;
         String[] tokens;
@@ -278,10 +284,10 @@ public class Test {
         int i = 0;
         while((line = bufferedReader.readLine()) != null){
 
-            if (++i % 100000 == 0){
+            if (++i % 10000 == 0){
                 System.err.println("current progress: "+i);
                 MemoryUsage.printCurrentMemUsage("");
-                if (i == 200000) break;
+                if (i == 100000) break;
             }
             tokens = line.split("\t");
             edges = tokens[1].split(",");
@@ -297,13 +303,13 @@ public class Test {
         }
         MemoryUsage.printCurrentMemUsage("");
 
-        edgeInvertedIndex.saveCompressed(Instance.fileSetting.EDGE_INVERTED_INDEX);
+        edgeInvertedIndex.saveCompressed(setting.EDGE_INVERTED_INDEX);
     }
 
     private static void genVertexInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000));
-        VertexInvertedIndex vertexInvertedIndex= new VertexInvertedIndex();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
+        VertexInvertedIndex vertexInvertedIndex= new VertexInvertedIndex(setting);
 
         String line;
         String[] tokens;
@@ -314,10 +320,10 @@ public class Test {
         int i = 0;
         while((line = bufferedReader.readLine()) != null){
 
-            if (++i % 100000 == 0){
+            if (++i % 10000 == 0){
                 System.err.println("current progress: "+i);
                 MemoryUsage.printCurrentMemUsage("");
-                if (i == 200000) break;
+                if (i == 100000) break;
             }
             tokens = line.split("\t");
             vertices = tokens[1].split(",");
@@ -333,13 +339,13 @@ public class Test {
         }
         MemoryUsage.printCurrentMemUsage("");
 
-        vertexInvertedIndex.saveCompressed(Instance.fileSetting.VERTEX_INVERTED_INDEX);
+        vertexInvertedIndex.saveCompressed(setting.VERTEX_INVERTED_INDEX);
     }
 
     private static void initGH(){
         GraphHopper hopper = new GraphHopperOSM();
         hopper.setDataReaderFile("Resources/Porto.osm.pbf");
-        hopper.setGraphHopperLocation(Instance.fileSetting.hopperURI);
+        hopper.setGraphHopperLocation(setting.hopperURI);
         FlagEncoder vehicle = new CarFlagEncoder();
         hopper.setEncodingManager(new EncodingManager(vehicle));
         hopper.getCHFactoryDecorator().setEnabled(false);

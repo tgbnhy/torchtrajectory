@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.base.db;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,15 +16,14 @@ public abstract class TrajectoryPool {
     private boolean isMem;
     private Map<String, String[]> memPool;
     private DBManager db;
-
     String tableName;
 
-    TrajectoryPool(boolean isMem){
+    TrajectoryPool(boolean isMem, FileSetting setting){
 
         this.isMem = isMem;
         if (!isMem) {
-            logger.info("init db version trajectory representation pool");
-            db = DBManager.getDB();
+            logger.info("init Torch_Porto.db version trajectory representation pool");
+            db = new DBManager(setting);
             return;
         }
 
@@ -32,8 +31,8 @@ public abstract class TrajectoryPool {
         memPool = new HashMap<>();
 
         loadFromFile((this instanceof TrajVertexRepresentationPool) ?
-                Instance.fileSetting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_200000 :
-                Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000);
+                setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_PARTIAL :
+                setting.TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL);
         //read meta properties
     }
 

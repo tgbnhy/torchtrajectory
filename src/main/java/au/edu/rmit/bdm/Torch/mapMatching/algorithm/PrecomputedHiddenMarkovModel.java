@@ -306,7 +306,7 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
      */
     private void addEdges(List<TorEdge> retEdges, List<TowerVertex> curShortestPath) {
 
-        Map<String, TorEdge> allEdges = TorGraph.getInstance().allEdges;
+        Map<String, TorEdge> allEdges = graph.allEdges;
         List<TorEdge> edges = new ArrayList<>(15);
 
         TorEdge curEdge;

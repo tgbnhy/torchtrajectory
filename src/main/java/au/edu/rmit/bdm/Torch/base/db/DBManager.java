@@ -1,33 +1,33 @@
 package au.edu.rmit.bdm.Torch.base.db;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.helper.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.sql.*;
 
 public class DBManager {
 
-    private static DBManager dbManager;
     private static Logger logger = LoggerFactory.getLogger(DBManager.class);
     private Connection conn;
+    private FileSetting setting;
 
-    public static DBManager getDB(){
-        if (dbManager == null)
-            dbManager = new DBManager().connect();
-        return dbManager;
-    }
-    private DBManager() {
+    public DBManager(FileSetting setting) {
+        this.setting = setting;
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
             logger.error("cannot find jdbc-sqlite driver!");
         }
+        connect();
     }
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) throws IOException {
+        FileSetting setting = new FileSetting("Torch_Beijing");
+        DBManager db = new DBManager(setting);
+        System.out.println(db.get(setting.EDGENAME_ID_TABLE, "农大南路"));
     }
 
     public void buildTable(String tableName, boolean override){
@@ -47,7 +47,7 @@ public class DBManager {
         }
 
         sql = "CREATE TABLE " + tableName + " (\n"
-                + "	name text PRIMARY KEY,\n"
+                + "	id text PRIMARY KEY,\n"
                 + "	content text NOT NULL\n"
                 + ");";
 
@@ -62,49 +62,49 @@ public class DBManager {
         }
     }
 
-//    public DBManager buildFromFile(String tableName, String path2file, boolean override) {
-//
-//        connect();
-//        buildTable(tableName, override);
-//
-//        //insert all records
-//        try(FileReader fr = new FileReader(path2file);
-//            BufferedReader reader = new BufferedReader(fr)){
-//
-//            String line;
-//            int counter = 0;
-//            while((line = reader.readLine())!=null) {
-//                if (counter++ %10000 == 0)
-//                    logger.info("has insert "+counter+" records into db");
-//                String[] tokens = line.split("\t");
-//                String id = tokens[0];
-//                String content = tokens[1];
-//
-//                insert(tableName, Integer.parseInt(id), content);
-//            }
-//
-//        }catch (IOException e){
-//            logger.error(e.getMessage());
-//            logger.error("cannot find "+path2file);
-//            System.exit(-1);
-//        }
-//
-//        return this;
-//    }
+    public DBManager buildFromFile(String tableName, String path2file, boolean override) {
 
-//    public void insert(String tableName, Integer id, String content){
-//        connect();
-//
-//        String sql = "INSERT INTO " + tableName + "(id,content) VALUES("+id+",'"+content+"')";
-//        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-//            logger.error("cannot insert record: id={}, content:{}"+id, content);
-//            System.exit(-1);
-//        }
-//    }
+        connect();
+        buildTable(tableName, override);
+
+        //insert all records
+        try(FileReader fr = new FileReader(path2file);
+            BufferedReader reader = new BufferedReader(fr)){
+
+            String line;
+            int counter = 0;
+            while((line = reader.readLine())!=null) {
+                if (counter++ %20000 == 0)
+                    logger.info("has insert "+counter+" records into Torch_Porto.db");
+                String[] tokens = line.split("\t");
+                String id = tokens[0];
+                String content = tokens[1];
+
+                insert(tableName, Integer.parseInt(id), content);
+            }
+
+        }catch (IOException e){
+            logger.error(e.getMessage());
+            logger.error("cannot find "+path2file);
+            System.exit(-1);
+        }
+
+        return this;
+    }
+
+    public void insert(String tableName, Integer id, String content){
+        connect();
+
+        String sql = "INSERT INTO " + tableName + "(id,content) VALUES("+id+",'"+content+"')";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            logger.error("cannot insert record: id={}, content:{}"+id, content);
+            System.exit(-1);
+        }
+    }
 
     public void insert(String tableName, String name, String content){
         connect();
@@ -123,14 +123,14 @@ public class DBManager {
 
     public DBManager connect(){
         if (conn != null) return this;
-        FileUtil.ensureExistence(Instance.fileSetting.DB_URL.split(":")[2]);
+        FileUtil.ensureExistence(setting.DB_URL.split(":")[2]);
         try {
-            String url = Instance.fileSetting.DB_URL;
+            String url = setting.DB_URL;
             conn = DriverManager.getConnection(url);
-            logger.info("connection to sqlite db succeeds");
+            logger.info("connection to sqlite succeeds");
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            logger.error("cannot init connection for sqlite db, system on exit");
+            logger.error("cannot init connection for sqlite, system on exit");
             System.exit(-1);
         }
         return this;
@@ -149,11 +149,11 @@ public class DBManager {
     }
 
 //    public int[] getEdgeRepresentation(String trajId){
-//        return get(Instance.fileSetting.TRAJECTORY_EDGE_TABLE, trajId);
+//        return get(FileSetting.fileSetting.TRAJECTORY_EDGE_TABLE, trajId);
 //    }
 //
 //    public int[] getVertexRepresentation(String trajId){
-//        return get(Instance.fileSetting.TRAJECTORY_VERTEX_TABLE, trajId);
+//        return get(FileSetting.fileSetting.TRAJECTORY_VERTEX_TABLE, trajId);
 //    }
 
     public String get(String table, int key) {
@@ -163,7 +163,7 @@ public class DBManager {
     public String get(String table, String val) {
         if (conn == null) throw new IllegalStateException("do not have sqlite connection");
         String attr;
-        if (table.equals(Instance.fileSetting.EDGENAME_ID_TABLE))
+        if (table.equals(setting.EDGENAME_ID_TABLE))
             attr = "name";
         else
             attr = "id";

@@ -1,5 +1,6 @@
 package au.edu.rmit.bdm.Torch.base.invertedIndex;
 
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.PathQueryIndex;
 import au.edu.rmit.bdm.Torch.base.TopKQueryIndex;
 import au.edu.rmit.bdm.Torch.base.model.TorEdge;
@@ -23,6 +24,9 @@ public class EdgeInvertedIndex extends InvertedIndex implements PathQueryIndex, 
 
     private static  final Logger logger = LoggerFactory.getLogger(EdgeInvertedIndex.class);
 
+    public EdgeInvertedIndex(FileSetting setting){
+        super(setting);
+    }
     /**
      * invertedIndex a list of trajectories
      * @param trajectories trajectories to be indexed

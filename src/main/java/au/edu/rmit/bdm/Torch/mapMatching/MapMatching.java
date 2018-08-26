@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.mapMatching;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.mapMatching.algorithm.Mapper;
 import au.edu.rmit.bdm.Torch.mapMatching.algorithm.Mappers;
 import au.edu.rmit.bdm.Torch.mapMatching.algorithm.TorDijkstra;
@@ -31,19 +31,20 @@ import java.util.List;
  * @see #start()
  */
 public class MapMatching {
-
+    
+    public static final String GRAPHNAME = "g";
     private static Logger logger = LoggerFactory.getLogger(MapMatching.class);
     private static Builder builder = new Builder();
     private MMProperties props;
     private TorGraph graph;
     private Mapper mapper;
-
     public static Builder getBuilder(){
         return builder;
     }
+    private FileSetting setting;
 
     private MapMatching(MMProperties props){
-
+        
         this.props = props;
 
         //check trajSrcPath file
@@ -60,15 +61,18 @@ public class MapMatching {
             throw new RuntimeException();
         }
 
+        String baseDir = props.baseDir;
+        setting = new FileSetting(baseDir);
+        
         //check output directory
-        File dir = new File(Instance.fileSetting.TorchPrefixURI);
+        File dir = new File(setting.TorchBase);
         if (!dir.exists()) {
             if (!dir.mkdirs()){
-                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", Instance.fileSetting.TorchPrefixURI);
+                logger.error("{} cannot make directory, possibly Torch do not have permission for it.", setting.TorchBase);
                 throw new RuntimeException();
             }
         }else if (!dir.isDirectory()){
-            logger.error("{} already exists and it is not a directory", Instance.fileSetting.TorchPrefixURI);
+            logger.error("{} already exists and it is not a directory", setting.TorchBase);
             throw new RuntimeException();
         }
     }
@@ -82,19 +86,19 @@ public class MapMatching {
      */
     public void start(){
 
-        TorSaver saver = new TorSaver();
-        TrajReader reader = new TrajReader(props);
         MemoryUsage.start();
 
         //readBatch and build graph
         if (graph == null) {
-            graph = TorGraph.getInstance().
-                    initGH(Instance.fileSetting.hopperURI, props.osmPath, props.vehicleType);
+            graph = TorGraph.newInstance(GRAPHNAME, setting).
+                    initGH(setting.hopperURI, props.osmPath, props.vehicleType);
             MemoryUsage.printCurrentMemUsage("[after init graph hopper]");
             graph.build(props);
             MemoryUsage.printCurrentMemUsage("[after build tor graph]");
         }
 
+        TorSaver saver = new TorSaver(graph, setting);
+        TrajReader reader = new TrajReader(props);
         mapper = Mappers.getMapper(props.mmAlg, graph);
 
         //readBatch trajectory data in batch from file
@@ -185,6 +189,11 @@ public class MapMatching {
          */
         public Builder setBatchSize(int batchSize){
             props.batchSize = batchSize;
+            return this;
+        }
+        
+        public Builder setBaseDir(String name){
+            props.baseDir = name;
             return this;
         }
 

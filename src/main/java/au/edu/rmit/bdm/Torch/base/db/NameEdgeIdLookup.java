@@ -1,19 +1,21 @@
 package au.edu.rmit.bdm.Torch.base.db;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NameEdgeIdLookup {
     private Logger logger = LoggerFactory.getLogger(NameEdgeIdLookup.class);
     private DBManager db;
+    private FileSetting setting;
 
-    public NameEdgeIdLookup(){
-        db = DBManager.getDB();
+    public NameEdgeIdLookup(FileSetting setting) {
+        this.setting = setting;
+        db = new DBManager(setting);
     }
 
     public int[] get(String edgeName){
-        String content = db.get(Instance.fileSetting.EDGENAME_ID_TABLE, edgeName);
+        String content = db.get(setting.EDGENAME_ID_TABLE, edgeName);
         if (content == null)
             return new int[0];
         String[] temp = content.split(",");

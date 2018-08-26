@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.base.spatialIndex;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.WindowQueryIndex;
 import au.edu.rmit.bdm.Torch.base.TopKQueryIndex;
 import au.edu.rmit.bdm.Torch.base.helper.GeoUtil;
@@ -27,6 +27,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
     private static Logger logger = LoggerFactory.getLogger(RTreeWrapper.class);
 
     private static final double MAX_LENGTH = 500;
+    private FileSetting setting;
 
     /*
      * This is the threashold for number of points in MBR( Envelope)
@@ -37,10 +38,10 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 
     private RTree<String, Geometry> rTree;
 
-    public RTreeWrapper(){
+    public RTreeWrapper(FileSetting setting){
+        this.setting = setting;
         this.rTree = RTree.star().maxChildren(6).create();
     }
-
 
     public List<String> findInRange(SearchWindow window) {
 
@@ -199,7 +200,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
 
         logger.info("build rtree");
         Serializer<String, Geometry> serializer = Serializers.flatBuffers().javaIo();
-        File rtree = new File(Instance.fileSetting.RTREE_INDEX);
+        File rtree = new File(setting.RTREE_INDEX);
 
         try (InputStream is = new FileInputStream(rtree)) {
             this.rTree = serializer.read(is, rtree.length(), InternalStructure.DEFAULT);
@@ -251,7 +252,7 @@ public abstract class RTreeWrapper implements WindowQueryIndex, TopKQueryIndex {
     public void Save(){
         logger.info("start to serialize dataStructure file to disk");
 
-        File rtree = new File(Instance.fileSetting.RTREE_INDEX);
+        File rtree = new File(setting.RTREE_INDEX);
         if (rtree.exists())
             rtree.delete();
 

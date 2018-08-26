@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.clustering.TrajectoryMtree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -560,12 +560,12 @@ public class Process extends Thread {
 
 	}
 
-	public static void init() throws IOException {
-		datafile = Instance.fileSetting.TRAJECTORY_EDGE_REPRESENTATION_PATH_200000;
+	public static void init(FileSetting setting) throws IOException {
+		datafile = setting.TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL;
 		trajectoryNumber = 200000;
 
-		edgefile = Instance.fileSetting.ID_EDGE_RAW;
-		graphfile = Instance.fileSetting.ID_EDGE_LOOKUP;
+		edgefile = setting.ID_EDGE_RAW;
+		graphfile = setting.ID_EDGE_LOOKUP;
 
 		datamap = new HashMap<>();// a btree map for easy search is created or read
 		traLength = new HashMap<>();
@@ -582,7 +582,7 @@ public class Process extends Thread {
 	}
 
 	public static void main(String[] args) throws IOException {
-		init();
+//		init();
 //		clustering(datamap.keySet());
 	}
 }

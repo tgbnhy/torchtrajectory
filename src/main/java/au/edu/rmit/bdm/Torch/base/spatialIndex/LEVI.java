@@ -1,6 +1,6 @@
 package au.edu.rmit.bdm.Torch.base.spatialIndex;
 
-import au.edu.rmit.bdm.Torch.base.Instance;
+import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.WindowQueryIndex;
 import au.edu.rmit.bdm.Torch.base.TopKQueryIndex;
 import au.edu.rmit.bdm.Torch.base.db.TrajVertexRepresentationPool;
@@ -32,6 +32,7 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     private static final int INITIAL_ROUND_FOR_DTW = 4;
     private static final int INITIAL_ROUND_FOR_H_OR_F = 5;
 
+    private  FileSetting setting;
     private static Logger logger = LoggerFactory.getLogger(LEVI.class);
     private VertexInvertedIndex vertexInvertedIndex;
     private VertexGridIndex gridIndex;
@@ -42,8 +43,9 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     private Map<Integer, TowerVertex> idVertexLookup;
     
     public LEVI(VertexInvertedIndex vertexInvertedIndex, VertexGridIndex gridIndex,
-                MeasureType measureType, TrajVertexRepresentationPool pool, Map<Integer, TowerVertex> idVertexLookup){
+                MeasureType measureType, TrajVertexRepresentationPool pool, Map<Integer, TowerVertex> idVertexLookup, FileSetting setting){
 
+        this.setting = setting;
         this.vertexInvertedIndex = vertexInvertedIndex;
         this.gridIndex = gridIndex;
         this.measureType = measureType;
@@ -54,8 +56,8 @@ public class LEVI implements WindowQueryIndex, TopKQueryIndex {
     @Override
     public boolean build(String Null) {
         
-        if (!vertexInvertedIndex.loaded) vertexInvertedIndex.build(Instance.fileSetting.VERTEX_INVERTED_INDEX);
-        if (!gridIndex.loaded) gridIndex.build(Instance.fileSetting.GRID_INDEX);
+        if (!vertexInvertedIndex.loaded) vertexInvertedIndex.build(setting.VERTEX_INVERTED_INDEX);
+        if (!gridIndex.loaded) gridIndex.build(setting.GRID_INDEX);
         
         return vertexInvertedIndex.loaded && gridIndex.loaded;
     }
