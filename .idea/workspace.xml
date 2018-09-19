@@ -1,84 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/Nantong/id_edge_raw.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Nantong/unused/missingkeys.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/nantong.osm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/edges" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/geometry" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/location_index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/names" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/nodes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/HopperMeta/properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/Torch/id_edge.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/Torch/id_vertex.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/Torch/trafficEdge2roadEdge.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Torch_nantong/meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data.tsv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/f.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Camera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Geometry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Graph.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/JsonObj.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Nantong.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Node.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/PriPair.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_2_6_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_graphhopper_graphhopper_core_0_9_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_graphhopper_graphhopper_reader_osm_0_9_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_vividsolutions_jts_1_13.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openstreetmap_osmosis_osmosis_osm_binary_0_45.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/torch-trajectory.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/torch-trajectory.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/db/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/db/DBManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/helper/MemoryUsage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/helper/MemoryUsage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/Kmeans.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/TrajectoryMtree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Bounds.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/ClusterPath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Histogram.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/LoadProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/OptimalPath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Process.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/RunLog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/StreamKpath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/TestNewMethods.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Util.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/VIseries.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Yinyang.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/ComposedSplitFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/DistanceFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/DistanceFunctions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/MTree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/PartitionFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/PartitionFunctions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/PromotionFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/PromotionFunctions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/SplitFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/tests/Data.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/tests/Fixture.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/utils/Pair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/mtree/utils/Utils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/streaming/DataReading.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/streaming/streamEdge.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/traclus/Baseline.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/visualization/mapv.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/HiddenMarkovModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/HiddenMarkovModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/PathQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/PathQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/TrajectoryResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/TrajectoryResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/visualization/TrajJsonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/visualization/TrajJsonModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/conf.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/conf.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/log4j.xml" afterDir="false" />
-    </list>
+    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -92,7 +15,7 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-929">
+            <state relative-caret-position="222">
               <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -101,15 +24,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="query.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Torch_Porto/query.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file leaf-file-name="Engine.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
+            <state relative-caret-position="15">
               <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
               <folding>
                 <element signature="e#764#765#0" expanded="true" />
@@ -291,8 +209,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1638" />
-    <option name="y" value="-6" />
+    <option name="x" value="1594" />
+    <option name="y" value="26" />
     <option name="width" value="1607" />
     <option name="height" value="847" />
   </component>
@@ -305,14 +223,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
               <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
@@ -422,22 +345,6 @@
               <item name="Torch" type="462c0819:PsiDirectoryNode" />
               <item name="queryEngine" type="462c0819:PsiDirectoryNode" />
               <item name="query" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="Torch_nantong" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="Torch_Porto" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
-              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
-              <item name="Torch_Porto" type="462c0819:PsiDirectoryNode" />
-              <item name="Torch" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -842,6 +749,7 @@
       <workItem from="1536830026773" duration="521000" />
       <workItem from="1537056023754" duration="16000" />
       <workItem from="1537323535482" duration="2729000" />
+      <workItem from="1537327814466" duration="271000" />
     </task>
     <servers />
   </component>
@@ -878,7 +786,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="729135000" />
+    <option name="totallyTimeSpent" value="729406000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -890,12 +798,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1638" y="-6" width="1607" height="847" extended-state="0" />
-    <editor active="true" />
+    <frame x="1594" y="26" width="1607" height="847" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" x="30" y="319" width="1377" height="229" id="TODO" order="7" weight="0.32761088" />
-      <window_info anchor="bottom" id="Messages" order="13" weight="0.21167883" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="bottom" id="Java Enterprise" order="14" />
@@ -903,24 +809,25 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50143063" side_tool="true" weight="0.2074392" />
       <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.18402556" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32904148" />
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4990476" weight="0.30123797" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4985694" weight="0.24817519" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32904148" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4985694" visible="true" weight="0.49243465" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.26773164" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.2709265" />
       <window_info anchor="right" id="Bean Validation" order="9" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Spring" order="12" />
       <window_info anchor="bottom" id="Thumbnails" order="0" weight="0.329927" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Messages" order="13" weight="0.21167883" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -939,27 +846,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Nantong/edges.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
-          <caret line="101" selection-start-line="101" selection-end-line="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Nantong/id_edge_raw.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-660">
-          <caret line="24" column="4" lean-forward="true" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Nantong/timestamp_carid_cameraid.csv">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="176">
-          <caret line="96" column="11" selection-start-line="96" selection-start-column="6" selection-end-line="96" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/nantong/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1096,14 +982,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Nantong/timestamp_carid_cameraid.csv">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="-1055">
-          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
-        </state>
-      </provider>
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="702">
           <caret line="1504" column="7" selection-start-line="1486" selection-start-column="8" selection-end-line="1504" selection-end-column="7" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="-1055">
+          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -1136,14 +1022,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Nantong/id_edge_raw.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1887">
-          <caret line="565" column="64" selection-start-line="565" selection-start-column="64" selection-end-line="565" selection-end-column="64" />
-        </state>
-      </provider>
       <provider editor-type-id="LargeFileEditor">
         <state relative-caret-position="212">
           <caret line="767" selection-start-line="767" selection-end-line="767" selection-end-column="176" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1887">
+          <caret line="565" column="64" selection-start-line="565" selection-start-column="64" selection-end-line="565" selection-end-column="64" />
         </state>
       </provider>
     </entry>
@@ -1258,7 +1144,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
+        <state relative-caret-position="15">
           <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
           <folding>
             <element signature="e#764#765#0" expanded="true" />
@@ -1269,12 +1155,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Torch_Porto/query.txt">
+    <entry file="file://$PROJECT_DIR$/data.tsv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/f.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lookup.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/missingLatLng.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-929">
+        <state relative-caret-position="222">
           <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
           <folding>
             <element signature="imports" expanded="true" />
