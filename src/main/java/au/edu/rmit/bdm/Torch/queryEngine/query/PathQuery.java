@@ -63,6 +63,7 @@ class PathQuery extends QueryImpl {
         try {
             mapped = (Trajectory<TrajEntry>)(Object)mapper.match(t);
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         isByStName = false;

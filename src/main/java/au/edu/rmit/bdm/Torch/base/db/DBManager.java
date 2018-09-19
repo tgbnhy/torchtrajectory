@@ -25,9 +25,10 @@ public class DBManager {
     }
 
     public static void main(String[] args) throws IOException {
-        FileSetting setting = new FileSetting("Torch_Beijing");
+        FileSetting setting = new FileSetting("Torch_nantong");
         DBManager db = new DBManager(setting);
-        System.out.println(db.get(setting.EDGENAME_ID_TABLE, "农大南路"));
+        db.buildFromFile(setting.TRAJECTORY_EDGE_TABLE, setting.TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL, true);
+        db.buildFromFile(setting.TRAJECTORY_VERTEX_TABLE, setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_PARTIAL, true);
     }
 
     public void buildTable(String tableName, boolean override){
@@ -75,7 +76,7 @@ public class DBManager {
             int counter = 0;
             while((line = reader.readLine())!=null) {
                 if (counter++ %20000 == 0)
-                    logger.info("has insert "+counter+" records into Torch_Porto.db");
+                    logger.info("has insert "+counter+" records into db");
                 String[] tokens = line.split("\t");
                 String id = tokens[0];
                 String content = tokens[1];

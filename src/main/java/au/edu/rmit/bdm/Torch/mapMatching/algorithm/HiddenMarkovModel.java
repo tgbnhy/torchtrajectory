@@ -39,8 +39,8 @@ public class HiddenMarkovModel implements Mapper {
 
     @Override
     public Trajectory<TowerVertex> match(Trajectory<? extends TrajEntry> in) {
-        logger.info("begin projecting query points onto graph");
-        logger.info("origin trajectory: {}", in);
+//        logger.info("begin projecting query points onto graph");
+//        logger.info("origin trajectory: {}", in);
 
         Trajectory<TowerVertex> mappedTrajectory = new Trajectory<>();
         Graph hopperGraph = torGraph.getGH().getGraphHopperStorage();
@@ -86,13 +86,18 @@ public class HiddenMarkovModel implements Mapper {
             TorEdge edge = edges.get(TorEdge.getKey(mappedTrajectory.get(i-1), mappedTrajectory.get(i)));
             if (edge == null)
                 edge = edges.get(TorEdge.getKey(mappedTrajectory.get(i), mappedTrajectory.get(i-1)));
+            if (edge == null){
+                System.err.println(mappedTrajectory.get(i-1).id);
+                System.err.println(mappedTrajectory.get(i).id);
+                System.exit(1);
+            }
             edge.setPosition(i);
             mappedTrajectory.edges.add(edge);
         }
 
-        logger.info("have done map-matching for query.txt points");
-        logger.info("map-matched query vertices representation: {}", mappedTrajectory);
-        logger.info("map-matched edge edges representation: {}", mappedTrajectory.edges);
+//        logger.info("have done map-matching for query.txt points");
+//        logger.info("map-matched query vertices representation: {}", mappedTrajectory);
+//        logger.info("map-matched edge edges representation: {}", mappedTrajectory.edges);
         return mappedTrajectory;
     }
 

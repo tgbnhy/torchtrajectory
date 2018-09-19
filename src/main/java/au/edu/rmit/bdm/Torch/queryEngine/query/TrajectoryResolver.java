@@ -3,6 +3,8 @@ package au.edu.rmit.bdm.Torch.queryEngine.query;
 import au.edu.rmit.bdm.Torch.base.FileSetting;
 import au.edu.rmit.bdm.Torch.base.Torch;
 import au.edu.rmit.bdm.Torch.base.db.TrajEdgeRepresentationPool;
+import au.edu.rmit.bdm.Torch.base.db.TrajVertexRepresentationPool;
+import au.edu.rmit.bdm.Torch.base.helper.GeoUtil;
 import au.edu.rmit.bdm.Torch.base.model.Coordinate;
 import au.edu.rmit.bdm.Torch.base.model.TrajEntry;
 import au.edu.rmit.bdm.Torch.base.model.Trajectory;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -20,12 +23,15 @@ public class TrajectoryResolver {
 
     private Logger logger = LoggerFactory.getLogger(TrajectoryResolver.class);
     private TrajEdgeRepresentationPool trajectoryPool;
+    private TrajVertexRepresentationPool trajVertexRepresentationPool;
     private Map<Integer, String[]> rawEdgeLookup;
     private Map<String, TimeInterval> timeSpanLookup;
+    private Map<Integer, Coordinate> vertexLookup;
     private boolean resolveAll;
     public FileSetting setting;
     public TimeInterval querySpan;
     public boolean contain;
+    public boolean isNantong;
 
     public TrajectoryResolver( TrajEdgeRepresentationPool trajectoryPool, Map<Integer, String[]> rawEdgeLookup, boolean resolveAll){
         this.trajectoryPool = trajectoryPool;
@@ -33,16 +39,36 @@ public class TrajectoryResolver {
         this.resolveAll = resolveAll;
     }
 
-    TrajectoryResolver(boolean resolveAll, FileSetting setting){
+    TrajectoryResolver(boolean resolveAll, boolean isNantong, FileSetting setting){
         this.resolveAll = resolveAll;
-        trajectoryPool = new TrajEdgeRepresentationPool(false, setting);
         this.setting = setting;
-        rawEdgeLookup = new HashMap<>();
-        loadRawEdgeLookupTable();
+        this.isNantong = isNantong;
+        if (!isNantong) {
+            trajectoryPool = new TrajEdgeRepresentationPool(false, setting);
+            rawEdgeLookup = new HashMap<>();
+            timeSpanLookup = new HashMap<>();
+            loadRawEdgeLookupTable();
+            loadTimeSpanLookupTable();
+        }else{
+            vertexLookup = new HashMap<>();
+            trajVertexRepresentationPool = new TrajVertexRepresentationPool(false, setting);
+            loadVertexLookup();
+        }
 
-        timeSpanLookup = new HashMap<>();
-        loadTimeSpanLookupTable();
+    }
 
+    private void loadVertexLookup() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(setting.ID_VERTEX_LOOKUP));
+            String line;
+            while ((line = reader.readLine()) !=null){
+                String[] splits = line.split(";");
+                vertexLookup.put(Integer.parseInt(splits[0]), new Coordinate(Double.parseDouble(splits[1]), Double.parseDouble(splits[2])));
+            }
+
+        } catch (IOException e) {
+            logger.debug("cannot find/read file: " + setting.ID_VERTEX_LOOKUP );
+        }
     }
 
     QueryResult resolve (String queryType, List<String> trajIds, List<TrajEntry> rawQuery, Trajectory<TrajEntry> _mappedQuery) {
@@ -123,29 +149,75 @@ public class TrajectoryResolver {
 
 
     private List<Trajectory<TrajEntry>> resolveRet(Collection<String> trajIds) {
-        List<Trajectory<TrajEntry>> ret = new ArrayList<>(trajIds.size());
-        for (String trajId : trajIds){
 
-            int[] edges = trajectoryPool.get(trajId);
-            if (edges == null) {
-                logger.debug("cannot find trajectory id {}, this should not be happened", trajId);
-                continue;
-            }
+        List<Trajectory<TrajEntry>> ret = null;
 
-            Trajectory<TrajEntry> t = new Trajectory<>();
-            t.id = trajId;
+        if (!isNantong) {
+            String[] tokens = null;
 
-            for (int i = 1; i < edges.length; i++) {
+            ret = new ArrayList<>(trajIds.size());
+            for (String trajId : trajIds) {
 
-                String[] tokens = rawEdgeLookup.get(edges[i]);
-                String[] lats = tokens[0].split(",");
-                String[] lngs = tokens[1].split(",");
-
-                for (int j = 0; j < lats.length; j++) {
-                    t.add(new Coordinate(Double.parseDouble(lats[j]),Double.parseDouble(lngs[j])));
+                int[] edges = trajectoryPool.get(trajId);
+                if (edges == null) {
+                    logger.debug("cannot find trajectory id {}, this should not be happened", trajId);
+                    continue;
                 }
+
+                Trajectory<TrajEntry> t = new Trajectory<>();
+                t.id = trajId;
+
+                for (int i = 1; i < edges.length; i++) {
+
+                    tokens = rawEdgeLookup.get(edges[i]);
+                    String[] lats = tokens[0].split(",");
+                    String[] lngs = tokens[1].split(",");
+
+                    for (int j = 0; j < lats.length; j++) {
+                        try {
+                            t.add(new Coordinate(Double.parseDouble(lats[j]), Double.parseDouble(lngs[j])));
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+                ret.add(t);
             }
-            ret.add(t);
+        }else{
+            String[] tokens = null;
+
+            ret = new ArrayList<>(trajIds.size());
+            for (String trajId : trajIds) {
+
+                int[] vertices = trajVertexRepresentationPool.get(trajId);
+
+                if (vertices == null) {
+                    logger.debug("cannot find trajectory id {}, this should not happen", trajId);
+                    continue;
+                }
+
+                Trajectory<TrajEntry> t = new Trajectory<>();
+                t.id = trajId;
+
+                for (int i = 1; i < vertices.length; i++) {
+
+                    Coordinate from = vertexLookup.get(vertices[i-1]);
+                    Coordinate to = vertexLookup.get(vertices[i]);
+
+                    t.add(from);
+                    double dist = GeoUtil.distance(from, to);
+                    int addNum = ((int)dist) / 50;
+                    if (addNum!=0){
+                        double latIncrement = (to.lat - from.lat) / (addNum + 1);
+                        double lngIncrement = (to.lng - from.lng) / (addNum + 1);
+                        for (int j = 0; j < addNum; j++) {
+                            Coordinate c = new Coordinate(from.lat + (j + 1) * latIncrement, from.lng + (j + 1) * lngIncrement);
+                            t.add(c);
+                        }
+                    }
+                }
+                
+                ret.add(t);
+            }
         }
         return ret;
     }
@@ -176,6 +248,7 @@ public class TrajectoryResolver {
     }
 
     private void loadTimeSpanLookupTable() {
+
         logger.info("load time querySpan lookup table");
 
         try(FileReader fr = new FileReader(setting.TRAJECTORY_START_END_TIME_PARTIAL);

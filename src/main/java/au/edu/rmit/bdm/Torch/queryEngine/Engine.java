@@ -122,6 +122,10 @@ public class Engine {
         return strictPathQ.execute(true);
     }
 
+    public FileSetting getFileSettings(){
+        return pool.getFileSettings();
+    }
+
     public static Builder getBuilder(){
         return Builder.builder;
     }
@@ -270,6 +274,11 @@ public class Engine {
          */
         public Engine build(){
             return new Engine(new QueryProperties(properties));
+        }
+
+        public Builder isNantong(boolean b) {
+            properties.isNantong = b;
+            return this;
         }
 
         /**

@@ -4,11 +4,11 @@ import au.edu.rmit.bdm.Torch.base.model.TrajEntry;
 
 import java.util.List;
 
-class TrajJsonModel {
+public class TrajJsonModel {
 
     Geometry geometry;
 
-    TrajJsonModel(List<TrajEntry> path){
+    public TrajJsonModel(List<TrajEntry> path){
         geometry = new Geometry(path);
     }
 }

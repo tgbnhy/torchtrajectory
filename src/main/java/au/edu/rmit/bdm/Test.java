@@ -11,6 +11,7 @@ import au.edu.rmit.bdm.Torch.mapMatching.model.TowerVertex;
 import au.edu.rmit.bdm.Torch.queryEngine.Engine;
 import au.edu.rmit.bdm.Torch.queryEngine.model.SearchWindow;
 import au.edu.rmit.bdm.Torch.queryEngine.query.QueryResult;
+import au.edu.rmit.bdm.clustering.trajectory.kpaths.Yinyang;
 import com.google.gson.Gson;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.osm.GraphHopperOSM;
@@ -27,41 +28,51 @@ import java.util.*;
 public class Test {
 
     static Logger logger = LoggerFactory.getLogger(Test.class);
-    static FileSetting setting = new FileSetting("Torch_Beijing");
+    static FileSetting setting = new FileSetting("Torch_nantong");
     
     public static void main(String[] args)throws IOException{
-//        MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
-//        mm.start();
 
-        Gson gson = new Gson();
+        Engine engine = Engine.getBuilder().baseDir("Torch_Porto").build();
+
         List<List<TrajEntry>> queries = read();
-        Engine engine1 = Engine.getBuilder().
-                resolveResult(true).
-                preferedIndex(Torch.Index.LEVI).
-                preferedSimilarityMeasure(Torch.Algorithms.LCSS).
-                baseDir("Torch_Porto").
-                build();
-        Engine engine2 = Engine.getBuilder().
-                resolveResult(true).
-                preferedIndex(Torch.Index.LEVI).
-                preferedSimilarityMeasure(Torch.Algorithms.LCSS).
-                baseDir("Torch_Beijing").
-                build();
-        //engine.setTimeInterval(new TimeInterval(new TorchDate().setAll("2018-03-11 11:11:09"), new TorchDate().setAll("2018-03-21 11:11:09")), true);
-
-        QueryResult ret = engine1.findInRange(new SearchWindow(new Coordinate(41.189186,-8.671003), new Coordinate(41.160016,-8.664043)));
-        System.out.println("number of results:" +ret.retSize);
-
-
-//        System.out.println(Arrays.toString(ret.idArray));
-//        Process.init();
-//        Process.clustering(new HashSet<>(Arrays.stream(ret.idArray).boxed().collect(Collectors.toSet())), 3);
-
-//        initGH();
+        QueryResult result = engine.findOnPath(queries.get(0));
+        System.out.println((result.toJSON(10)));
 
     }
 
+    private static List<List<TrajEntry>> read() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("Torch_Porto/query.txt"));
+        List<List<TrajEntry>> list = new ArrayList<>(3);
 
+        String line;
+        while((line = reader.readLine())!=null){
+
+            String[] temp = line.split("\t");
+            String trajId = temp[0];
+            String trajContent = temp[1];
+
+            trajContent = trajContent.substring(2, trajContent.length() - 2); //remove head "[[" and tail "]]"
+            String[] trajTuples = trajContent.split("],\\[");
+            List<TrajEntry> query = new ArrayList<>();
+
+            String[] latLng;
+            for (int i = 0; i < trajTuples.length; i++){
+
+                double lat = 0.;
+                double lon = 0.;
+
+                    latLng = trajTuples[i].split(",");
+                    lat = Double.parseDouble(latLng[1]);
+                    lon = Double.parseDouble(latLng[0]);
+
+                Coordinate node = new Coordinate(lat, lon);
+
+                query.add(node);
+            }
+            list.add(query);
+        }
+        return list;
+    }
 
     private static void addTime() throws IOException {
 
@@ -173,40 +184,6 @@ public class Test {
 
     }
 
-    private static List<List<TrajEntry>> read() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("Torch_Porto/query.txt"));
-        List<List<TrajEntry>> list = new ArrayList<>(3);
-
-        String line;
-        while((line = reader.readLine())!=null){
-
-            String[] temp = line.split("\t");
-            String trajId = temp[0];
-            String trajContent = temp[1];
-
-            trajContent = trajContent.substring(2, trajContent.length() - 2); //remove head "[[" and tail "]]"
-            String[] trajTuples = trajContent.split("],\\[");
-            List<TrajEntry> query = new ArrayList<>();
-
-            String[] latLng;
-            for (int i = 0; i < trajTuples.length; i++){
-
-                double lat = 0.;
-                double lon = 0.;
-
-                    latLng = trajTuples[i].split(",");
-                    lat = Double.parseDouble(latLng[1]);
-                    lon = Double.parseDouble(latLng[0]);
-
-                Coordinate node = new Coordinate(lat, lon);
-
-                query.add(node);
-            }
-            list.add(query);
-        }
-        return list;
-    }
-
     private static void addLenToEdgeLookuptable() throws IOException{
         BufferedReader edgeReader = new BufferedReader(new FileReader(setting.ID_EDGE_LOOKUP));
         BufferedReader rawReader = new BufferedReader(new FileReader(setting.ID_EDGE_RAW));
@@ -272,7 +249,7 @@ public class Test {
 
     private static void genEdgeInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH+".txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL));
         EdgeInvertedIndex edgeInvertedIndex = new EdgeInvertedIndex(setting);
 
         String line;
@@ -308,7 +285,7 @@ public class Test {
 
     private static void genVertexInvertedIndex() throws IOException {
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH+".txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(setting.TRAJECTORY_VERTEX_REPRESENTATION_PATH_PARTIAL));
         VertexInvertedIndex vertexInvertedIndex= new VertexInvertedIndex(setting);
 
         String line;

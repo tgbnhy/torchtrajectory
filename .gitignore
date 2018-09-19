@@ -1,4 +1,6 @@
 out
+hopper
+Nantong
 .*
 !/.gitignore
 local
@@ -10,3 +12,4 @@ Torch_Porto
 src/main/java/au/edu/rmit/trajectory/similarity
 src/main/java/au/edu/rmit/trajectory/Test
 src/test/java/au/edu/rmit/trajectory/similarity
+Torch_nantong

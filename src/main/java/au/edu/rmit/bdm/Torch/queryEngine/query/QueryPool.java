@@ -57,7 +57,7 @@ public class QueryPool extends HashMap<String, Query> {
     private void init() {
 
         buildMapper();
-        resolver = new TrajectoryResolver(props.resolveAll, setting);
+        resolver = new TrajectoryResolver(props.resolveAll, props.isNantong, setting);
 
         if (props.queryUsed.contains(Torch.QueryType.PathQ))
             put(Torch.QueryType.PathQ, initPathQuery());
@@ -84,7 +84,6 @@ public class QueryPool extends HashMap<String, Query> {
             gNameGen.getAndIncrement();
             TorGraph graph = TorGraph.newInstance(String.valueOf(graphId), setting).
                     initGH(setting.hopperURI, osmPath, vehicleType).buildFromDiskData();
-
             idVertexLookup = graph.idVertexLookup;
             mapper = Mappers.getMapper(Torch.Algorithms.HMM, graph);
 
@@ -222,5 +221,9 @@ public class QueryPool extends HashMap<String, Query> {
     public QueryResult resolve(int[] idArr) {
         List<Trajectory<TrajEntry>> resolved = resolver.resolveResult(idArr);
         return new QueryResult(resolved);
+    }
+
+    public FileSetting getFileSettings() {
+        return setting;
     }
 }

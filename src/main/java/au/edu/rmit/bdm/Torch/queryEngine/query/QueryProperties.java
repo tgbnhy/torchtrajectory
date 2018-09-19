@@ -21,6 +21,7 @@ public class QueryProperties {
     public boolean resolveAll;
     public String baseDir = "Torch";
     public String uriPrefix = "";
+    public boolean isNantong = false;
 
     public QueryProperties(QueryProperties properties) {
         init();
@@ -29,6 +30,7 @@ public class QueryProperties {
         this.resolveAll = properties.resolveAll;
         this.baseDir = properties.baseDir;
         this.uriPrefix = properties.uriPrefix;
+        isNantong = properties.isNantong;
 
         // if user does not specify what kind of query.txt will be used,
         // we initialize all supported queries.
@@ -48,6 +50,7 @@ public class QueryProperties {
         useRaw = false;
         resolveAll = true;
         queryUsed = new HashSet<>();
+        isNantong = false;
         return this;
     }
 }

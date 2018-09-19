@@ -11,7 +11,7 @@ public class MemoryUsage {
 
     private static Logger logger = LoggerFactory.getLogger(MemoryUsage.class);
     private static long memoryUsage = 0;
-    private static boolean debug = false;
+    private static boolean debug = true;
 
     public static void start(){
         if (!debug) return;
