@@ -35,7 +35,7 @@ T-Torch is able to efficiently answer two typical types of queries now:
 ### 0. Dataset
 Our trajectory dataset collected at Porto is also shared. 
 The dataset is map-matched and indexed so that you could go part 2 directly.
-Please download it at https://drive.google.com/drive/folders/14oDRk2tLiEbfSMwNnFyWeZ30CCXPPZd1?usp=sharing
+Please download it at https://drive.google.com/open?id=110U9RaQxHxWS_tN0IjI-A1N71ElRiyBM
 and put it in the root directory of the project.
 
 ### 1. Map matching
