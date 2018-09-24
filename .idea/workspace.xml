@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="" />
+    <list default="true" id="055b8296-f517-41c0-af5d-739a9860535b" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Stream.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,8 +22,8 @@
       <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="265">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -24,10 +31,82 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="QueryPool.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="618">
+              <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TorGraph.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/TorGraph.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1500">
+              <caret line="126" column="40" selection-start-line="126" selection-start-column="40" selection-end-line="126" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="meta" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Torch_Porto/meta">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FileSetting.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="89" column="33" selection-start-line="89" selection-start-column="33" selection-end-line="89" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DBManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/db/DBManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="streamEdge.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/trajectory/streaming/streamEdge.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Test.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Stream.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Stream.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Engine.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="165">
               <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
               <folding>
                 <element signature="e#764#765#0" expanded="true" />
@@ -54,7 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>38328</find>
       <find>38322</find>
       <find>1019</find>
       <find>temp</find>
@@ -84,6 +162,7 @@
       <find>567</find>
       <find>ver2</find>
       <find>;555;3432</find>
+      <find>have</find>
     </findStrings>
     <replaceStrings>
       <replace>.hash</replace>
@@ -120,9 +199,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/TestNewMethods.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Process.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Histogram.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/StreamKpath.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Yinyang.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/clustering/kpaths/Util.java" />
@@ -168,8 +244,11 @@
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/PathQuery.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/HiddenMarkovModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java" />
-        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java" />
+        <option value="$PROJECT_DIR$/Torch_Porto/meta" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/TorGraph.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Stream.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Test.java" />
+        <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java" />
         <option value="$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java" />
       </list>
     </option>
@@ -209,10 +288,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1594" />
-    <option name="y" value="26" />
-    <option name="width" value="1607" />
-    <option name="height" value="847" />
+    <option name="x" value="1597" />
+    <option name="y" value="37" />
+    <option name="width" value="1536" />
+    <option name="height" value="829" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -224,6 +303,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
@@ -303,7 +383,72 @@
               <item name="edu" type="462c0819:PsiDirectoryNode" />
               <item name="rmit" type="462c0819:PsiDirectoryNode" />
               <item name="bdm" type="462c0819:PsiDirectoryNode" />
+              <item name="clustering" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="bdm" type="462c0819:PsiDirectoryNode" />
+              <item name="clustering" type="462c0819:PsiDirectoryNode" />
+              <item name="sparkStreaming" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="bdm" type="462c0819:PsiDirectoryNode" />
+              <item name="clustering" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="bdm" type="462c0819:PsiDirectoryNode" />
+              <item name="clustering" type="462c0819:PsiDirectoryNode" />
+              <item name="trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="streaming" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="bdm" type="462c0819:PsiDirectoryNode" />
               <item name="Torch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="au" type="462c0819:PsiDirectoryNode" />
+              <item name="edu" type="462c0819:PsiDirectoryNode" />
+              <item name="rmit" type="462c0819:PsiDirectoryNode" />
+              <item name="bdm" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
@@ -346,11 +491,32 @@
               <item name="queryEngine" type="462c0819:PsiDirectoryNode" />
               <item name="query" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch_nantong" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch_Porto" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch_Porto" type="462c0819:PsiDirectoryNode" />
+              <item name="HopperMeta" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="torch-trajectory" type="b2602c69:ProjectViewProjectNode" />
+              <item name="torch-trajectory" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch_Porto" type="462c0819:PsiDirectoryNode" />
+              <item name="Torch" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -749,7 +915,12 @@
       <workItem from="1536830026773" duration="521000" />
       <workItem from="1537056023754" duration="16000" />
       <workItem from="1537323535482" duration="2729000" />
-      <workItem from="1537327814466" duration="271000" />
+      <workItem from="1537327814466" duration="481000" />
+      <workItem from="1537492027221" duration="518000" />
+      <workItem from="1537498128530" duration="151000" />
+      <workItem from="1537518175947" duration="1327000" />
+      <workItem from="1537521877489" duration="872000" />
+      <workItem from="1537768905190" duration="1148000" />
     </task>
     <servers />
   </component>
@@ -786,7 +957,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="729406000" />
+    <option name="totallyTimeSpent" value="733632000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -798,36 +969,37 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1594" y="26" width="1607" height="847" extended-state="0" />
+    <frame x="1597" y="37" width="1536" height="829" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" x="30" y="319" width="1377" height="229" id="TODO" order="7" weight="0.32761088" />
+      <window_info anchor="bottom" id="Messages" order="13" weight="0.21167883" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="bottom" id="Java Enterprise" order="14" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50143063" side_tool="true" weight="0.2074392" />
-      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.18402556" />
+      <window_info anchor="right" id="Maven Projects" order="7" visible="true" weight="0.19277108" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4990476" weight="0.30123797" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32904148" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4985694" visible="true" weight="0.49243465" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4990476" visible="true" weight="0.30042315" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4985694" weight="0.45804676" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.2709265" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.30120483" />
       <window_info anchor="right" id="Bean Validation" order="9" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Spring" order="12" />
       <window_info anchor="bottom" id="Thumbnails" order="0" weight="0.329927" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" order="13" weight="0.21167883" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -955,13 +1127,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/db/DBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="28" column="12" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Torch_Beijing/Torch/trajectory_time_partial.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -982,14 +1147,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Nantong/timestamp_carid_cameraid.csv">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state relative-caret-position="702">
-          <caret line="1504" column="7" selection-start-line="1486" selection-start-column="8" selection-end-line="1504" selection-end-column="7" />
-        </state>
-      </provider>
       <provider editor-type-id="text-editor">
         <state relative-caret-position="-1055">
           <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="702">
+          <caret line="1504" column="7" selection-start-line="1486" selection-start-column="8" selection-end-line="1504" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -1022,14 +1187,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Nantong/id_edge_raw.txt">
-      <provider editor-type-id="LargeFileEditor">
-        <state relative-caret-position="212">
-          <caret line="767" selection-start-line="767" selection-end-line="767" selection-end-column="176" />
-        </state>
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1887">
           <caret line="565" column="64" selection-start-line="565" selection-start-column="64" selection-end-line="565" selection-end-column="64" />
+        </state>
+      </provider>
+      <provider editor-type-id="LargeFileEditor">
+        <state relative-caret-position="212">
+          <caret line="767" selection-start-line="767" selection-end-line="767" selection-end-column="176" />
         </state>
       </provider>
     </entry>
@@ -1093,27 +1258,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="49" column="46" selection-start-line="49" selection-start-column="46" selection-end-line="49" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/TorGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="199" selection-start-line="199" selection-end-line="199" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="84" column="47" selection-start-line="84" selection-start-column="47" selection-end-line="84" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/HiddenMarkovModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
@@ -1144,7 +1288,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/Engine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="165">
           <caret line="23" column="24" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
           <folding>
             <element signature="e#764#765#0" expanded="true" />
@@ -1155,22 +1299,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data.tsv">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/mapMatching/algorithm/TorGraph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1500">
+          <caret line="126" column="40" selection-start-line="126" selection-start-column="40" selection-end-line="126" selection-end-column="40" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/f.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/Torch_Porto/meta">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lookup.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/trajectory/streaming/streamEdge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/missingLatLng.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Stream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/clustering/sparkStreaming/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/db/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/queryEngine/query/QueryPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Torch/base/FileSetting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="89" column="33" selection-start-line="89" selection-start-column="33" selection-end-line="89" selection-end-column="33" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/au/edu/rmit/bdm/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="265">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

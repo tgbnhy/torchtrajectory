@@ -65,6 +65,8 @@ public class FileSetting {
 
         RAW_TRAJECTORY_INDEX = TorchBase + "/raw_trajectories";
         GRID_INDEX = TorchBase + "/grid_vertex.idx";RTREE_INDEX = TorchBase + "/rtree_raw.idx";
+
+        modifyForWinOS();
     }
 
     public void update(String prefix) {
@@ -85,8 +87,32 @@ public class FileSetting {
         RTREE_INDEX = this.prefix + RTREE_INDEX;
 
         DB_URL = DB_PREFIX + this.prefix + DB_URL.split(":")[2];
+        System.err.println(DB_URL);
         RAW_TRAJECTORY_INDEX = this.prefix + "/raw_trajectories";
+
+        modifyForWinOS();
     }
 
+    private void modifyForWinOS(){
+        boolean isWindow = System.getProperty("os.name").contains("win");
+        if (!isWindow) return;
+
+        prefix = prefix.replace("/","\\");
+        hopperURI = hopperURI.replace("/","\\");
+        metaURI = metaURI.replace("/","\\");
+        ID_VERTEX_LOOKUP = ID_VERTEX_LOOKUP.replace("/","\\");
+        ID_EDGE_LOOKUP = ID_EDGE_LOOKUP.replace("/","\\");
+        ID_EDGE_RAW = ID_EDGE_RAW.replace("/","\\");
+        EDGE_INVERTED_INDEX = EDGE_INVERTED_INDEX.replace("/","\\");
+        VERTEX_INVERTED_INDEX = VERTEX_INVERTED_INDEX.replace("/","\\");
+        TRAJECTORY_VERTEX_REPRESENTATION_PATH = TRAJECTORY_VERTEX_REPRESENTATION_PATH.replace("/","\\");
+        TRAJECTORY_EDGE_REPRESENTATION_PATH = TRAJECTORY_EDGE_REPRESENTATION_PATH.replace("/","\\");
+        TRAJECTORY_VERTEX_REPRESENTATION_PATH_PARTIAL = TRAJECTORY_VERTEX_REPRESENTATION_PATH_PARTIAL.replace("/","\\");
+        TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL = TRAJECTORY_EDGE_REPRESENTATION_PATH_PARTIAL.replace("/","\\");
+        TRAJECTORY_START_END_TIME_PARTIAL = TRAJECTORY_START_END_TIME_PARTIAL.replace("/","\\");
+        GRID_INDEX = GRID_INDEX.replace("/","\\");
+        RTREE_INDEX = RTREE_INDEX.replace("/","\\");
+        RAW_TRAJECTORY_INDEX = RAW_TRAJECTORY_INDEX.replace("/","\\");
+    }
 
 }

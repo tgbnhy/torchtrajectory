@@ -74,23 +74,27 @@ public class QueryPool extends HashMap<String, Query> {
         if (mapper != null)
             return;
 
+        String vehicleType = null;
+        String osmPath = null;
+
         //read meta properties
-        try(FileReader fr = new FileReader(setting.metaURI);
-            BufferedReader reader = new BufferedReader(fr)){
-            String vehicleType = reader.readLine();
-            String osmPath = reader.readLine();
+        try (FileReader fr = new FileReader(setting.metaURI);
+             BufferedReader reader = new BufferedReader(fr)) {
+            vehicleType = reader.readLine();
+            osmPath = reader.readLine();
 
-            this.graphId = String.valueOf(gNameGen.intValue());
-            gNameGen.getAndIncrement();
-            TorGraph graph = TorGraph.newInstance(String.valueOf(graphId), setting).
-                    initGH(setting.hopperURI, osmPath, vehicleType).buildFromDiskData();
-            idVertexLookup = graph.idVertexLookup;
-            mapper = Mappers.getMapper(Torch.Algorithms.HMM, graph);
-
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("some critical data is missing, system on exit...");
             System.exit(-1);
         }
+
+        this.graphId = String.valueOf(gNameGen.intValue());
+        gNameGen.getAndIncrement();
+        TorGraph graph = TorGraph.newInstance(String.valueOf(graphId), setting).
+                initGH(setting.hopperURI, osmPath, vehicleType).buildFromDiskData();
+        idVertexLookup = graph.idVertexLookup;
+        mapper = Mappers.getMapper(Torch.Algorithms.HMM, graph);
+
 
     }
 
