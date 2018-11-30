@@ -4,7 +4,7 @@
 Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for 
 Trajectory Data. SIGIR 2018: 535-544
 ```
-* We also have a traffic analytics system based on T-Torch: http://43.240.96.2/TTorchServer/.
+* We also have a traffic analytics system based on T-Torch: http://115.146.93.77:8080/TTorchServer/.
 
 ## Supported queries 
 T-Torch is able to efficiently answer two typical types of queries now:
