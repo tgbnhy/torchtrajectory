@@ -1,10 +1,10 @@
-# <img src="https://github.com/tgbnhy/torch-trajectory/blob/developing/t4.png" alt="drawing" width="100"/>  T-Torch: searching trajectories in a fast way
+# <img src="https://github.com/tgbnhy/torch-trajectory/blob/developing/t4.png" alt="drawing" width="60"/>  T-Torch: searching trajectories in a fast way
 * T-Torch is the world's first search engine for trajectory data, which is built over our research paper below:
 ```
 Sheng Wang, Zhifeng Bao, J. Shane Culpepper, Zizhe Xie, Qizhi Liu, Xiaolin Qin: Torch: A Search Engine for 
 Trajectory Data. SIGIR 2018: 535-544
 ```
-* We also have a traffic analytics system based on T-Torch: http://43.240.96.2/TTorchServer/.
+* We also have a traffic analytics system based on T-Torch: http://115.146.93.77:8080/TTorchServer/.
 
 ## Supported queries 
 T-Torch is able to efficiently answer two typical types of queries now:
