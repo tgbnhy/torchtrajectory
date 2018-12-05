@@ -7,7 +7,7 @@ import au.edu.rmit.bdm.clustering.mtree.utils.Pair;
 import au.edu.rmit.bdm.clustering.mtree.utils.Utils;
 
 /**
- * Some pre-defined implementations of {@linkplain PromotionFunction promotion
+ * Some cur-defined implementations of {@linkplain PromotionFunction promotion
  * functions}.
  */
 public final class PromotionFunctions {

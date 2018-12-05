@@ -269,11 +269,11 @@ public class PrecomputedHiddenMarkovModel implements Mapper {
         mappedTrajectory.addAll(vertices);
 //
 //        Iterator<TorEdge> iterator = edges.iterator();
-//        TorEdge pre = iterator.next();
+//        TorEdge cur = iterator.next();
 //        while (iterator.hasNext()){
 //            TorEdge cur = iterator.next();
-//            if (pre == cur) iterator.remove();
-//            else pre = cur;
+//            if (cur == cur) iterator.remove();
+//            else cur = cur;
 //        }
 
         mappedTrajectory.edges.addAll(edges);

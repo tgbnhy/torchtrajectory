@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Some pre-defined implementations of {@linkplain DistanceFunction distance
+ * Some cur-defined implementations of {@linkplain DistanceFunction distance
  * functions}.
  */
 public final class DistanceFunctions {

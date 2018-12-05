@@ -10,7 +10,7 @@ import java.util.Set;
 import au.edu.rmit.bdm.clustering.mtree.utils.Pair;
 
 /**
- * Some pre-defined implementations of {@linkplain PartitionFunction partition
+ * Some cur-defined implementations of {@linkplain PartitionFunction partition
  * functions}.
  */
 public final class PartitionFunctions {
@@ -34,7 +34,7 @@ public final class PartitionFunctions {
 		 * Processes the balanced partition.
 		 * 
 		 * <p>The algorithm is roughly equivalent to this:
-		 * <pre>
+		 * <cur>
 		 *     While dataSet is not Empty:
 		 *         X := The object in dataSet which is nearest to promoted.<b>first</b>
 		 *         Remove X from dataSet
@@ -45,7 +45,7 @@ public final class PartitionFunctions {
 		 *         Add Y to result.<b>second</b>
 		 *         
 		 *     Return result
-		 * </pre>
+		 * </cur>
 		 * 
 		 * @see au.edu.rmit.bdm.clustering.mtree.PartitionFunction#process( au.edu.rmit.bdm.clustering.mtree.utils.Pair, java.util.Set, au.edu.rmit.bdm.clustering.mtree.DistanceFunction)
 		 */

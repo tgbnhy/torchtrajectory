@@ -1,23 +1,12 @@
 package au.edu.rmit.bdm.clustering.trajectory.kpaths;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import au.edu.rmit.bdm.Torch.base.FileSetting;
@@ -71,7 +60,7 @@ public class Process extends Thread {
 	protected Map<Integer, int[]> datamap; // the trajectory dataset
 	protected Map<Integer, Integer> traLength; // the trajectory dataset
 	protected Map<Integer, Integer> trajectoryHistogram;//the histogram of each trajectory
-	protected Map<Integer, ArrayList<Integer>> edgeIndex;// the index used for similarity search
+	protected Map<Integer, List<Integer>> edgeIndex;// the index used for similarity search
 	protected Map<Integer, Integer> edgeHistogram;// the index used for similarity search
 	protected Map<Integer, String> edgeInfo;// the points information
 	Map<Integer, Integer> edgeType;
@@ -102,10 +91,14 @@ public class Process extends Thread {
 		graphfile = args[4];
 
 		try {
-			Initialization();
+			init();
 		}catch (IOException e){
 			logger.error("IO exception in clustering module. {}", e.getMessage());
 		}
+	}
+
+	public Process(){
+
 	}
 
 	public Process(FileSetting setting, int trajNumber){
@@ -119,7 +112,7 @@ public class Process extends Thread {
 		cluster2SearchLookup = new HashMap<>();
 
 		try {
-			Initialization();
+			init();
 		}catch (IOException e){
 			logger.error("IO exception in clustering module. {}", e.getMessage());
 		}
@@ -159,12 +152,12 @@ public class Process extends Thread {
 					vertexes[t] = Integer.valueOf(vertexSeries[t]);
 					int edgeID = vertexes[t];
 					if(edgeIndex.containsKey(edgeID)) {
-						ArrayList<Integer> lists = edgeIndex.get(edgeID);
+						List<Integer> lists = edgeIndex.get(edgeID);
 						lists.add(idx);					//enlarge the lists
 						edgeIndex.put(edgeID, lists);
 					}else {
 						ArrayList<Integer> lists = new ArrayList<Integer>();
-						lists.add(idx);	
+						lists.add(idx);
 						edgeIndex.put(edgeID, lists);
 					}
 					if(edgeHistogram.containsKey(edgeID)) {
@@ -198,7 +191,7 @@ public class Process extends Thread {
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println("the trajectory dataset is loaded");		
+		System.out.println("the trajectory dataset is loaded");
 	//	System.out.println("the M-tree is built");
 		System.out.println("the frequency histogram of edge is built");
 		System.out.println("the inverted index of edge is built");
@@ -554,8 +547,9 @@ public class Process extends Thread {
 		Yinyang streamkpath = new Yinyang("kpath");
 		streamkpath.start();
 	}
+
 	
-	public void Initialization() throws IOException {
+	public void init() throws IOException {
 		CENTERS = new ArrayList<ClusterPath>();	
 		interMinimumCentoridDis = new double[k];
 		innerCentoridDis = new double[k][];
@@ -573,59 +567,4 @@ public class Process extends Thread {
         folder = sdf.format(cal.getTime());
 	}
 
-	public int[] clustering(Set<Integer> trajIds, int k){
-
-		this.k = k;
-		CENTERS = new ArrayList<>();
-		interMinimumCentoridDis = new double[k];
-		innerCentoridDis = new double[k][];
-
-		try {
-			Set<Integer> transformed = new HashSet<>();
-			for (Integer trans : trajIds)
-				transformed.add(search2ClusterLookup.get(trans));
-
-			initializeClustersIncrease(k, 100);
-			kPath(k, null);
-
-			runrecord.printLog();
-			int[] results = new int[k];
-			for (int i = 0; i < k; i++)
-				results[i] = cluster2SearchLookup.get(CENTERS.get(i).getTrajectoryID());
-
-			return results;
-		} catch (Exception e) {
-			System.err.println("error when perform clustering: " + e.getMessage());
-		}
-
-		return new int[0];
-	}
-	
-	public int[] clustering(int[] trajIds, int k){
-
-		this.k = k;
-		CENTERS = new ArrayList<>();
-		interMinimumCentoridDis = new double[k];
-		innerCentoridDis = new double[k][];
-
-		try {
-			Set<Integer> transformed = new HashSet<>();
-			for (Integer trans : trajIds)
-				transformed.add(search2ClusterLookup.get(trans));
-
-			initializeClustersIncrease(k, 100);
-			kPath(k, null);
-
-			runrecord.printLog();
-			int[] results = new int[k];
-			for (int i = 0; i < k; i++)
-				results[i] = cluster2SearchLookup.get(CENTERS.get(i).getTrajectoryID());
-
-			return results;
-		} catch (Exception e) {
-			System.err.println("error when perform clustering: " + e.getMessage());
-		}
-
-		return new int[0];
-	}
 }

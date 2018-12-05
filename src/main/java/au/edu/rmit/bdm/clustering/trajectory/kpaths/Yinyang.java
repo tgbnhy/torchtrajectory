@@ -606,7 +606,7 @@ public class Yinyang extends Process {
 		return t;
 	}
 
-	@Override
+
 	public int[] clustering(Set<Integer> trajIds, int k){
 		this.k = k;
 		CENTERS = new ArrayList<>();
@@ -635,7 +635,6 @@ public class Yinyang extends Process {
 		return new int[0];
 	}
 
-	@Override
 	public int[] clustering(int[] trajIds, int k){
 		this.k = k;
 		CENTERS = new ArrayList<>();

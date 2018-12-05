@@ -1,11 +1,6 @@
 package au.edu.rmit.bdm.clustering.trajectory.kpaths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
+
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 /*
@@ -51,12 +46,12 @@ public class ClusterPath {
 	/*
 	 * generate the list id of trajectory that share edge with cluster
 	 */
-	public Set<Integer> creatCandidateList(Map<Integer, ArrayList<Integer>> edgeIndex, Map<Integer, int[]> datamap) {
+	public Set<Integer> creatCandidateList(Map<Integer, List<Integer>> edgeIndex, Map<Integer, int[]> datamap) {
 		if (centerChanged) {//create a new list if changed, otherwise return previous to avoid rebuild
 			int[] trajectory = datamap.get(idx);
 			candidateList = new HashSet<Integer>();
 			for (int edgeid : trajectory) {
-				ArrayList<Integer> traidlist = edgeIndex.get(edgeid);
+				List<Integer> traidlist = edgeIndex.get(edgeid);
 				Collections.addAll(candidateList, traidlist.toArray(new Integer[0]));
 			}			
 		}
@@ -66,11 +61,11 @@ public class ClusterPath {
 	/*
 	 * generate the list id of trajectory that share edge with cluster, or we can ignore this
 	 */
-	public Set<Integer> creatCandidateListNoDatamap(Map<Integer, ArrayList<Integer>> edgeIndex, int[] trajectory) {
+	public Set<Integer> creatCandidateListNoDatamap(Map<Integer, List<Integer>> edgeIndex, int[] trajectory) {
 		if (centerChanged) {//create a new list if changed, otherwise return previous to avoid rebuild
 			candidateList = new HashSet<Integer>();
 			for (int edgeid : trajectory) {
-				ArrayList<Integer> traidlist = edgeIndex.get(edgeid);
+				List<Integer> traidlist = edgeIndex.get(edgeid);
 				Collections.addAll(candidateList, traidlist.toArray(new Integer[0]));
 			}			
 		}
