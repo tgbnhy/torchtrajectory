@@ -28,7 +28,7 @@ T-Torch is able to efficiently answer two typical types of queries now:
   * Compressiable index
   * Various similarity measures
 * Trajectory visualization on real road network
-  * http://43.240.96.2/TTorchServer/
+  * http://115.146.93.77:8080/TTorchServer/
 
 
 ## Getting started
