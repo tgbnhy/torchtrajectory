@@ -28,7 +28,7 @@ import java.util.*;
 public class Test {
 
     static Logger logger = LoggerFactory.getLogger(Test.class);
-    static FileSetting setting = new FileSetting("Torch_nantong");
+    static FileSetting setting = new FileSetting("Torch_Porto");
     
     public static void main(String[] args)throws IOException{
 

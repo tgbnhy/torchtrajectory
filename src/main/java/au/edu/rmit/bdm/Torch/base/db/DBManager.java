@@ -75,7 +75,7 @@ public class DBManager {
             String line;
             int counter = 0;
             while((line = reader.readLine())!=null) {
-                if (counter++ %20000 == 0)
+                if (counter++ %2000 == 0)
                     logger.info("has insert "+counter+" records into db");
                 String[] tokens = line.split("\t");
                 String id = tokens[0];
@@ -174,9 +174,10 @@ public class DBManager {
             //pstmt.setString(1, attr);
             pstmt.setString(1, val);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.isClosed())
+            if (rs.isClosed()) {
+                System.out.println("no result is found!");
                 return null;
-
+            }
             String ret = rs.getString(1);
             rs.close();
             return ret;

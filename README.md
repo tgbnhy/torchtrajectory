@@ -32,37 +32,32 @@ T-Torch is able to efficiently answer two typical types of queries now:
 
 
 ## Getting started
-### 0. Dataset
-Our trajectory dataset collected at Porto is also shared. 
-The dataset is map-matched and indexed so that you could go part 2 directly.
+### 0. Download the Porto Dataset
+Our trajectory dataset collected at Porto is available. 
+The dataset is map-matched and indexed. 
 Please download it at https://drive.google.com/open?id=110U9RaQxHxWS_tN0IjI-A1N71ElRiyBM
 and put it in the root directory of the project.
 
-### 1. Map matching
+### 1. Dependencies
+We manage the dependent libraries with Maven. You can easily install those 
+required softwares in pom.xml file.
+
+### 2. Running the sample program
+We provide a use case for Path query. The main() method is in the 
+Test class.
 
 ```
-   MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
-   mm.start();
-```
-
-Map matching is the technique for projecting raw trajectories onto real road network.The first argument is the URI of raw trajectory data-set, while the second argument **"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
-After setup, call start() method to convert raw trajectories to mapped trajectories.
-
-#### Note:
-```
-   trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
-```
- 1. The format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
- 2. It is your part to take care of data cleansing, as low quality trajectories leads to low projection rate, and high length trajectories (over 200) could affect query time.
-
-
-### 2. Query
-After map-matching, we could perform trajectory retrieval over mapped trajectories. T-Torch provides high level class *Engine* containing simple APIs for query processing. 
-To get the engine ready( loading or building necessary indexes to support different types of query), 
-only a line of code is required: 
-```
-   Engine engine = Engine.getBuilder().build();
+   1. Engine engine = Engine.getBuilder().build();
+   2. List<List<TrajEntry>> queries = read();
+   3. QueryResult result = engine.findOnPath(queries.get(0));
 ``` 
+
+T-Torch provides high level class *Engine* containing simple APIs for query processing. 
+- line 1 loads/builds the index structures of a dataset, encapsulated by Engine class.
+- line 2 loads sample queries provided by us.
+- line 3 invokes API of a path query. APIs for other supported query types are described in the next section
+
+### 3. Query Types
 
 #### 1) Range query
 ```
@@ -94,7 +89,7 @@ k highest ranked trajectories based on the specified similarity measure.
 First argument is a "query trajectory" represented by a list of *Coordinate*, 
 and the second is number of top results to return.
 
-### 3. QueryResult
+### 4. QueryResult
 ```
    if (ret.mappingSucceed){
       List<Trajectory<TrajEntry>> l = ret.getResultTrajectory();
@@ -106,6 +101,32 @@ and the second is number of top results to return.
 
 After the query is processed, object of type QueryResult is returned uniformly. 
 It contains the query trajectory in raw form, the map-matched query trajectory, and all trajectories being retrieved. Also, you can project these on MapV<sup>[3]</sup> for visualization purpose.
+
+### 3. Use your own dataset
+If you want to search over your own dataset, please follow these steps for data preprocessing:
+
+1) Download the map data from openstreetmap where the trajectory data is collected,
+It should be in *.osm.pbf format and you need to put it into Resourses directory.
+
+2) Preprocess your dataset into the format supported by our program. 
+Map matching is the technique for projecting raw trajectories onto real road network.
+The first argument is the URI of raw trajectory data-set, while the second argument 
+**"Resources/porto.osm.pbf"** should be the URI to your PBF file<sup>[1]</sup>
+After setup, call start() method to convert raw trajectories to mapped trajectories.
+After mapmatching, run the main() program in the Torch.base.db.DBManager class to build inverted index on disk. 
+Please take our Porto dataset as an example. 
+```
+   MapMatching mm = MapMatching.getBuilder().build("Resources/porto_raw_trajectory.txt","Resources/porto.osm.pbf");
+   mm.start();
+```
+
+
+#### Note:
+```
+   trajectoryID [[latitude1,longtitude1],[latitude2,longtitude2],...]
+```
+ 1. The format of trajectory data should be the same as it in sample data-set, and there is a **\t** character separating trajectory id and content of it
+ 2. If using your own dataset, please preprocess your data properly. Low quality trajectories leads to low projection rate, and high length trajectories (over 200) could affect query time.
 
 
 
